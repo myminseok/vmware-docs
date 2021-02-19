@@ -20,7 +20,7 @@ Then
 
 # pre-requisite
 
-## install velero to target cluster
+-  install velero to target cluster
 
 
 
