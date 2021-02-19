@@ -1,5 +1,5 @@
 # pre-requisite
-install velero
+#176996480
 
 
 # backup
@@ -15,10 +15,10 @@ mc mb minio/velero/restic/default
 mc ls minio/velero -r --summarize
 ```
 
+## backup procedure
+- how backup works: https://velero.io/docs/v1.5/how-velero-works/
+- volume backup with restic: https://velero.io/docs/v1.5/restic/#how-backup-and-restore-work-with-restic
 
-
-
-https://velero.io/docs/v1.5/how-velero-works/
 ```
 velero backup create BACKUP-NAME  --exclude-namespaces=velero --include-cluster-resources=true 
 
