@@ -1,0 +1,21 @@
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+    kubernetes.io/ingress.allow-http: "false"
+  name: yelb-ingress-tls
+spec:
+  tls:
+  - hosts:
+    - yelb.com
+    secretName: yelb-tls
+  rules:
+  - host: yelb.com
+    http:
+      paths:
+      - backend:
+          serviceName: yelb-ui
+          servicePort: 80
+          

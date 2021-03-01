@@ -1,0 +1,22 @@
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+    kubernetes.io/ingress.allow-http: "false"
+  name: envoy-ingress-tls
+  namespace: tanzu-system-ingress
+spec:
+  tls:
+  - hosts:
+    - envoy.tanzu.com
+    secretName: envoy-tls
+  rules:
+  - host: envoy.tanzu.com
+    http:
+      paths:
+      - backend:
+          serviceName: envoy
+          servicePort: 80
+          

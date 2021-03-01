@@ -1,0 +1,1 @@
+ssh -L 9090:prometheus.tanzu.com:80 -i SSH_KEY ubuntu@JUMPBOX

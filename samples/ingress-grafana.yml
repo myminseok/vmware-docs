@@ -1,0 +1,22 @@
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+    kubernetes.io/ingress.allow-http: "false"
+  name: grafana-ingress-tls
+  namespace: tanzu-system-monitoring
+spec:
+  tls:
+  - hosts:
+    - grafana.tanzu.com
+    secretName: grafana-tls
+  rules:
+  - host: grafana.tanzu.com
+    http:
+      paths:
+      - backend:
+          serviceName: grafana
+          servicePort: 80
+          

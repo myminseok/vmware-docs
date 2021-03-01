@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jumpbox
+  namespace: ns1
+spec:
+  containers:
+  - name: jumpbox
+    image: "photon:3.0"
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "yum install -y openssh-server; mkdir /root/.ssh; cp /root/ssh/ssh-privatekey /root/.ssh/id_rsa; chmod 600 /root/.ssh/id_rsa; while true; do sleep 30; done;" ]
+    volumeMounts:
+      - mountPath: "/root/ssh"
+        name: ssh-key
+        readOnly: true
+    resources:          
+      requests:
+        memory: "1024Mi"
+        cpu: "500m"
+      limits:
+        memory: "2048Mi"
+        cpu: "1000m"
+  volumes:
+    - name: ssh-key
+      secret:
+        secretName:  TKC1-ssh
+

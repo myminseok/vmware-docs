@@ -1,39 +1,23 @@
-### Why
-This is for Disaster Recovery with service downtime.
- 
-
-**As personaName**
-**I want **
-**So that **
-
-### Acceptance Criteria
-
-```gherkin
-Scenario: 
-Given
-When
-Then
-```
-
-**Notes:**
+# Restore  with velero and restic 
+- for Tanzu Kubernetes cluster on TKGs v1.2.1(vsphere7)
+- for Guest cluster from TKGm
 
 
-# pre-requisite
-
--  install velero to target cluster
+# Pre-requisite
+-  [install velero to target cluster](velero-install.md)
 
 
 
 ## set velero readonly (backupstoragelocation)
 ```
-k patch backupstoragelocation default -n velero --type merge  --patch '{"spec":{"accessMode":"ReadOnly"}}'
+kubectl patch backupstoragelocation default -n velero --type merge  --patch '{"spec":{"accessMode":"ReadOnly"}}'
 
-k get backupstoragelocation  -n velero
+kkubectl get backupstoragelocation  -n velero
 NAME      PHASE       LAST VALIDATED   AGE
 default   Available   42s              21m
 ```
 
-## wait for backup sync
+## wait for backup sync with minio
 you can see backup list . default sync interval  from minio is 1 min
 ```
 ubuntu@ubuntu-455:~$ velero backup get
@@ -41,14 +25,14 @@ NAME             STATUS            ERRORS   WARNINGS   CREATED                  
 default-backup   PartiallyFailed   1        0          2021-02-15 08:06:01 -0800 PST   29d       default            <none>
 ```
 
-# #restore backup 
+## Restore backup 
 ```
 velero restore create --from-backup BACKUP-NAME  
 
 # --include-namespaces yelb (optional)
 ```
 
-## check  restore 
+## Check  restore 
 velero namespace를 제외한 것 복구완료
 ```
 ubuntu@ubuntu-455:~$ velero restore get
@@ -70,7 +54,7 @@ Phase:  Completed
 ```
 
 
-# check pv store
+# Check PV
 ssh into redis-server pod and check volume.
 
 ```

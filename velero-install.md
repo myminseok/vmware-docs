@@ -1,40 +1,27 @@
-Velero tested on TKG s v1.2.1 on vsphere7
+# backup and with velero and restic 
+- for Tanzu Kubernetes cluster on TKGs v1.2.1(vsphere7)
+- for Guest cluster from TKGm
 
-# velero architecture
+# velero docs
 - https://velero.io/docs/v1.5/how-velero-works/
 - https://github.com/vmware-tanzu/velero
-
-
-# backup PV plugin
+- https://velero.io/blog/velero-v1-1-stateful-backup-vsphere
 - https://github.com/vmware-tanzu/velero-plugin-for-aws
-- https://github.com/vmware-tanzu/velero-plugin-for-vsphere
-- https://velero.io/blog/velero-v1-1-stateful-backup-vsphere/ => 실제 설치하지 않음.
-- https://github.com/vmware-tanzu/velero-plugin-for-csi => beta
 
 
-
-
-#  install velero
-- install: https://velero.io/docs/v1.5/basic-install/
+# Download 
 
 ## tkg , tkg extension bundle, velero, cert manager, kubectl
 https://www.vmware.com/go/get-tkg
 
-
-## uninstalling velero server
-- https://velero.io/docs/v1.5/uninstalling/
+##  velero cli
 ```
-1)  login to guest-cluster as admin
-2) 
-kubectl delete namespace/velero clusterrolebinding/velero
-kubectl delete crds -l component=velero
-```
-
-
-## velero cli
 wget https://github.com/vmware-tanzu/velero/releases/download/v1.5.3/velero-v1.5.3-linux-amd64.tar.gz
 cp velero-v1.5.3-linux-amd64/velero ~/bin/
+```
 
+#  Install velero-server
+- install: https://velero.io/docs/v1.5/basic-install/
 
 ## credentials-velero
 ```
@@ -45,7 +32,8 @@ aws_secret_access_key=mysecretkey
 EOF
 ```
 
-## install velero server on k8s
+
+## Install velero server on k8s
 ```
 velero install \
 --provider aws \
@@ -55,64 +43,42 @@ velero install \
 --snapshot-location-config region=minio \
 --backup-location-config \
 region=minio,s3ForcePathStyle="true",s3Url=http://10.213.227.70:9000,publicUrl=http://10.213.227.70:9000 \
---use-restic --default-volumes-to-restic 
-
-# --secret-file ./credentials-velero 
-#  will create velero namespace
-# --use-restic 
-# --default-volumes-to-restic 
-```
-
-# configure private docker registry to velero 
-
-## create harbor secret.
-```
-kubectl delete secret harbor-registry-secret -n velero
-kubectl create secret docker-registry harbor-registry-secret --docker-server=10.213.227.68 --docker-username=user1@vsphere.local --docker-password=VMware1! -n velero
-```
-
-## deployment.apps/velero -n velero에 반영해야 함.
-```
-spec:
-  template:
-    spec:
-       imagePullSecrets:
-       - name: harbor-registry-secret
-      containers:
-      containers:
-        image: 10.213.227.68/ns1/velero/velero:v1.5.3
-      initContainers:
-      - image: 10.213.227.68/ns1/velero/velero-plugin-for-aws:v1.1.0
-```
-
-## apply to pods by script.
+--use-restic \
+--default-volumes-to-restic 
 
 ```
-cat > add_imagepullsecrets.yml <<EOF
-#@ load("@ytt:overlay", "overlay")
+- it will create velero namespace
+- --secret-file ./credentials-velero 
 
-#@overlay/match by=overlay.all
----
-spec:
-  template:
-    spec:
-      #@overlay/match missing_ok=True
-      imagePullSecrets:
-      #@overlay/match by=overlay.index(0)
-      - name: harbor-registry-secret
- 
-EOF
+## Install velero server on k8s (from private registry)
 ```
+velero install \
+--provider aws \
+--bucket velero \
+--secret-file ./credentials-velero \
+--plugins PRIVATE-REGISTRY/velero/velero-plugin-for-aws:v1.1.0 \
+--snapshot-location-config region=minio \
+--backup-location-config \
+region=minio,s3ForcePathStyle="true",s3Url=http://10.213.227.70:9000,publicUrl=http://10.213.227.70:9000 \
+--use-restic \
+--default-volumes-to-restic 
 
 ```
-k get deployment.apps/velero -n velero -o yaml | sed 's/image: /image: 10.213.227.68\/ns1\//g' | ytt   -f add_imagepullsecrets.yml -f -  | kubectl apply -f -
-k get daemonset.apps/restic  -n velero -o yaml | sed 's/image: /image: 10.213.227.68\/ns1\//g' | ytt   -f add_imagepullsecrets.yml -f -  | kubectl apply -f -
-```
+- PRIVATE-REGISTRY
 
+## modify deployments
+[private-registry-modify-deployment](private-registry-modify-deployment.md)
 
-## check  cloud-credentials 
+# check installation
+
+## deployments
 ```
-k get secret -n velero cloud-credentials -o jsonpath='{.data.cloud}' | base64 -d
+kubectl get all -n velero
+
+```
+## check cloud-credentials 
+```
+kubectl get secret -n velero cloud-credentials -o jsonpath='{.data.cloud}' | base64 -d
 [default]
 aws_access_key_id = myaccesskey
 aws_secret_access_key = mysecretkey
@@ -126,17 +92,16 @@ default   aws        velero          Unavailable   2021-02-15 05:46:43 -0800 PST
 ```
 ```
 velero get backup-location default -o yaml
-k api-resources | grep backup
+kubectl api-resources | grep backup
 ```
 
 ## check backupstoragelocations
 ```
-k get backupstoragelocations default -n velero -o yaml
+kubectl get backupstoragelocations default -n velero -o yaml
 ```
 
 ## check snapshot-location
 -  A volume snapshot location is a location in which to store the volume snapshots created for a backup.
-- 백업할 때 없어도 백업 됨.
 
 ```
 velero snapshot-location create vsl-vsphere --provider velero.io/vsphere
@@ -195,6 +160,15 @@ kubectl edit deployment/velero -n velero
 ```
 
 
-##  velero-plugin-for-vsphere 
-restic을 쓸 경우 velero-plugin-for-vsphere는 설치 안해도 됨.
+
+# Uninstalling velero server
+- https://velero.io/docs/v1.5/uninstalling/
+
+## login to guest-cluster as admin
+
+## delete velero server
+```
+kubectl delete namespace/velero clusterrolebinding/velero
+kubectl delete crds -l component=velero
+```
 
