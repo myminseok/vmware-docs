@@ -1,5 +1,7 @@
+login once to supervisor-cluster with kubectl. and navigate to the target TKC cluster with kubeconfig whhich is extracted from secert in the supervisor cluster.
 
-login to supervisor-cluster
+for example, 
+
 ```
 kubectl vsphere login --insecure-skip-tls-verify --server wcp.haas-455.pez.vmware.com -u user1@vsphere.local
 
