@@ -1,9 +1,12 @@
+# Apply Private CA to TKC
 
-# Get SSH secrets of TKC
+## manaul way
+
+### Get SSH secrets of TKC
 - [tkgs-tkc-ssh-access](tkgs-tkc-ssh-access.md)
 
 
-# Copy registry CA to TKG nodes
+### Copy registry CA to TKG nodes
 
 list TKC node IPs.
 
@@ -15,7 +18,7 @@ kubectl get nodes -o wide
 kubectl get node  -o jsonpath='{.status.addresses[?(@.type=="InternalIP")].address}'
 ```
 
-Copy the Registry root CA bundle to the TKG node and install it into the system trust bundle by appending it to '/etc/pki/tls/certs/ca-bundle.crt'
+### Copy the Registry root CA bundle to the TKG node and install it into the system trust bundle by appending it to '/etc/pki/tls/certs/ca-bundle.crt'
 
 ```
 scp -i cluster-ssh <path to Registry Service CA bundle>  vmware-system-user@<node IP>:/home/vmware-system-user/registry_ca.crt
@@ -25,13 +28,19 @@ ssh -i cluster-ssh vware-system-user@10.244.1.4 'sudo bash -c "cat /home/vware-s
 ssh -i cluster-ssh vmware-system-user@<node IP> 'sudo systemctl restart containerd'
 
 ```
+## using script
+
+```
+wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkgs-insecure-registry-ca.sh
+chmod +x tkgs-insecure-registry-ca.sh
+
+./tkgs-insecure-registry-ca.sh -c <TKC_NAME> -n <VSPHERE_NAMESPACE> -r <PRIVATE_REGISTRY_URL> --vc_admin_passowrd <VC_ADMIN_PASS> --vc_admin_user <VC_ADMIN_USER> --vc_ip <VC_URL> --sv_ip <SV_URL> --vc_root_password <VC_ROOT_PASS> --ca_file harbor-ca.crt
+
+```
 
 
-
-
-# Modify deployment to use private docker registry 
-
-deployment 
+# Modify deployment 
+to use private docker registry 
 ```
 spec:
   template:
@@ -46,7 +55,7 @@ spec:
 ```
 
 
-## create harbor secret.
+### create harbor secret.
 ```
 kubectl delete secret harbor-registry-secret -n velero
 
@@ -54,7 +63,8 @@ kubectl create secret docker-registry harbor-registry-secret --docker-server=10.
 ```
 
 
-## modify deployment 
+### modify deployment
+
 
 ```
 cat > add_imagepullsecrets.yml <<EOF
@@ -80,12 +90,3 @@ k get daemonset.apps/restic  -n velero -o yaml | sed 's/image: /image: 10.213.22
 ```
 
 
-
-#
-```
-wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkgs-insecure-registry-ca.sh
-chmod +x tkgs-insecure-registry-ca.sh
-
-./tkgs-insecure-registry-ca.sh -c <TKC_NAME> -n <VSPHERE_NAMESPACE> -r <PRIVATE_REGISTRY_URL> --vc_admin_passowrd <VC_ADMIN_PASS> --vc_admin_user <VC_ADMIN_USER> --vc_ip <VC_URL> --sv_ip <SV_URL> --vc_root_password <VC_ROOT_PASS> --ca_file harbor-ca.crt
-
-```
