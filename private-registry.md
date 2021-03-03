@@ -78,3 +78,14 @@ k get deployment.apps/velero -n velero -o yaml | sed 's/image: /image: 10.213.22
 
 k get daemonset.apps/restic  -n velero -o yaml | sed 's/image: /image: 10.213.227.68\/ns1\//g' | ytt   -f add_imagepullsecrets.yml -f -  | kubectl apply -f -
 ```
+
+
+
+#
+```
+wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkgs-insecure-registry-ca.sh
+chmod +x tkgs-insecure-registry-ca.sh
+
+./tkgs-insecure-registry-ca.sh -c <TKC_NAME> -n <VSPHERE_NAMESPACE> -r <PRIVATE_REGISTRY_URL> --vc_admin_passowrd <VC_ADMIN_PASS> --vc_admin_user <VC_ADMIN_USER> --vc_ip <VC_URL> --sv_ip <SV_URL> --vc_root_password <VC_ROOT_PASS> --ca_file harbor-ca.crt
+
+```
