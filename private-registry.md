@@ -1,4 +1,17 @@
-# Apply Private CA to TKC
+# Apply Private CA to TKC nodes
+
+## using script
+prepare harbor ca file.
+
+```
+wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-add-ca-via-sv.sh
+wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-add-ca.sh
+chmod +x tkg-ssh-sv-vm.sh
+
+./tkg-add-ca-via-sv.sh --vc_ip pacific-vcsa.haas-455.pez.vmware.com --vc_admin_passowrd secret --vc_admin_user administrator@vsphere.local --vc_root_password secret  --sv_ip wcp.haas-455.pez.vmware.com -c ns1-tkg1 -n  ns1  --ca_file_path ../harbor-root-ca.crt
+                            
+```
+
 
 ## manaul way
 
@@ -28,18 +41,7 @@ ssh -i cluster-ssh vware-system-user@10.244.1.4 'sudo bash -c "cat /home/vware-s
 ssh -i cluster-ssh vmware-system-user@<node IP> 'sudo systemctl restart containerd'
 
 ```
-## using script
 
-```
-
-wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-add-ca-via-sv.sh
-wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-add-ca.sh
-chmod +x tkg-ssh-sv-vm.sh
-
-./tkg-add-ca-via-sv.sh --vc_ip pacific-vcsa.haas-455.pez.vmware.com --vc_admin_passowrd secret --vc_admin_user administrator@vsphere.local --vc_root_password secret  --sv_ip wcp.haas-455.pez.vmware.com -c ns1-tkg1 -n  ns1  --ca_file_path ../harbor-root-ca.crt
-                            
-
-```
 
 
 # Modify deployment 
