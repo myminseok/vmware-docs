@@ -1,7 +1,7 @@
 # Apply Private CA to TKC nodes
 
 ## using script
-prepare harbor ca file.
+prepare harbor ca file to apply Private CA to TKC nodes
 
 ```
 wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-add-ca-via-sv.sh
