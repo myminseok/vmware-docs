@@ -31,10 +31,13 @@ ssh -i cluster-ssh vmware-system-user@<node IP> 'sudo systemctl restart containe
 ## using script
 
 ```
-wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkgs-insecure-registry-ca.sh
-chmod +x tkgs-insecure-registry-ca.sh
 
-./tkgs-insecure-registry-ca.sh -c <TKC_NAME> -n <VSPHERE_NAMESPACE> -r <PRIVATE_REGISTRY_URL> --vc_admin_passowrd <VC_ADMIN_PASS> --vc_admin_user <VC_ADMIN_USER> --vc_ip <VC_URL> --sv_ip <SV_URL> --vc_root_password <VC_ROOT_PASS> --ca_file harbor-ca.crt
+wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-ssh-sv-vm.sh
+wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-add-ca.sh
+chmod +x tkg-ssh-sv-vm.sh
+
+./tkg-ssh-sv-vm.sh --vc_ip pacific-vcsa.haas-455.pez.vmware.com --vc_admin_passowrd secret --vc_admin_user administrator@vsphere.local --vc_root_password secret  --sv_ip wcp.haas-455.pez.vmware.com -c ns1-tkg1 -n  ns1  --ca_file_path ../harbor-root-ca.crt
+                            
 
 ```
 
