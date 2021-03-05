@@ -32,11 +32,11 @@ ssh -i cluster-ssh vmware-system-user@<node IP> 'sudo systemctl restart containe
 
 ```
 
-wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-ssh-sv-vm.sh
+wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-add-ca-via-sv.sh
 wget https://raw.githubusercontent.com/myminseok/vmware-docs/main/samples/tkg-add-ca.sh
 chmod +x tkg-ssh-sv-vm.sh
 
-./tkg-ssh-sv-vm.sh --vc_ip pacific-vcsa.haas-455.pez.vmware.com --vc_admin_passowrd secret --vc_admin_user administrator@vsphere.local --vc_root_password secret  --sv_ip wcp.haas-455.pez.vmware.com -c ns1-tkg1 -n  ns1  --ca_file_path ../harbor-root-ca.crt
+./tkg-add-ca-via-sv.sh --vc_ip pacific-vcsa.haas-455.pez.vmware.com --vc_admin_passowrd secret --vc_admin_user administrator@vsphere.local --vc_root_password secret  --sv_ip wcp.haas-455.pez.vmware.com -c ns1-tkg1 -n  ns1  --ca_file_path ../harbor-root-ca.crt
                             
 
 ```
