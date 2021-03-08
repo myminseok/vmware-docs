@@ -1,0 +1,109 @@
+# prometheus k14s objects managed by extension manager
+---
+apiVersion: clusters.tmc.cloud.vmware.com/v1alpha1
+kind: Extension
+metadata:
+  name: prometheus
+  namespace: tanzu-system-monitoring
+  annotations:
+    tmc.cloud.vmware.com/managed: "false"
+spec:
+  description: prometheus
+  version: "v2.17.1_vmware.1"
+  name: prometheus
+  namespace: tanzu-system-monitoring
+  deploymentStrategy:
+    type: KUBERNETES_NATIVE
+  objects: |
+    apiVersion: kappctrl.k14s.io/v1alpha1
+    kind: App
+    metadata:
+      name: prometheus
+      annotations:
+        tmc.cloud.vmware.com/orphan-resource: "true"
+    spec:
+      syncPeriod: 1m
+      serviceAccountName: prometheus-extension-sa
+      fetch:
+        - image:
+            url: registry.tkg.vmware.run/tkg-extensions-templates:v1.2.0_vmware.1
+      template:
+        - ytt:
+            ignoreUnknownComments: true
+            paths:
+              - tkg-extensions/common
+              - tkg-extensions/monitoring/prometheus
+            inline:
+              paths:
+                update-server-deployment.yaml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-server"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        #@overlay/match missing_ok=True
+                        imagePullSecrets:
+                        #@overlay/match by=overlay.index(0)
+                        - name: harbor-registry-secret
+                update-alertmanager-deployment.yaml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-alertmanager"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        #@overlay/match missing_ok=True
+                        imagePullSecrets:
+                        #@overlay/match by=overlay.index(0)
+                        - name: harbor-registry-secret
+                update-kube-state-metrics-deployment.yaml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-kube-state-metrics"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        #@overlay/match missing_ok=True
+                        imagePullSecrets:
+                        #@overlay/match by=overlay.index(0)
+                        - name: harbor-registry-secret
+                update-node-exporter-daemonset.yaml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "DaemonSet", "metadata": {"name": "prometheus-node-exporter"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        #@overlay/match missing_ok=True
+                        imagePullSecrets:
+                        #@overlay/match by=overlay.index(0)
+                        - name: harbor-registry-secret
+                update-pushgateway-deployment.yaml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-pushgateway"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        #@overlay/match missing_ok=True
+                        imagePullSecrets:
+                        #@overlay/match by=overlay.index(0)
+                        - name: harbor-registry-secret
+                update-cadvisor-daemonset.yaml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "DaemonSet", "metadata": {"name": "prometheus-cadvisor"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        #@overlay/match missing_ok=True
+                        imagePullSecrets:
+                        #@overlay/match by=overlay.index(0)
+                        - name: harbor-registry-secret
+              pathsFrom:
+                - secretRef:
+                    name: prometheus-data-values
+      deploy:
+        - kapp:
+            rawOptions: ["--wait-timeout=1m"]

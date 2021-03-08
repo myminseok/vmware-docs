@@ -62,9 +62,31 @@ spec:
 
 ### create harbor secret.
 ```
+
 kubectl delete secret harbor-registry-secret -n velero
 
+
+kubectl create secret docker-registry harbor-registry-secret --docker-server=https://myprivate-docker --docker-username=USER --docker-password=PASS --namespace YOUR-NAMESPACE
+
+
 kubectl create secret docker-registry harbor-registry-secret --docker-server=10.213.227.68 --docker-username=user1@vsphere.local --docker-password=VMware1! -n velero
+```
+
+or
+
+```
+kubectl get serviceaccounts default -o yaml > ./sa.yaml
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: default
+secrets:
+- name: default-token-uudge
+imagePullSecrets:
+- name: harbor-registry-secret
+
 ```
 
 
