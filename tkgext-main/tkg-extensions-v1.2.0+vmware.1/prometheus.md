@@ -22,7 +22,7 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
    edit data-values.yaml 
    - referencing monitoring/prometheus/values.yml
    - put private harbor url 
-   
+
    ```
 #@data/values
 #@overlay/match-child-defaults missing_ok=True
@@ -73,7 +73,7 @@ monitoring:
    kubectl get secret  prometheus-data-values -n tanzu-system-monitoring -o 'go-template={{ index .data "values.yaml" }}' | base64 -d 
    ```
 
-   check  deployment integrity
+  Test if contour templates are rendered correctly
    ```
    ytt --ignore-unknown-comments -f common/ -f monitoring/prometheus/  -f ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml  -v infrastructure_provider=vsphere 
    ```
