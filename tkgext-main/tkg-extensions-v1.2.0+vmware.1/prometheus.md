@@ -5,7 +5,7 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
 1. Create namespace for extension
 
     ```sh
-    kubectl apply -f namespace-role.yaml
+    kubectl apply -f extentions/monitoring/prometheus/namespace-role.yaml
     ```
 
 2. Copy `<extension-name>-data-values.yaml.example` to `<extension-name>-data-values.yaml` and
@@ -18,6 +18,44 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
    ```
    cp ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml.example ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
    ```
+
+   edit data-values.yaml 
+   - referencing monitoring/prometheus/values.yml
+   - put private harbor url 
+   
+   ```
+#@data/values
+#@overlay/match-child-defaults missing_ok=True
+---
+infrastructure_provider: "vsphere"
+monitoring:
+  prometheus_server:
+    image:
+      name: "prometheus"
+      tag: "v2.18.1_vmware.1"
+      repository: "registry.tkg.vmware.run/prometheus"
+  alertmanager:
+    image:
+      repository: registry.tkg.vmware.run/prometheus
+  kube_state_metrics:
+    image:
+      repository: registry.tkg.vmware.run/prometheus
+  node_exporter:
+    image:
+      repository: registry.tkg.vmware.run/prometheus
+  pushgateway:
+    image:
+      repository: registry.tkg.vmware.run/prometheus
+  cadvisor:
+    image:
+      repository: registry.tkg.vmware.run/prometheus
+  prometheus_server_configmap_reload:
+    image:
+      repository: registry.tkg.vmware.run/prometheus
+  prometheus_server_init_container:
+    image:
+      repository: registry.tkg.vmware.run/prometheus
+      ```
 
 3. Create a secret with data values
 
@@ -119,6 +157,3 @@ spec:
           serviceName: prometheus-alertmanager
           servicePort: 80
 ```
-
-
-#
