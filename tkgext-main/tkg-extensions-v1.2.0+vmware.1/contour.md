@@ -36,7 +36,7 @@ envoy:
     repository: myregistry.tkg.vmware.run
   service:
     type: LoadBalancer
-    externalTrafficPolicy: Cluster  #<-- envoy LB
+    externalTrafficPolicy: Cluster  #!<-- envoy LB
     disableWait: false
   loglevel: info
 
