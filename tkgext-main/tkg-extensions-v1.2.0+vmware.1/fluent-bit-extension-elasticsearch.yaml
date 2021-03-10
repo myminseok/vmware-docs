@@ -1,0 +1,73 @@
+
+# fluent-bit k14s objects managed by extension manager
+---
+apiVersion: clusters.tmc.cloud.vmware.com/v1alpha1
+kind: Extension
+metadata:
+  name: fluent-bit
+  namespace: tanzu-system-logging
+  annotations:
+    tmc.cloud.vmware.com/managed: "false"
+spec:
+  description: fluent-bit
+  version: "v1.5.3_vmware.1"
+  name: fluent-bit
+  namespace: tanzu-system-logging
+  deploymentStrategy:
+    type: KUBERNETES_NATIVE
+  objects: |
+    apiVersion: kappctrl.k14s.io/v1alpha1
+    kind: App
+    metadata:
+      name: fluent-bit
+      annotations:
+        tmc.cloud.vmware.com/orphan-resource: "true"
+    spec:
+      syncPeriod: 1m
+      serviceAccountName: fluent-bit-extension-sa
+      fetch:
+        - image:
+            url: projects-stg.registry.vmware.com/tkg/tkgextensions-dev/tkg-extensions-templates:v1.3.0-pre-alpha-7-g1a72ffd
+      template:
+        - ytt:
+            paths:
+              - tkg-extensions/common
+              - tkg-extensions/logging/fluent-bit
+            inline:
+              paths:
+                update-config-map.yaml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "ConfigMap", "metadata": {"name": "fluent-bit-config"}})
+                  ---
+                  data:
+                    output-elasticsearch.conf: |
+                      [OUTPUT]
+                          Name            es
+                          Match           *
+                          Host            ubuntu-455.haas-455.pez.vmware.com
+                          Port            9200
+                          Logstash_Format On
+                          Replace_Dots    On
+                          Retry_Limit     False
+                          Buffer_Size     False
+                          tls             Off
+                          HTTP_User       elastic
+                          HTTP_Passwd     changeme
+                update-fluent-bit-ds.yml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "DaemonSet", "metadata": {"name": "fluent-bit"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        #@overlay/match missing_ok=True
+                        imagePullSecrets:
+                        #@overlay/match by=overlay.index(0)
+                        - name: harbor-registry-secret
+              pathsFrom:
+                - secretRef:
+                    name: fluent-bit-data-values
+      deploy:
+        - kapp:
+            rawOptions: ["--wait-timeout=5m"]
+

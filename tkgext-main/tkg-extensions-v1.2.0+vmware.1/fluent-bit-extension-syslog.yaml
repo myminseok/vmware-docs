@@ -1,4 +1,4 @@
-# for tkg-extensions-v1.2.0+vmware.1
+
 # fluent-bit k14s objects managed by extension manager
 ---
 apiVersion: clusters.tmc.cloud.vmware.com/v1alpha1
@@ -42,17 +42,17 @@ spec:
                   data:
                     output-elasticsearch.conf: |
                       [OUTPUT]
-                          Name            es
-                          Match           *
-                          Host            ubuntu-455.haas-455.pez.vmware.com
-                          Port            9200
-                          Logstash_Format On
-                          Replace_Dots    On
-                          Retry_Limit     False
-                          Buffer_Size     False
-                          tls             Off
-                          HTTP_User       elastic
-                          HTTP_Passwd     changeme
+                          Name   syslog
+                          Match  *
+                          Host   logs.yoursyslog.com
+                          Port   514
+                          Mode   tcp
+                          Syslog_Format        rfc5424
+                          Syslog_Hostname_key  tkg_cluster
+                          Syslog_Appname_key   pod_name
+                          Syslog_Procid_key    container_name
+                          Syslog_Message_key   message
+                          Syslog_sd_key        dockerid=docker_id
                 update-fluent-bit-ds.yml: |
                   #@ load("@ytt:overlay", "overlay")
                   #@overlay/match by=overlay.subset({"kind": "DaemonSet", "metadata": {"name": "fluent-bit"}})
@@ -69,5 +69,5 @@ spec:
                     name: fluent-bit-data-values
       deploy:
         - kapp:
-            rawOptions: ["--wait-timeout=1m"]
+            rawOptions: ["--wait-timeout=5m"]
 
