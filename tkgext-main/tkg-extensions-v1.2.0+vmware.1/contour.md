@@ -14,15 +14,15 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
 
    ```sh
    cp <extension-name>-data-values.yaml.example <extension-name>-data-values.yaml
+   
+   cp ./extensions/ingress/contour/vsphere/contour-data-values.yaml.example ./extensions/ingress/contour/vsphere/contour-data-values.yaml
    ```
-
-   ```
-  cp ./extensions/ingress/contour/vsphere/contour-data-values.yaml.example ./extensions/ingress/contour/vsphere/contour-data-values.yaml
-
-   ```
+  
   edit data-values.yaml 
+
    - referencing monitoring/prometheus/values.yml
    - put private harbor url 
+   
 ```
 #@data/values
 #@overlay/match-child-defaults missing_ok=True
@@ -46,12 +46,8 @@ envoy:
 
    ```sh
    kubectl create secret generic <extension-name>-data-values --from-file=values.yaml=<extension-name>-data-values.yaml -n <extension-namespace>
-   ```
-
-   ```
- 
+  
    kubectl create secret generic contour-data-values --from-file=values.yaml=./extensions/ingress/contour/vsphere/contour-data-values.yaml -n tanzu-system-ingress
-
 
    kubectl create secret generic contour-data-values --from-file=values.yaml=./extensions/ingress/contour/vsphere/contour-data-values.yaml -n tanzu-system-ingress -o yaml --dry-run=client | kubectl replace -f -
 
@@ -70,8 +66,7 @@ envoy:
 
     ```sh
     kubectl apply -f <extension-name>-extension.yaml
-    ```
-    ```
+  
     kubectl apply -f ./extensions/ingress/contour/contour-extension.yaml
 
     ```
@@ -90,12 +85,10 @@ envoy:
 
    ```sh
    kubectl get app <extension-name> -n <extension-namespace> -o yaml
+   
+   kubectl get app contour -n tanzu-system-ingress -o yaml -w
+   kubectl get all -n tanzu-system-ingress
    ```
-
-    ```
-    kubectl get app contour -n tanzu-system-ingress -o yaml -w
-    kubectl get all -n tanzu-system-ingress
-    ```
 
 
 ## Update contour extension
