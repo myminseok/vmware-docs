@@ -37,62 +37,8 @@ spec:
               paths:
                 update-server-deployment.yaml: |
                   #@ load("@ytt:overlay", "overlay")
-                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-server"}})
-                  ---
-                  spec:
-                    template:
-                      spec:
-                        #@overlay/match missing_ok=True
-                        imagePullSecrets:
-                        #@overlay/match by=overlay.index(0)
-                        - name: harbor-registry-secret
-                update-alertmanager-deployment.yaml: |
-                  #@ load("@ytt:overlay", "overlay")
-                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-alertmanager"}})
-                  ---
-                  spec:
-                    template:
-                      spec:
-                        #@overlay/match missing_ok=True
-                        imagePullSecrets:
-                        #@overlay/match by=overlay.index(0)
-                        - name: harbor-registry-secret
-                update-kube-state-metrics-deployment.yaml: |
-                  #@ load("@ytt:overlay", "overlay")
-                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-kube-state-metrics"}})
-                  ---
-                  spec:
-                    template:
-                      spec:
-                        #@overlay/match missing_ok=True
-                        imagePullSecrets:
-                        #@overlay/match by=overlay.index(0)
-                        - name: harbor-registry-secret
-                update-node-exporter-daemonset.yaml: |
-                  #@ load("@ytt:overlay", "overlay")
-                  #@overlay/match by=overlay.subset({"kind": "DaemonSet", "metadata": {"name": "prometheus-node-exporter"}})
-                  ---
-                  spec:
-                    template:
-                      spec:
-                        #@overlay/match missing_ok=True
-                        imagePullSecrets:
-                        #@overlay/match by=overlay.index(0)
-                        - name: harbor-registry-secret
-                update-pushgateway-deployment.yaml: |
-                  #@ load("@ytt:overlay", "overlay")
-                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-pushgateway"}})
-                  ---
-                  spec:
-                    template:
-                      spec:
-                        #@overlay/match missing_ok=True
-                        imagePullSecrets:
-                        #@overlay/match by=overlay.index(0)
-                        - name: harbor-registry-secret
-                update-cadvisor-daemonset.yaml: |
-                  #@ load("@ytt:overlay", "overlay")
-                  #@overlay/match by=overlay.subset({"kind": "DaemonSet", "metadata": {"name": "prometheus-cadvisor"}})
+                  #@ for/end kind in ["Deployment", "DaemonSet"]
+                  #@overlay/match by=overlay.subset({"kind": kind}), expects="1+"
                   ---
                   spec:
                     template:
