@@ -42,7 +42,7 @@ spec:
                   spec:
                     template:
                       spec:
-                        hostNetwork: true
+                        hostNetwork: false
 
                 update-adding-private-registry-secret.yml: |
                   #@ load("@ytt:overlay", "overlay")
