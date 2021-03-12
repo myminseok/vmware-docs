@@ -44,6 +44,40 @@ spec:
                       spec:
                         hostNetwork: false
 
+                update-alertmanager-deployment.yml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-alertmanager"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        containers:
+                        #@overlay/replace
+                        #@overlay/match by="name"
+                        - name: prometheus-alertmanager
+                          image: "prom/alertmanager:v0.20.0"
+                          imagePullPolicy: "IfNotPresent"
+                          args:
+                            - --config.file=/etc/config/alertmanager.yml
+                            - --storage.path=/data
+                            - --cluster.listen-address=
+                          ports:
+                            - containerPort: 9093
+                          readinessProbe:
+                            httpGet:
+                              path: /-/ready
+                              port: 9093
+                            initialDelaySeconds: 30
+                            timeoutSeconds: 30
+                          resources:
+                            {}
+                          volumeMounts:
+                            - name: config-volume
+                              mountPath: /etc/config
+                            - name: storage-volume
+                              mountPath: "/data"
+                              subPath: ""
+
                 update-adding-private-registry-secret.yml: |
                   #@ load("@ytt:overlay", "overlay")
                   #@ for/end kind in ["Deployment", "DaemonSet"]:

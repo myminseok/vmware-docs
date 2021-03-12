@@ -1,0 +1,7 @@
+#@ load("@ytt:overlay", "overlay")
+#@overlay/match by=overlay.subset({"kind": "DaemonSet", "metadata": {"name": "prometheus-node-exporter"}})
+---
+spec:
+  template:
+    spec:
+      hostNetwork: false
