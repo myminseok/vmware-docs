@@ -1,14 +1,16 @@
 https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kubernetes-grid-12/GUID-extensions-monitoring.html
 
 
-1. Copy `<extension-name>-data-values.yaml.example` to `<extension-name>-data-values.yaml` and
-    Configure data values required for the extension in `<extension-name>-data-values.yaml`. <br>
-    rather copy ./monitoring/prometheus/values.yaml for complete set
+1. Copy data-values.yaml
+    Copy ./monitoring/prometheus/values.yaml for complete set
+        
     ``` sh
     cp ./monitoring/prometheus/values.yaml ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
     ```
 
 2. Edit data-values.yaml 
+    Configure data values required for the extension in `<extension-name>-data-values.yaml`.
+    
     vi ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
 
     ```yaml      
