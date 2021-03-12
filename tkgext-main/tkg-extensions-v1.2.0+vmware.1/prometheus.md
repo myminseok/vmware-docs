@@ -111,6 +111,7 @@ monitoring:
 
 
 6. Check status of an extension
+
    App status should change to `Reconcile Succeeded` once extension is deployed successfully
    
    View detailed status
