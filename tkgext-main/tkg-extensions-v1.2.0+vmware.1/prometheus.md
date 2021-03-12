@@ -2,6 +2,7 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
 
 
 1. Copy data-values.yaml
+
     Copy ./monitoring/prometheus/values.yaml for complete set
         
     ``` sh
@@ -9,6 +10,7 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
     ```
 
 2. Edit data-values.yaml 
+
     Configure data values required for the extension in `<extension-name>-data-values.yaml`.
     
     vi ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
