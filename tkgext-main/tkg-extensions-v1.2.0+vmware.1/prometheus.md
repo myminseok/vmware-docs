@@ -81,7 +81,7 @@ monitoring:
     there are some modification on extension.
     
     refer to  https://github.com/myminseok/vmware-docs/blob/main/tkgext-main/tkg-extensions-v1.2.0%2Bvmware.1/prometheus-extension-custom.yaml
-    ```
+```
  ...
 
                 update-alertmanager-deployment.yml: |
@@ -102,7 +102,7 @@ monitoring:
                             - --storage.path=/data
                             - --cluster.listen-address=                        #! add this line to disable alertmanager cluster feature. sometimes alertmanager pod fails to start due to cluster feature enabled.
                            
-    ```
+```
     
 5. Deploy extension  
 
