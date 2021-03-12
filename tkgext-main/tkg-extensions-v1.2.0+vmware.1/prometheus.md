@@ -1,14 +1,7 @@
 https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kubernetes-grid-12/GUID-extensions-monitoring.html
 
 
-
-1. Create namespace for extension
-
-    ```sh
-    kubectl apply -f extentions/monitoring/prometheus/namespace-role.yaml
-    ```
-
-2. Copy `<extension-name>-data-values.yaml.example` to `<extension-name>-data-values.yaml` and
+1. Copy `<extension-name>-data-values.yaml.example` to `<extension-name>-data-values.yaml` and
     Configure data values required for the extension in `<extension-name>-data-values.yaml`. <br>
     rather copy ./monitoring/prometheus/values.yaml for complete set
     ``` sh
@@ -56,8 +49,20 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
                   smarthost: smtp.eample.com:25
                   require_tls: false
     ```
+     test if contour templates are rendered correctly
+    ```sh
+    ytt --ignore-unknown-comments -f common/ -f monitoring/prometheus/  -f ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml  -v infrastructure_provider=vsphere 
+    ```
 
-3. Create a secret with data values
+
+
+3. Create namespace for extension
+
+    ```sh
+    kubectl apply -f extentions/monitoring/prometheus/namespace-role.yaml
+    ```
+    
+4. Create a secret with data values
     ```sh
     # create new
     kubectl create secret generic prometheus-data-values --from-file=values.yaml=./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml -n tanzu-system-monitoring
@@ -69,13 +74,10 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
     kubectl get secret  prometheus-data-values -n tanzu-system-monitoring -o 'go-template={{ index .data "values.yaml" }}' | base64 -d 
     ```
    
-    test if contour templates are rendered correctly
-    ```sh
-    ytt --ignore-unknown-comments -f common/ -f monitoring/prometheus/  -f ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml  -v infrastructure_provider=vsphere 
-   ```
+   
 
 
-4. Edit extension
+5. Edit extension
 
     there are some modification on extension.
     
@@ -104,7 +106,7 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
                            
     ```
     
-5. Deploy extension  
+6. Deploy extension  
 
     ```sh 
     kubectl apply -f ./extensions/monitoring/prometheus/prometheus-extension.yaml
@@ -112,7 +114,7 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
     ```
 
 
-6. Check status of an extension
+7. Check status of an extension
 
    App status should change to `Reconcile Succeeded` once extension is deployed successfully
    
