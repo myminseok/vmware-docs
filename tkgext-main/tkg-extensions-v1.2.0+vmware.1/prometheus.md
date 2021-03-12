@@ -17,6 +17,10 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
 
    ```
    cp ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml.example ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
+   
+   # for complete set of file.
+   cp ./monitoring/prometheus/values.yaml ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
+   
    ```
 
    edit data-values.yaml 
