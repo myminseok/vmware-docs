@@ -83,7 +83,7 @@ monitoring:
     refer to  https://github.com/myminseok/vmware-docs/blob/main/tkgext-main/tkg-extensions-v1.2.0%2Bvmware.1/prometheus-extension-custom.yaml
 
     ```
- ...
+    ...
 
                 update-alertmanager-deployment.yml: |
                   #@ load("@ytt:overlay", "overlay")
