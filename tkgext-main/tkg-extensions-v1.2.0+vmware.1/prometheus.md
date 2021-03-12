@@ -15,8 +15,10 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
    cp ./monitoring/prometheus/values.yaml ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
    ```
 
-   edit data-values.yaml 
-```yaml   
+2. Edit data-values.yaml 
+vi ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
+
+```yaml      
 #@data/values
 #@overlay/match-child-defaults missing_ok=True
 ---
@@ -53,10 +55,8 @@ monitoring:
           from: from-email@tanzu.com
           smarthost: smtp.eample.com:25
           require_tls: false
-          
-          
 
-   ```
+```
 
 3. Create a secret with data values
    ```sh
@@ -76,10 +76,10 @@ monitoring:
    ```
 
 
-4. Deploy extensions
+4. Edit extension
     there are some modification on extension. <br>
     refer to  https://github.com/myminseok/vmware-docs/blob/main/tkgext-main/tkg-extensions-v1.2.0%2Bvmware.1/prometheus-extension-custom.yaml
-```
+    ```
  ...
 
                 update-alertmanager-deployment.yml: |
@@ -100,21 +100,19 @@ monitoring:
                             - --storage.path=/data
                             - --cluster.listen-address=                        #! add this line to disable alertmanager cluster feature. sometimes alertmanager pod fails to start due to cluster feature enabled.
                            
-```
+    ```
     
-    
+5. Deploy extension  
 
     ```sh 
     kubectl apply -f ./extensions/monitoring/prometheus/prometheus-extension.yaml
     
-    
     ```
 
 
-5. Retrieve status of an extension
-
+6. Check status of an extension
    App status should change to `Reconcile Succeeded` once extension is deployed successfully
-
+   
    View detailed status
 
     ```sh
