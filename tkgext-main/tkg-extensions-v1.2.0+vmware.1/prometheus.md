@@ -59,7 +59,7 @@ monitoring:
    ```
 
 3. Create a secret with data values
-   ```
+   ```sh
    # create new
    kubectl create secret generic prometheus-data-values --from-file=values.yaml=./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml -n tanzu-system-monitoring
 
@@ -69,9 +69,9 @@ monitoring:
    # verify
    kubectl get secret  prometheus-data-values -n tanzu-system-monitoring -o 'go-template={{ index .data "values.yaml" }}' | base64 -d 
    ```
-
-  Test if contour templates are rendered correctly
-   ```
+   
+   test if contour templates are rendered correctly
+   ```sh
    ytt --ignore-unknown-comments -f common/ -f monitoring/prometheus/  -f ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml  -v infrastructure_provider=vsphere 
    ```
 
