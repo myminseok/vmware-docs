@@ -77,7 +77,9 @@ monitoring:
 
 
 4. Edit extension
-    there are some modification on extension. <br>
+
+    there are some modification on extension.
+    
     refer to  https://github.com/myminseok/vmware-docs/blob/main/tkgext-main/tkg-extensions-v1.2.0%2Bvmware.1/prometheus-extension-custom.yaml
     ```
  ...
