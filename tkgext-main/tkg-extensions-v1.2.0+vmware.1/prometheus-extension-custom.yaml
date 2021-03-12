@@ -35,18 +35,28 @@ spec:
               - tkg-extensions/monitoring/prometheus
             inline:
               paths:
-                update-server-deployment.yaml: |
+                update-prometheus-node-exporter-daemonset.yml: |
                   #@ load("@ytt:overlay", "overlay")
-                  #@ for/end kind in ["Deployment", "DaemonSet"]
-                  #@overlay/match by=overlay.subset({"kind": kind}), expects="1+"
+                  #@overlay/match by=overlay.subset({"kind": "DaemonSet", "metadata": {"name": "prometheus-node-exporter"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        hostNetwork: true
+
+                update-adding-private-registry-secret.yml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@ for/end kind in ["Deployment", "DaemonSet"]:
+                  #@overlay/match by=overlay.subset({"kind": kind}), expects="0+"
                   ---
                   spec:
                     template:
                       spec:
                         #@overlay/match missing_ok=True
                         imagePullSecrets:
-                        #@overlay/match by=overlay.index(0)
-                        - name: harbor-registry-secret
+                          #@overlay/match by=overlay.index(0)
+                          - name: harbor-registry-secret
+                      
               pathsFrom:
                 - secretRef:
                     name: prometheus-data-values
