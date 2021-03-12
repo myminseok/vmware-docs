@@ -12,11 +12,10 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
    Configure data values required for the extension in `<extension-name>-data-values.yaml`. <br>
    rather copy ./monitoring/prometheus/values.yaml for complete set
    ``` sh
-   # 
    cp ./monitoring/prometheus/values.yaml ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
    ```
 
-edit data-values.yaml 
+   edit data-values.yaml 
 ```yaml   
 #@data/values
 #@overlay/match-child-defaults missing_ok=True
@@ -78,7 +77,8 @@ monitoring:
 
 
 4. Deploy extensions
-    there are some modification on extension. refer to : https://github.com/myminseok/vmware-docs/blob/main/tkgext-main/tkg-extensions-v1.2.0%2Bvmware.1/prometheus-extension-custom.yaml
+    there are some modification on extension. <br>
+    refer to  https://github.com/myminseok/vmware-docs/blob/main/tkgext-main/tkg-extensions-v1.2.0%2Bvmware.1/prometheus-extension-custom.yaml
 ```
  ...
 
@@ -98,8 +98,8 @@ monitoring:
                           args:
                             - --config.file=/etc/config/alertmanager.yml
                             - --storage.path=/data
-                            - --cluster.listen-address=
-
+                            - --cluster.listen-address=                        #! add this line to disable alertmanager cluster feature. sometimes alertmanager pod fails to start due to cluster feature enabled.
+                           
 ```
     
     
