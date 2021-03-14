@@ -1,4 +1,4 @@
-# Backup TKG with velero and restic 
+# Backup TKG with Velero and Restic 
 - for Tanzu Kubernetes cluster on TKGs v1.2.1(vsphere7)
 - for Guest cluster from TKGm
 
