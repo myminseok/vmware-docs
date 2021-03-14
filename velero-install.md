@@ -1,4 +1,4 @@
-# backup and with velero and restic 
+# Backup TKG with velero and restic 
 - for Tanzu Kubernetes cluster on TKGs v1.2.1(vsphere7)
 - for Guest cluster from TKGm
 
@@ -9,16 +9,20 @@
 - https://github.com/vmware-tanzu/velero-plugin-for-aws
 
 
-# Download 
+# Prerequisites 
 
-## tkg , tkg extension bundle, velero, cert manager, kubectl
+## Download tkg , tkg extension bundle, velero, cert manager, kubectl
 https://www.vmware.com/go/get-tkg
 
-##  velero cli
+## Download  velero cli
 ```
 wget https://github.com/vmware-tanzu/velero/releases/download/v1.5.3/velero-v1.5.3-linux-amd64.tar.gz
 cp velero-v1.5.3-linux-amd64/velero ~/bin/
 ```
+
+## Prepare minio
+install test minio cluster on k8s
+- https://github.com/vmware-tanzu/velero/blob/main/examples/minio/00-minio-deployment.yaml
 
 #  Install velero-server
 - install: https://velero.io/docs/v1.5/basic-install/
