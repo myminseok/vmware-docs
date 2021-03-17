@@ -20,7 +20,7 @@ https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kuberne
     #@data/values
     #@overlay/match-child-defaults missing_ok=True
     ---
-
+    infrastructure_provider: "vsphere"              #! <------------ add  
     monitoring:
       namespace: "tanzu-system-monitoring"
       create_namespace: false
