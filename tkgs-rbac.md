@@ -90,3 +90,21 @@ nginx-app2-99b5db6c8-lsz7d   0/1     ImagePullBackOff   0          14m
 
 ```
 
+## for access to authenticated user group
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: custom-clusterrolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:authenticated
+  
+```
+
