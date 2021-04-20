@@ -43,6 +43,12 @@ ssh -i cluster-ssh vmware-system-user@<node IP> 'sudo systemctl restart containe
 ```
 
 
+or
+```
+cp HARBOR_CA.crt /etc/ssl/certs/HARBOR_CA.crt
+
+```
+
 
 # Modify deployment 
 to use private docker registry 
