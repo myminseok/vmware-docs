@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: jumpbox
-    image: "photon:3.0"
+    image: "photon:3.0" #dbha/photon-cm:3.0_dev
     command: [ "/bin/bash", "-c", "--" ]
     args: [ "yum install -y openssh-server; mkdir /root/.ssh; cp /root/ssh/ssh-privatekey /root/.ssh/id_rsa; chmod 600 /root/.ssh/id_rsa; while true; do sleep 30; done;" ]
     volumeMounts:
