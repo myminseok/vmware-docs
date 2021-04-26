@@ -59,7 +59,6 @@ spec:
        imagePullSecrets:
        - name: harbor-registry-secret
       containers:
-      containers:
         image: 10.213.227.68/ns1/velero/velero:v1.5.3
       initContainers:
       - image: 10.213.227.68/ns1/velero/velero-plugin-for-aws:v1.1.0
@@ -107,7 +106,7 @@ k get daemonset.apps/restic  -n velero -o yaml | sed 's/image: /image: 10.213.22
 ### or apply harbor secret to service account
 
 ```
-kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "myregistrykey"}]}'
+kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "harbor-registry-secret"}]}'
 
 ```
 
