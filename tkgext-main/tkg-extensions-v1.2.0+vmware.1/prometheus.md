@@ -1,163 +1,133 @@
 https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kubernetes-grid-12/GUID-extensions-monitoring.html
 
 
+1. Copy data-values.yaml
 
-1. Create namespace for extension
+    Copy ./monitoring/prometheus/values.yaml for complete set
+        
+    ``` sh
+    cp ./monitoring/prometheus/values.yaml ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
+    ```
+
+2. Edit data-values.yaml 
+
+    Configure data values required for the extension in `<extension-name>-data-values.yaml`.
+    
+    vi ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
+
+    ```yaml      
+    #@data/values
+    #@overlay/match-child-defaults missing_ok=True
+    ---
+    infrastructure_provider: "vsphere"              #! <------------ add    
+    monitoring:
+      prometheus_server:
+        image:
+          name: "prometheus"
+          tag: "v2.18.1_vmware.1"
+          repository: "registry.tkg.vmware.run/prometheus"
+
+
+                alerting:                                           #!---- around line 211 
+                  alertmanagers:
+                  - scheme: http
+                    static_configs:
+                    - targets:
+                      - "prometheus-alertmanager.tanzu-system-monitoring.svc:80"  #! alermanager service listens on port 80.
+
+
+          ...
+          alertmanager:  #!---- around line  908 
+            ...
+            #@overlay/replace                                  #! <============ put this to prevent ytt errors.
+            config:
+              slack_demo:
+                name: slack_demo
+                slack_configs: []
+              email_receiver:
+                name: email-receiver
+                email_configs:                                #! optionally add email config
+                - to: custom-email@tanzu.com
+                  send_resolved: false
+                  from: from-email@tanzu.com
+                  smarthost: smtp.eample.com:25
+                  require_tls: false
+    ```
+     test if contour templates are rendered correctly
+    ```sh
+    ytt --ignore-unknown-comments -f common/ -f monitoring/prometheus/  -f ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml  -v infrastructure_provider=vsphere 
+    ```
+
+
+
+3. Create namespace for extension
 
     ```sh
     kubectl apply -f extentions/monitoring/prometheus/namespace-role.yaml
     ```
-
-2. Copy `<extension-name>-data-values.yaml.example` to `<extension-name>-data-values.yaml` and
-   Configure data values required for the extension in `<extension-name>-data-values.yaml`
-
-   ```sh
-   cp <extension-name>-data-values.yaml.example <extension-name>-data-values.yaml
-   ```
-
-   ```
-   cp ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml.example ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
-   
-   # for complete set of file.
-   cp ./monitoring/prometheus/values.yaml ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml
-   
-   ```
-
-   edit data-values.yaml 
-   - referencing monitoring/prometheus/values.yml
-   - put private harbor url 
-
-   ```
-#@data/values
-#@overlay/match-child-defaults missing_ok=True
----
-infrastructure_provider: "vsphere"
-monitoring:
-  prometheus_server:
-    image:
-      name: "prometheus"
-      tag: "v2.18.1_vmware.1"
-      repository: "registry.tkg.vmware.run/prometheus"
-  alertmanager:
-    image:
-      repository: registry.tkg.vmware.run/prometheus
-  kube_state_metrics:
-    image:
-      repository: registry.tkg.vmware.run/prometheus
-  node_exporter:
-    image:
-      repository: registry.tkg.vmware.run/prometheus
-  pushgateway:
-    image:
-      repository: registry.tkg.vmware.run/prometheus
-  cadvisor:
-    image:
-      repository: registry.tkg.vmware.run/prometheus
-  prometheus_server_configmap_reload:
-    image:
-      repository: registry.tkg.vmware.run/prometheus
-  prometheus_server_init_container:
-    image:
-      repository: registry.tkg.vmware.run/prometheus
-      ```
-
-3. Create a secret with data values
-
-   ```sh
-   kubectl create secret generic <extension-name>-data-values --from-file=values.yaml=<extension-name>-data-values.yaml -n <extension-namespace>
-   ```
-
-   ```
-   kubectl create secret generic prometheus-data-values --from-file=values.yaml=./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml -n tanzu-system-monitoring
-
-
-   kubectl create secret generic prometheus-data-values --from-file=values.yaml=./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml -n tanzu-system-monitoring -o yaml --dry-run | kubectl replace -f-
-
-
-   kubectl get secret  prometheus-data-values -n tanzu-system-monitoring -o 'go-template={{ index .data "values.yaml" }}' | base64 -d 
-   ```
-
-  Test if contour templates are rendered correctly
-   ```
-   ytt --ignore-unknown-comments -f common/ -f monitoring/prometheus/  -f ./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml  -v infrastructure_provider=vsphere 
-   ```
-
-
-4. Deploy extensions
-
+    
+4. Create a secret with data values
     ```sh
-    kubectl apply -f <extension-name>-extension.yaml
+    # create new
+    kubectl create secret generic prometheus-data-values --from-file=values.yaml=./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml -n tanzu-system-monitoring
+
+    # for replace
+    kubectl create secret generic prometheus-data-values --from-file=values.yaml=./extensions/monitoring/prometheus/vsphere/prometheus-data-values.yaml -n tanzu-system-monitoring -o yaml --dry-run | kubectl replace -f-
+
+    # verify
+    kubectl get secret  prometheus-data-values -n tanzu-system-monitoring -o 'go-template={{ index .data "values.yaml" }}' | base64 -d 
     ```
+   
+   
+
+
+5. Edit extension
+
+    there are some modification on extension.
+    
+    refer to  https://github.com/myminseok/vmware-docs/blob/main/tkgext-main/tkg-extensions-v1.2.0%2Bvmware.1/prometheus-extension-custom.yaml
+
     ```
+    ...
+
+                update-alertmanager-deployment.yml: |
+                  #@ load("@ytt:overlay", "overlay")
+                  #@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-alertmanager"}})
+                  ---
+                  spec:
+                    template:
+                      spec:
+                        containers:
+                        #@overlay/replace
+                        #@overlay/match by="name"
+                        - name: prometheus-alertmanager
+                          image: "prom/alertmanager:v0.20.0"
+                          imagePullPolicy: "IfNotPresent"
+                          args:
+                            - --config.file=/etc/config/alertmanager.yml
+                            - --storage.path=/data
+                            - --cluster.listen-address=                        #! add this line to disable alertmanager cluster feature. sometimes alertmanager pod fails to start due to cluster feature enabled.
+                           
+    ```
+    
+6. Deploy extension  
+
+    ```sh 
     kubectl apply -f ./extensions/monitoring/prometheus/prometheus-extension.yaml
+    
     ```
 
 
-5. Retrieve status of an extension
-
-    ```sh
-    kubectl get extension <extension-name> -n <extension-namespace>
-    kubectl get app <extension-name> -n <extension-namespace>
-    ```
+7. Check status of an extension
 
    App status should change to `Reconcile Succeeded` once extension is deployed successfully
-
+   
    View detailed status
 
-   ```sh
-   kubectl get app <extension-name> -n <extension-namespace> -o yaml
-   ```
-
-    ```
+    ```sh
     kubectl get app prometheus -n tanzu-system-monitoring -o yaml -w
     kubectl get all -n tanzu-system-monitoring
+    kubectl get httpproxy -n  tanzu-system-monitoring
+    
     ```
 
-6. exposing service
-prometheus-server
-```
-
-cat  > ingress-monitoring.yml <<EOF
-
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    cert-manager.io/cluster-issuer: selfsigned-issuer
-    kubernetes.io/ingress.allow-http: "true"
-  name: prometheus-server-ingress
-  namespace: tanzu-system-monitoring
-spec:
-  tls:
-  - hosts:
-    - prometheus.tanzu.com
-    secretName: prometheus-server-tls
-  rules:
-  - host: prometheus.tanzu.com
-    http:
-      paths:
-      - backend:
-          serviceName: prometheus-server
-          servicePort: 80
----
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    cert-manager.io/cluster-issuer: selfsigned-issuer
-    kubernetes.io/ingress.allow-http: "true"
-  name: prometheus-alertmanager-ingress
-  namespace: tanzu-system-monitoring
-spec:
-  tls:
-  - hosts:
-    - alertmanager.tanzu.com
-    secretName: prometheus-alertmanager-tls
-  rules:
-  - host: alertmanager.tanzu.com
-    http:
-      paths:
-      - backend:
-          serviceName: prometheus-alertmanager
-          servicePort: 80
-```

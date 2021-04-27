@@ -43,6 +43,12 @@ ssh -i cluster-ssh vmware-system-user@<node IP> 'sudo systemctl restart containe
 ```
 
 
+or
+```
+cp HARBOR_CA.crt /etc/ssl/certs/HARBOR_CA.crt
+
+```
+
 
 # Modify deployment 
 to use private docker registry 
@@ -52,7 +58,6 @@ spec:
     spec:
        imagePullSecrets:
        - name: harbor-registry-secret
-      containers:
       containers:
         image: 10.213.227.68/ns1/velero/velero:v1.5.3
       initContainers:
@@ -72,26 +77,7 @@ kubectl create secret docker-registry harbor-registry-secret --docker-server=htt
 kubectl create secret docker-registry harbor-registry-secret --docker-server=10.213.227.68 --docker-username=user1@vsphere.local --docker-password=VMware1! -n velero
 ```
 
-or
-
-```
-kubectl get serviceaccounts default -o yaml > ./sa.yaml
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: default
-  namespace: default
-secrets:
-- name: default-token-uudge
-imagePullSecrets:
-- name: harbor-registry-secret
-
-```
-
-
 ### modify deployment
-
 
 ```
 cat > add_imagepullsecrets.yml <<EOF
@@ -114,6 +100,33 @@ EOF
 k get deployment.apps/velero -n velero -o yaml | sed 's/image: /image: 10.213.227.68\/ns1\//g' | ytt   -f add_imagepullsecrets.yml -f -  | kubectl apply -f -
 
 k get daemonset.apps/restic  -n velero -o yaml | sed 's/image: /image: 10.213.227.68\/ns1\//g' | ytt   -f add_imagepullsecrets.yml -f -  | kubectl apply -f -
+```
+
+
+### or apply harbor secret to service account
+
+```
+kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "harbor-registry-secret"}]}'
+
+```
+
+or
+
+```
+kubectl get serviceaccounts default -o yaml > ./sa.yaml
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: default
+secrets:
+- name: default-token-uudge
+imagePullSecrets:
+- name: harbor-registry-secret
+
+
+kubectl replace serviceaccount default -f ./sa.yaml
 ```
 
 
