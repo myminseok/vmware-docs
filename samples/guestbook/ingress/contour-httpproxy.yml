@@ -1,0 +1,13 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: guestbook
+spec:
+  virtualhost:
+    fqdn: contour-httpproxy.guestbook.com
+    tls:
+      secretName: default/guestbook-tls
+  routes:
+    - services:
+        - name: guestbook
+          port: 80
