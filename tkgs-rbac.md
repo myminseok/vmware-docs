@@ -90,7 +90,7 @@ nginx-app2-99b5db6c8-lsz7d   0/1     ImagePullBackOff   0          14m
 
 ```
 
-## for access to authenticated user group
+## cluster role binding to the authenticated user group
 
 ```
 apiVersion: rbac.authorization.k8s.io/v1
@@ -107,4 +107,3 @@ subjects:
   name: system:authenticated
   
 ```
-
