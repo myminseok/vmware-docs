@@ -1,4 +1,5 @@
 # prometheus k14s objects managed by extension manager
+# kubectl create secret docker-registry harbor-registry-secret -n nginx --docker-server=<docker-ip-or-url>  --docker-username=<docker-user> --docker-password=<docker-secret>
 ---
 apiVersion: clusters.tmc.cloud.vmware.com/v1alpha1
 kind: Extension
