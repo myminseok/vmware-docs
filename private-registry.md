@@ -129,4 +129,14 @@ imagePullSecrets:
 kubectl replace serviceaccount default -f ./sa.yaml
 ```
 
+tkg-extensions-v1.3.0+vmware.1/extensions/monitoring/prometheus/namespace-role.yaml
+```
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus-extension-sa
+  namespace: tanzu-system-monitoring
+imagePullSecrets:
+- name: harbor-registry-secret
+```
 

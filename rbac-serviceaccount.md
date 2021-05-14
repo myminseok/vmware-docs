@@ -84,7 +84,7 @@ default-token-lpnrt     kubernetes.io/service-account-token   3      19d
 kubectl config set-credentials custom-sa --token=$(kubectl get secret custom-sa-token-dblzv -o jsonpath={.data.token} | base64 -d)
 
 
-kubectl config set-cluster custom-cluster --server=https://10.90.12.133 --insecure-skip-tls-verify=true
+kubectl config set-cluster custom-cluster --server=https://10.90.12.133:6443 --insecure-skip-tls-verify=true
 Cluster "custom-cluster" set.
 
 
