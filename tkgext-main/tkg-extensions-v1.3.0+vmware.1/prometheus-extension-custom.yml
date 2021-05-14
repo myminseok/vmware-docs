@@ -41,7 +41,7 @@ spec:
               paths:
                 add-imagepullsecrets.yml: |
                   #@ load("@ytt:overlay", "overlay")
-                  #@overlay/match by=overlay.subset({"kind": "ServiceAccount", "metadata": {"name": "prometheus-server"}})
+                  #@overlay/match by=overlay.subset({"kind": "ServiceAccount"}), expects="0+"
                   ---
                   #@overlay/match missing_ok=True
                   imagePullSecrets:
