@@ -27,7 +27,13 @@ spec:
       serviceAccountName: prometheus-extension-sa
       fetch:
         - image:
-            url: projects.registry.vmware.com/tkg/tkg-extensions-templates:v1.3.0_vmware.1
+            #url: projects.registry.vmware.com/tkg/tkg-extensions-templates:v1.3.0_vmware.1
+            url: myminseok/tkg-extensions-templates:v1.3.0_vmware.1
+            ## to use private docker repo, use generic secret. (kapp 0.19.0+ supports docker secret)
+            ## https://carvel.dev/kapp-controller/docs/latest/config/#image-authentication
+            secretRef:
+              ## kubectl create secret generic docker-registry-secret-generic --from-literal=username=dockeraccountname --from-literal=password=XXXXXX -n tanzu-system-monitoring
+              name: docker-registry-secret-generic
       template:
         - ytt:
             ignoreUnknownComments: true
