@@ -1,6 +1,4 @@
-
 # Binding vcenter sso user to TKC 
-
 
 ## create devops-user1 on vcenter namespace ns1
 - permission: devops-admin1@vsphere.local /EDIT
@@ -107,3 +105,6 @@ subjects:
   name: system:authenticated
   
 ```
+
+
+https://kubernetes.io/docs/reference/access-authn-authz/authentication/
