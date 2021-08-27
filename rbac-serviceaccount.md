@@ -14,6 +14,7 @@ kubectl create clusterrole custom-role \
 --verb=get,list,watch,create,delete \
 --resource="*"
 ```
+> no option for apigroups
 
 ```
 apiVersion: rbac.authorization.k8s.io/v1
@@ -22,15 +23,11 @@ metadata:
   name: custom-role
 rules:
 - apiGroups:
-  - ""
+  - '*'
   resources:
   - '*'
   verbs:
-  - get
-  - list
-  - watch
-  - create
-  - delete
+  - '*'
 
 ```
 
@@ -112,5 +109,39 @@ tkc-kmin-control-plane-nbt66              Ready    master   19d   v1.19.7+vmware
 tkc-kmin-workers-rw2qn-669686bdf4-4hkkr   Ready    <none>   45h   v1.19.7+vmware.1
 tkc-kmin-workers-rw2qn-669686bdf4-zwxlj   Ready    <none>   19d   v1.19.7+vmware.1
 
+```
+
+## space permission
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: custom-space-role
+  namespace: space1
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+```
 
 ```
+kubectl create rolebinding custom-sa-binding  -n space1 \
+--role=custom-space-role \
+--serviceaccount=space1:custom-sa
+```
+```
+kubectl get secret -n space1
+
+kubectl config set-credentials custom-sa --token=$(kubectl -n space1 get secret custom-sa-token-48rxr -o jsonpath={.data.token} | base64 -d)
+
+kubectl config set-context custom-sa-context  --user=custom-sa --cluster=kind-kind
+
+kubectl config use-context custom-sa-context
+
+kubectl get all -n space1
+
+```
+
