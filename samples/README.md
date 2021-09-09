@@ -1,4 +1,5 @@
 ### podAntiAffinity
+https://kubernetes.io/ko/docs/concepts/scheduling-eviction/assign-pod-node/
 ```
 apiVersion:
 Kind: Deployment
