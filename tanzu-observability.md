@@ -10,7 +10,8 @@ Remains-days: floor(${Expire-days}-${Current-days})
 - need to label the control plane nodes to  'label.role=control-plane'
 - prometheus-kube-state-metrics should collect metrics.
 - wavefront-proxy reports to TO every 30 sec
-- `at` function limits the latest timeseries data. 2min was best fit based on testing on azure. 
+- `at` function limits the latest timeseries data. 2min was best fit based on testing on azure.
+- use chart type: single stat
 ```wql
 Ready_valid: at("now", 2m, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready" and status="True" and label.role="control-plane"))
 Count: count(${Ready_valid})
