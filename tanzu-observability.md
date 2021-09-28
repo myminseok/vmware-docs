@@ -6,10 +6,22 @@ Current-days: time()/(3600*24)
 Remains-days: floor(${Expire-days}-${Current-days})
 ```
 
-## Controlplane-inactive-node
+## control plane active node
+- need to label the control plane nodes to  'label.role=control-plane'
+- prometheus-kube-state-metrics should collect metrics.
+- wavefront-proxy reports to TO every 30 sec
+- `at` function limits the latest timeseries data. 2min was best fit based on testing on azure. 
+```wql
+Ready_valid: at("now", 2m, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready" and status="True" and label.role="control-plane"))
+Count: count(${Ready_valid})
 ```
-aws: default(0, align(1m, count(lowpass(1, ts(kubernetes.node.status.condition, cluster="${cluster_name}" AND condition=Ready AND label.role=control-plane)))))
-azure: default(0, align(1m, count(lowpass(1, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready" and label.node.kubernetes.io/instance-type=m5.xlarge)))))
+## Controlplane-inactive-node
+
+```wql
+Ready_all_now: at("now", 2m, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition=Ready and label.role="control-plane"))
+Ready_Invalid: lowpass(1, ${Ready_all_now})
+Count: default(0,count(${Ready_Invalid}).orElse(0))
+
 ```
 
 ## PVC-used
