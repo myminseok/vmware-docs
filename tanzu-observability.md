@@ -1,20 +1,18 @@
 
-## Certificate Expiration Remains(days)-Certmanager
-```
-Expire-days: ts("certmanager.certificate.expiration.timestamp.seconds.gauge", cluster="${cluster_name}")/(3600*24)
-Current-days: time()/(3600*24)
-Remains-days: floor(${Expire-days}-${Current-days})
-```
-
-## control plane active node
+## Control plane active node
 - need to label the control plane nodes to  'label.role=control-plane'
 - prometheus-kube-state-metrics should collect metrics.
 - wavefront-proxy reports to TO every 30 sec
 - `at` function limits the latest timeseries data. 2min was best fit based on testing on azure.
 - use chart type: single stat
+
 ```wql
 Ready_valid: at("now", 2m, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready" and status="True" and label.role="control-plane"))
 Count: count(${Ready_valid})
+```
+or
+```
+sum( ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready" and status=True and label.role="control-plane").gt(0), Sources, condition, label.role)
 ```
 ## Controlplane-inactive-node
 
@@ -44,10 +42,17 @@ kube-*: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="kub
 
 ```
 
-### aliasMetric
+### using aliasMetric function
 ```
 alloc_cpu_cores: aliasMetric(limit(250, ts("kubernetes.node.cpu.node_allocatable", cluster="${cluster_name}" and nodename="${node_name}")), "CPU Cores")/1000
 request_cpu_cores: aliasMetric(limit(250, ts("kubernetes.node.cpu.request", cluster="${cluster_name}" and nodename="${node_name}")), "CPU Request")/1000
 alloc_mem_bytes: aliasMetric(limit(250, ts("kubernetes.node.memory.node_allocatable", cluster="${cluster_name}" and nodename="${node_name}")), "Memory Bytes")
 request_mem_bytes: aliasMetric(limit(250, ts("kubernetes.node.memory.request", cluster="${cluster_name}" and nodename="${node_name}")), "Memory Request")
+```
+
+## Certificate Expiration Remains(days)-Certmanager
+```
+Expire-days: ts("certmanager.certificate.expiration.timestamp.seconds.gauge", cluster="${cluster_name}")/(3600*24)
+Current-days: time()/(3600*24)
+Remains-days: floor(${Expire-days}-${Current-days})
 ```
