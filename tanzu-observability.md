@@ -39,15 +39,12 @@ UsageRate: round(aliasMetric(limit(250, ts("kubernetes.node.filesystem.usage", c
 ```
 
 
-## PVC-used
+## PVC summary ( no join key)
+- install kube-state-metrics for "kube.persistentvolumeclaim.resource.requests.storage.bytes.gauge"
+- there is no common key between the two metrics for Join.
 ```
-ts("kubernetes.pod.filesystem.usage" , cluster="${cluster_name}" and namespace_name="${namespace}")
-```
-
-## PVC-capacity
-install kube-state-metrics
-```
-ts(kube.persistentvolumeclaim.resource.requests.storage.bytes.gauge and cluster=${cluster_name})
+Used: aliasMetric(ts("kubernetes.pod.filesystem.usage" , cluster="${cluster_name}" and namespace_name="${namespace}"), "Used")
+Capacity: aliasMetric(ts("kube.persistentvolumeclaim.resource.requests.storage.bytes.gauge" and cluster="${cluster_name}" and namespace="${namespace}"), "Capacity")
 ```
 
 ## POD status (TKG only)
