@@ -14,14 +14,30 @@ or
 ```
 sum( ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready" and status=True and label.role="control-plane").gt(0), Sources, condition, label.role)
 ```
-## Controlplane-inactive-node
 
+## Controlplane-inactive-node
 ```wql
 Ready_all_now: at("now", 2m, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition=Ready and label.role="control-plane"))
 Ready_Invalid: lowpass(1, ${Ready_all_now})
 Count: default(0,count(${Ready_Invalid}).orElse(0))
-
 ```
+
+### Node CPU, Memory request/allocated (using aliasMetric function)
+- 
+```
+alloc_cpu_cores: aliasMetric(limit(250, ts("kubernetes.node.cpu.node_allocatable", cluster="${cluster_name}" and nodename="${node_name}")), "CPU Cores")/1000
+request_cpu_cores: aliasMetric(limit(250, ts("kubernetes.node.cpu.request", cluster="${cluster_name}" and nodename="${node_name}")), "CPU Request")/1000
+alloc_mem_bytes: aliasMetric(limit(250, ts("kubernetes.node.memory.node_allocatable", cluster="${cluster_name}" and nodename="${node_name}")), "Memory Bytes")
+request_mem_bytes: aliasMetric(limit(250, ts("kubernetes.node.memory.request", cluster="${cluster_name}" and nodename="${node_name}")), "Memory Request")
+```
+## Node storage (aliasMetric function)
+- check column > group by source
+```
+Total: round(aliasMetric(limit(250, ts("kubernetes.node.filesystem.limit", cluster="${cluster_name}" and nodename="${node_name}")), " Total(MB)")/(1024*1024))
+Used: round(aliasMetric(limit(250, ts("kubernetes.node.filesystem.usage", cluster="${cluster_name}" and nodename="${node_name}")), "Usage(MB)")/(1024*1024))
+UsageRate: round(aliasMetric(limit(250, ts("kubernetes.node.filesystem.usage", cluster="${cluster_name}" and nodename="${node_name}") / ts("kubernetes.node.filesystem.limit", cluster="${cluster_name}" and nodename="${node_name}")*100), "UsageRate(%)"))
+```
+
 
 ## PVC-used
 ```
@@ -34,25 +50,45 @@ install kube-state-metrics
 ts(kube.persistentvolumeclaim.resource.requests.storage.bytes.gauge and cluster=${cluster_name})
 ```
 
-## controlplane component status
+## POD status (TKG only)
+- this metric only valid to show running pod list. it cannot distinguish the failed pod list.
+- this metic doesn't compatible with openshift
 ```
 etcd: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="etcd*" and condition=true)
 coredns: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="coredns*" and condition=true)
 kube-*: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="kube-*" and condition=true)
-
 ```
 
-### using aliasMetric function
+## POD status(TKG + openshift)
+- if pod fail, or not exist, then the Running metric disapears, so that we can check pod status.
 ```
-alloc_cpu_cores: aliasMetric(limit(250, ts("kubernetes.node.cpu.node_allocatable", cluster="${cluster_name}" and nodename="${node_name}")), "CPU Cores")/1000
-request_cpu_cores: aliasMetric(limit(250, ts("kubernetes.node.cpu.request", cluster="${cluster_name}" and nodename="${node_name}")), "CPU Request")/1000
-alloc_mem_bytes: aliasMetric(limit(250, ts("kubernetes.node.memory.node_allocatable", cluster="${cluster_name}" and nodename="${node_name}")), "Memory Bytes")
-request_mem_bytes: aliasMetric(limit(250, ts("kubernetes.node.memory.request", cluster="${cluster_name}" and nodename="${node_name}")), "Memory Request")
+ts("kubernetes.pod.status.phase", cluster="<APP CLUSTERNAME>" and nodename="*" and namespace_name="<APP_NAMESPACE>" and pod_name="yelb-ui-*" and phase="Running")
 ```
+
+## Pod not running alert rule
+```
+count(ts("kubernetes.pod.status.phase", cluster="<APP CLUSTERNAME>" and nodename="*" and namespace_name="<APP_NAMESPACE>" and pod_name="yelb-ui-*" and phase="Running")) < 1 
+```
+
 
 ## Certificate Expiration Remains(days)-Certmanager
+- put annotation to Ingress with certs
 ```
+Kind: Ingress
+metadata:
+  annotations:  
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+    ...
+spec:
+  tls:
+  - hosts:
+    - yelb.com
+    secretName: yelb-tls
+```
+- the tls will be shown up to cert-manager metrics.
+```wql
 Expire-days: ts("certmanager.certificate.expiration.timestamp.seconds.gauge", cluster="${cluster_name}")/(3600*24)
 Current-days: time()/(3600*24)
 Remains-days: floor(${Expire-days}-${Current-days})
 ```
+
