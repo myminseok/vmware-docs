@@ -15,7 +15,7 @@ cdn02.quay.io
 ## TMC TO
 
 - extensions.aws-apne1.tmc.cloud.vmware.com 
-- samsungsds.tmc.cloud.vmware.com 
+- sec.tmc.cloud.vmware.com 
 - main-tenancy.whitesand.tmc.cloud.vmware.com
 - tmc.cloud.vmware.com 
 - main-tenancy.whitesand.tmc.cloud.vmware.com 
