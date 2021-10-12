@@ -32,6 +32,7 @@ Name=eth0
 [Network]
 Address=192.168.0.21/24
 Gateway=192.168.0.1
+DNS=192.168.0.5
 EOF
 
 chmod 644 /etc/systemd/network/10-static-en.network
