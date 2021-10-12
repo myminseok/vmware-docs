@@ -1,12 +1,12 @@
 
 ## TMC
-- tmc.cloud.vmware.com:443
-- main-tenancy.whitesand.tmc.cloud.vmware.com:443
-- blob.purple.stacks.whitesand.tmc.cloud.vmware.com:443
-- extensions.aws-apne1.tmc.cloud.vmware.com:443
-- extensions.aws-usw2.tmc.cloud.vmware.com:443
-- gts.svcs.whitesand.tmc.cloud.vmware.com:443
-- sec.tmc.cloud.vmware.com:443(custom)
+- tmc.cloud.vmware.com
+- main-tenancy.whitesand.tmc.cloud.vmware.com
+- blob.purple.stacks.whitesand.tmc.cloud.vmware.com
+- extensions.aws-apne1.tmc.cloud.vmware.com
+- extensions.aws-usw2.tmc.cloud.vmware.com
+- gts.svcs.whitesand.tmc.cloud.vmware.com
+- sec.tmc.cloud.vmware.com(custom)
 
 ## TMC CSI benchmark
 - gcr.io
