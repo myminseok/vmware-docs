@@ -88,7 +88,7 @@ nginx-app2-99b5db6c8-lsz7d   0/1     ImagePullBackOff   0          14m
 
 ```
 
-## cluster role binding to the ANY authenticated user group
+## (donot do this) cluster role binding to the ANY authenticated user group
 
 ```
 apiVersion: rbac.authorization.k8s.io/v1
