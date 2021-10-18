@@ -13,7 +13,7 @@ kubectl vsphere login --insecure-skip-tls-verify \
 --server=wcp.haas-455.pez.vmware.com \
 --tanzu-kubernetes-cluster-namespace ns1 \
 --tanzu-kubernetes-cluster-name ns1-tkg1  \
---vsphere-username administrator@vsphere.local
+--vsphere-username devops-admin1@vsphere.local
 
 
 kubectl create namespace org1
@@ -79,7 +79,7 @@ kubectl vsphere login --insecure-skip-tls-verify \
 
 
 ubuntu@ubuntu-455:~/workspace/rbac$ k get nodes
-Error from server (Forbidden): nodes is forbidden: User "sso:user1@vsphere.local" cannot list resource "nodes" in API group "" at the cluster scope
+Error from server (Forbidden): nodes is forbidden: User "sso:devops-user1@vsphere.local" cannot list resource "nodes" in API group "" at the cluster scope
 
 
 ubuntu@ubuntu-455:~/workspace/rbac$ k get pod -n org1
@@ -88,7 +88,7 @@ nginx-app2-99b5db6c8-lsz7d   0/1     ImagePullBackOff   0          14m
 
 ```
 
-## cluster role binding to the authenticated user group
+## cluster role binding to the ANY authenticated user group
 
 ```
 apiVersion: rbac.authorization.k8s.io/v1
