@@ -3,17 +3,19 @@
 https://vmware.github.io/photon/assets/files/html/3.0/photon_admin/setting-a-static-ip-address.html
 
 ## static ip
-```
+```sh
 networkctl
-
+```
+```
 IDX LINK             TYPE               OPERATIONAL SETUP
   1 lo               loopback           carrier     unmanaged
   2 eth0             ether              routable    configured
 ```
 
-```
+```sh
 ls -al /etc/systemd/network
-
+```
+```
 total 20
 drwxr-xr-x 2 root            root            4096 Sep 17 04:01 .
 drwxr-xr-x 6 root            root            4096 Jan 21  2021 ..
