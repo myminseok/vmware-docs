@@ -4,15 +4,14 @@ https://vmware.github.io/photon/assets/files/html/3.0/photon_admin/setting-a-sta
 
 ## static ip
 ```
-
 networkctl
 
 IDX LINK             TYPE               OPERATIONAL SETUP
   1 lo               loopback           carrier     unmanaged
   2 eth0             ether              routable    configured
+```
 
-
-
+```
 ls -al /etc/systemd/network
 
 total 20
@@ -22,8 +21,10 @@ drwxr-xr-x 6 root            root            4096 Jan 21  2021 ..
 -rw-r--r-- 1 root            root              74 Sep 17 04:00 10-static-en.network
 -rw-r--r-- 1 root            root              52 Jan 21  2021 99-dhcp-en.network
 
+```
 
 
+```sh
 cat > /etc/systemd/network/10-static-en.network << "EOF"
 
 [Match]
@@ -35,12 +36,17 @@ Gateway=192.168.0.1
 DNS=192.168.0.5
 EOF
 
+```
+
+```sh
 chmod 644 /etc/systemd/network/10-static-en.network
 
 mv /etc/systemd/network/10-id0.network /etc/systemd/network/10-id0.network.orig
-
-
+```
+```sh
 systemctl restart systemd-networkd
+
+```
 
 
 ```
