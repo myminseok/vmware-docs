@@ -1,0 +1,71 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: backup
+  namespace: kube-system
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - args:
+            - -c
+            - etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt
+              --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key
+              snapshot save /backup/etcd-snapshot-$(date +%Y-%m-%d_%H:%M:%S_%Z).db
+            command:
+            - /bin/sh
+            env:
+            - name: ETCDCTL_API
+              value: "3"
+            image: k8s.gcr.io/etcd:3.4.3-0
+            imagePullPolicy: IfNotPresent
+            name: backup
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            volumeMounts:
+            - mountPath: /etc/kubernetes/pki/etcd
+              name: etcd-certs
+              readOnly: true
+            - mountPath: /backup
+              name: backup
+          - args:
+            - -c
+            - find /backup -type f -mtime +30 -exec rm -f {} \;
+            command:
+            - /bin/sh
+            env:
+            - name: ETCDCTL_API
+              value: "3"
+            image: k8s.gcr.io/etcd:3.4.3-0
+            imagePullPolicy: IfNotPresent
+            name: cleanup
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            volumeMounts:
+            - mountPath: /backup
+              name: backup
+          dnsPolicy: ClusterFirst
+          hostNetwork: true
+          nodeName: YOUR_MASTER_NODE_NAME
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          volumes:
+          - hostPath:
+              path: /etc/kubernetes/pki/etcd
+              type: DirectoryOrCreate
+            name: etcd-certs
+          - hostPath:
+              path: /opt/etcd_backups
+              type: DirectoryOrCreate
+            name: backup
+  schedule: "0 */6 * * *"
+  successfulJobsHistoryLimit: 3
+  suspend: false
