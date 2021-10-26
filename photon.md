@@ -51,4 +51,3 @@ systemctl restart systemd-networkd
 ```
 
 
-```
