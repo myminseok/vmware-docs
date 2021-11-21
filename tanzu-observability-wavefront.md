@@ -1,5 +1,5 @@
 
-## Control plane active node
+## active Controlplane node
 - need to label the control plane nodes to  'label.role=control-plane'
 - prometheus-kube-state-metrics should collect metrics.
 - wavefront-proxy reports to TO every 30 sec
@@ -15,14 +15,29 @@ or
 sum( ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready" and status=True and label.role="control-plane").gt(0), Sources, condition, label.role)
 ```
 
-## Controlplane-inactive-node
+##  inactive node
+
 ```wql
-Ready_all_now: at("now", 2m, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition=Ready and label.role="control-plane"))
-Ready_Invalid: lowpass(1, ${Ready_all_now})
-Count: default(0,count(${Ready_Invalid}).orElse(0))
+# original sql from example k8s dashboard providesd by wavefront
+default(0, align(1m, count(lowpass(1, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready")))))
+
 ```
 
-### Node CPU, Memory request/allocated (using aliasMetric function)
+# custom wql putting orElse() function.
+```wql
+Ready_all_now: ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition=Ready and label.role="control-plane")
+Ready_Invalid: lowpass(1, ${Ready_all_now})
+Count: count(${Ready_Invalid}).orElse(0)
+Default: default(0, align(1m, ${Count}))
+```
+equvelant single wql
+
+```wql
+default(0, align(1m, count(lowpass(1, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready"))).orElse(0)))
+```
+
+
+### Node CPU, Memory request/allocated (combinded charts using aliasMetric function)
 - 
 ```
 alloc_cpu_cores: aliasMetric(limit(250, ts("kubernetes.node.cpu.node_allocatable", cluster="${cluster_name}" and nodename="${node_name}")), "CPU Cores")/1000
