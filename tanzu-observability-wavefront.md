@@ -3,7 +3,7 @@
 - need to label the control plane nodes to  'label.role=control-plane'
 - prometheus-kube-state-metrics should collect metrics.
 - wavefront-proxy reports to TO every 30 sec
-- `at` function limits the latest timeseries data. 2min was best fit based on testing on azure.
+- `at` function limits the latest timeseries data. 2 min is best number considering metric reporing cycle which every 30 sec from wavefront collector for stable dashboard alerting)
 - use chart type: single stat
 
 ```wql
