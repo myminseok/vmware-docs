@@ -116,7 +116,7 @@ Capacity: aliasMetric(ts("kube.persistentvolumeclaim.resource.requests.storage.b
 # Certificate Expiration Remains(days)
 
 ###  using cert manager
-this method only shows the deployments with following cert-manager annotations, contour extensions
+this method only shows the deployments with following cert-manager annotations. it is added allIngress/HttProxy resources with Contour extensions which leveraging cert-manager.
 ```
 Kind: Ingress
 metadata:
