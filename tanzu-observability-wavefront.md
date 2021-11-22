@@ -33,8 +33,8 @@ Count: count(${Ready_valid})
 ```wql
 default(0, align(1m, count(lowpass(1, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready")))))
 ```
-### improved Inactive Nodes chart 
-you may see the defaut count is not working to show `0` if all nodes is `ready`state. uses orElse() function to make sure to show the default `0` 
+### improved Inactive Nodes chart (TBD)
+you may see the defaut count is not working to show `0` if all nodes is `ready`state. uses `orElse()` function additionally to make sure to show the default `0`. 
 ```wql
 Ready_all_now: ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition=Ready and label.role="control-plane")
 Ready_Invalid: lowpass(1, ${Ready_all_now})
