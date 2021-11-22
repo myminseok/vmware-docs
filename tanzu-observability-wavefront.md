@@ -7,7 +7,7 @@
 
 
 # `cluster_name` variable for chart filter
-this variable is to list up cluster name available. following Query is provided by wavefront sample dashboard,
+this variable is to list up cluster name available. following Query is provided by wavefront sample dashboard, and will be used in the following chart.
 - variable Name: cluster_name
 - variable type: Dynamic
 - Field: Point Tag
