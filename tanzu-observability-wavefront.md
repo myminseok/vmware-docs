@@ -2,11 +2,12 @@
 # General Considerations for WQL
 - It is easier to debug if compose smaller unit of WQL for better visibility when debugging by change the chart type to `table`
 - for the charts using the current status such as Active/Inactive charts, consider that the Wavefront-proxy agent reports to Wavefront every 30 secondes. it make sense to use the last 2 mins metrics for stable dashboard alerting. 
-- `at` function limits the latest timeseries data. 
+- use `at` function to use the latest timeseries data. 
 - for alert, use the same WQL from the chart.
 
 
-# `cluster_name` variable for chart filter:
+# `cluster_name` variable for chart filter
+this variable is to list up cluster name available. following Query is provided by wavefront sample dashboard,
 - variable Name: cluster_name
 - variable type: Dynamic
 - Field: Point Tag
@@ -15,13 +16,13 @@
 
 
 # Active Nodes chart
-The Original Active Node chart from [Wavefront Sample Dashboard](https://vmware.wavefront.com/dashboards/integration-kubernetes-clusters) shows all nodes without filters
-
-### Original Active Node chart from [Wavefront Sample Dashboard](https://vmware.wavefront.com/dashboards/integration-kubernetes-clusters)
+### Original Active Node chart 
+The Original Active Node chart from [Wavefront Sample Dashboard](https://vmware.wavefront.com/dashboards/integration-kubernetes-clusters) shows all nodes.
 ```wql
 align(1m, count(ts("kubernetes.node.memory.working_set", cluster="${cluster_name}")))
 ```
-### Improved Active Node chart 
+###  improved Active Node chart
+you may improved Active Node chart as following. with unknown reason, you may observe that `Ready` and `Not Ready` state data for the same node at the sametime on Wavefront. you need to filter inactive nodes in case of events happening. and better to use `at` fundtion to use only the latest data for acurate state decision.
 ```wql
 Ready_valid: at("now", 2m, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready" and status="True"))
 Count: count(${Ready_valid})
@@ -32,22 +33,21 @@ Count: count(${Ready_valid})
 ```wql
 default(0, align(1m, count(lowpass(1, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready")))))
 ```
-### custom wql 
-- uses orElse() function to show the default `0` if all nodes is `ready`state. 
+### improved Inactive Nodes chart 
+you may see the defaut count is not working to show `0` if all nodes is `ready`state. uses orElse() function to make sure to show the default `0` 
 ```wql
 Ready_all_now: ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition=Ready and label.role="control-plane")
 Ready_Invalid: lowpass(1, ${Ready_all_now})
 Count: count(${Ready_Invalid}).orElse(0)
 Default: default(0, align(1m, ${Count}))
 ```
-or equvelant single wql
+following single WQL is equvelant to above.
 ```wql
 default(0, align(1m, count(lowpass(1, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready"))).orElse(0)))
 ```
 
-# To filter node by role (control plane or worker node )
-- need to label the control plane nodes to 'label.role=control-plane' on the source kubernetes cluster in advance. this is required that every k8s cluster from different ventor/cloud doesn't have common labels to distinghush the role of nodes.
-- prometheus-kube-state-metrics should collect metrics.
+# To filter node by Role (control plane or worker node )
+- you may need to label the control plane nodes to 'label.role=control-plane' on the source kubernetes cluster in advance. this is required that every k8s cluster from different ventor/cloud doesn't have common labels to distinghush the role of nodes. `prometheus-kube-state-metrics` from TKC should collect metrics automatically.
 
 ### Active Control Plane Nodes chart
 - the same WQL with active Nodes chart but puttig label.role filter
@@ -83,7 +83,7 @@ Used: round(aliasMetric(limit(250, ts("kubernetes.node.filesystem.usage", cluste
 UsageRate: round(aliasMetric(limit(250, ts("kubernetes.node.filesystem.usage", cluster="${cluster_name}" and nodename="${node_name}") / ts("kubernetes.node.filesystem.limit", cluster="${cluster_name}" and nodename="${node_name}")*100), "UsageRate(%)"))
 ```
 
-# POD status
+# Pod status
 ### POD status by platform process (TKG only)
 - this metric only valid to show running pod list. it cannot distinguish the failed pod list.
 - this metic doesn't compatible with openshift
