@@ -137,7 +137,9 @@ Remains-days: floor(${Expire-days}-${Current-days})
 ```
 
 ### Node Exporter for Certificate Expiration chart
-TBD
+you may wants to show certificate expiracy for kubernets component, located on /etc/kubernetes/pki. once you install [x509-certificate-exporter](https://artifacthub.io/packages/helm/enix/x509-certificate-exporter) exporter will automatically expose to `/metrics` endopints.
+
+
 
 
 
