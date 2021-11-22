@@ -2,6 +2,9 @@ kubectl -n tkg-extensions create secret generic harbor-velero-overlay -o yaml --
 
 kubectl -n tkg-extensions annotate packageinstalls harbor ext.packaging.carvel.dev/ytt-paths-from-secret-name.1=harbor-velero-overlay
 
+## you have to delete statefulset to update some metadata other than than 'replicas', 'template', and 'updateStrategy'
+## updates to statefulset spec for fields other than 'replicas', 'template', and 'updateStrategy' are forbidden (reason: Invalid)
+
 kubectl delete statefulset --all -n tanzu-system-registry
 
 kubectl delete pod --all -n tanzu-system-registry
