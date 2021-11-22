@@ -1,4 +1,5 @@
-kubectl -n tkg-extensions create secret generic harbor-velero-overlay -o yaml --dry-run=client --from-file=harbor-velero-overlay.yml | kubectl apply -f -
+yq  eval '... comments=""' harbor-data-values.yaml > harbor-data-values.yaml.nocomment
+kubectl -n tkg-extensions create secret generic harbor-velero-overlay -o yaml --dry-run=client --from-file=harbor-data-values.yaml.nocomment | kubectl apply -f -
 
 kubectl -n tkg-extensions annotate packageinstalls harbor ext.packaging.carvel.dev/ytt-paths-from-secret-name.1=harbor-velero-overlay
 
