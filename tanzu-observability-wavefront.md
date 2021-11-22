@@ -1,5 +1,5 @@
 
-# General Considerations for WQL
+# General Consideration for WQL
 - It is easier to debug if compose smaller unit of WQL for better visibility when debugging by change the chart type to `table`
 - for the charts using the current status such as Active/Inactive charts, consider that the Wavefront-proxy agent reports to Wavefront every 30 secondes. it make sense to use the last 2 mins metrics for stable dashboard alerting. 
 - use `at` function to use the latest timeseries data. 
