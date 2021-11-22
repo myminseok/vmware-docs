@@ -1,8 +1,7 @@
 
 # General Consideration for WQL
 - It is easier to debug if compose smaller unit of WQL for better visibility when debugging by change the chart type to `table`
-- for any charts to show current status such as Active/Inactive charts, it is magic number to use the last 2 mins metrics for stable dashboard alerting ( minimizing flip-flop in the event), considering the Wavefront-proxy agent reports to Wavefront every 30 secondes. 
-- use `at` function to use the latest timeseries data. 
+- for any charts to show current status such as Active/Inactive charts, it is magic number to use the last 2 mins metrics for stable dashboard alerting ( minimizing flip-flop in the event), considering the Wavefront-proxy agent reports to Wavefront every 30 seconds. use `at` function to use the latest timeseries data. 
 - for alert, use the same WQL from the chart.
 
 
