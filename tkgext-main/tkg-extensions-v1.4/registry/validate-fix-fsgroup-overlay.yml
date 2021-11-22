@@ -1,0 +1,5 @@
+#ytt --ignore-unknown-comments -f ../../../common -f ../../../registry/harbor -f harbor-data-values.yaml
+ytt --ignore-unknown-comments \
+  -f /tmp/harbor-package-2.2.3/config/_ytt_lib/bundle/config \
+  -f harbor-data-values.yaml \
+  -f fix-fsgroup-overlay.yml
