@@ -21,14 +21,14 @@ The Original Active Node chart from [Wavefront Sample Dashboard](https://vmware.
 align(1m, count(ts("kubernetes.node.memory.working_set", cluster="${cluster_name}")))
 ```
 ###  improved Active Node chart
-you may improved Active Node chart as following. with unknown reason, you may observe that `Ready` and `Not Ready` state data for the same node at the sametime on Wavefront. you need to filter inactive nodes when events happening. and better to use `at` fundtion to filter out old data and only use the latest data for acurate state decision.
+you may improve Active Node chart as following. for unknown reasons, you may observe that `Ready` and `Not Ready` state data for the same node at the sametime on Wavefront. you need to filter inactive nodes when the events happening. and better to use `at` fundtion to filter out old data and only use the latest data for acurate state decision.
 ```wql
 Ready_valid: at("now", 2m, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready" and status="True"))
 Count: count(${Ready_valid})
 ```
 
 # Inactive Nodes chart
-### original sql from example k8s dashboard providesd by wavefront
+### original WQL from example k8s dashboard provided by wavefront
 ```wql
 default(0, align(1m, count(lowpass(1, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready")))))
 ```
