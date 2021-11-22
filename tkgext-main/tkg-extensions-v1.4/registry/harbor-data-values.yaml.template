@@ -29,31 +29,34 @@ tlsCertificate:
 enableContourHttpProxy: true
 
 #! [Required] The initial password of Harbor admin.
-harborAdminPassword: Gw66eYzzGsEjhpqL
+harborAdminPassword:
 
-# [Required] The secret key used for encryption. Must be a string of 16 chars.
-secretKey: mdMhWHfQJXF89fW9
+#! [Required] The secret key used for encryption. Must be a string of 16 chars.
+secretKey:
 
 database:
-  # [Required] The initial password of the postgres database.
-  password: OVrjX2lFwPyVcFDe
+  #! [Required] The initial password of the postgres database.
+  password:
 
 core:
-  # [Required] Secret is used when core server communicates with other components.
-  secret: kCrN1ECz7NKdPhql
-  # [Required] The XSRF key. Must be a string of 32 chars.
-  xsrfKey: RBy8EKjUGNbIdQIi7AbCmajTWwFfivxz
+  replicas: 1
+  #! [Required] Secret is used when core server communicates with other components.
+  secret:
+  #! [Required] The XSRF key. Must be a string of 32 chars.
+  xsrfKey:
 jobservice:
-  # [Required] Secret is used when job service communicates with other components.
-  secret: 8sFhYuws2KJtO2XC
+  replicas: 1
+  #! [Required] Secret is used when job service communicates with other components.
+  secret:
 registry:
-  # [Required] Secret is used to secure the upload state from client
-  # and registry storage backend.
-  # See: https://github.com/docker/distribution/blob/master/docs/configuration.md#http
-  secret: tL2y2sO7NKOclAFi
+  replicas: 1
+  #! [Required] Secret is used to secure the upload state from client
+  #! and registry storage backend.
+  #! See: https://github.com/docker/distribution/blob/master/docs/configuration.md#http
+  secret:
 notary:
   #! Whether to install Notary
-  enabled: false
+  enabled: true
 trivy:
   #! enabled the flag to enable Trivy scanner
   enabled: true

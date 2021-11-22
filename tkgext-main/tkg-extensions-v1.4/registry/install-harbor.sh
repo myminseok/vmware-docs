@@ -1,4 +1,4 @@
-yq -i eval '... comments=""' harbor-data-values.yaml
+yq  eval '... comments=""' harbor-data-values.yaml > harbor-data-values.yaml.nocomment
 tanzu package install harbor \
 	--package-name harbor.tanzu.vmware.com \
 	--version 2.2.3+vmware.1-tkg.1 \
