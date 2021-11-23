@@ -1,4 +1,4 @@
-This tips are from the field experiences applying Wavefront on customer project. the wavefront document can be found [here](https://docs.wavefront.com/query_language_reference.html)
+This tips are from the field experiences applying Wavefront on customer project. following tips are intended to help implementing Dashboard but not something guaranteed or supported from VMware in performance and durability. the wavefront document can be found [here](https://docs.wavefront.com/query_language_reference.html)
 
 # General Consideration for WQL
 - It is easier to debug if compose smaller unit of WQL for better visibility when debugging by change the chart type to `table`
