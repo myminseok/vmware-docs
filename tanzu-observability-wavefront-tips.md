@@ -1,19 +1,19 @@
-This tips are from the field experiences applying Wavefront on customer project. it is intended to help implementing Dashboard but not something guaranteed or supported from VMware. the wavefront document can be found [here](https://docs.wavefront.com/query_language_reference.html)
+This tips are from the field experiences applying Wavefront on customer project. it is intended to help implementing Dashboard but not something guaranteed or supported from VMware. you can refer to the [Wavefront documentation](https://docs.wavefront.com/query_language_reference.html) for detailed information on Wavefront Query Language(WQL)
 
 # General Consideration for WQL
 - It is easier to debug if compose smaller unit of WQL for better visibility when debugging by change the chart type to `table`
 - for any charts to show current status such as Active/Inactive charts, it is magic number to use the last 2 mins metrics for stable dashboard alerting ( minimizing flip-flop in the event), considering the Wavefront-proxy agent reports to Wavefront every 30 seconds. use `at` function to use the latest timeseries data. 
 - for alert, use the same WQL from the chart.
 
-
-# `cluster_name` variable for chart filter
-this variable is to list up cluster name available. following Query is provided by wavefront sample dashboard, and will be used in the following chart.
+#  Variables for chart filter
+variables is a filter to be used to in the WQL. you can define as many as you can. such as cluster list , namespace list, pod list, etc.
+### `cluster_name` 
+this variable lists up clusters available. Following Query is from Wavefront sample dashboard, and will be used in the following chart.
 - variable Name: cluster_name
 - variable type: Dynamic
 - Field: Point Tag
 - Point Tag Key: cluster
 - Query: collect(max(ts("kubernetes.cluster.cpu.limit"), cluster), taggify(1, cluster, "*"))
-
 
 # Active Nodes chart
 ### Original Active Node chart 
@@ -46,7 +46,7 @@ following single WQL is equvelant to above.
 default(0, align(1m, count(lowpass(1, ts("kubernetes.node.status.condition", cluster="${cluster_name}" and condition="Ready"))).orElse(0)))
 ```
 
-# To filter node by Role (control plane or worker node )
+# To filter node by Role (control plane or worker node)
 - you may need to label the control plane nodes to 'label.role=control-plane' on the source kubernetes cluster in advance. this is required that every k8s cluster from different ventor/cloud doesn't have common labels to distinghush the role of nodes. `prometheus-kube-state-metrics` from TKC should collect metrics automatically.
 
 ### Active Control Plane Nodes chart
@@ -67,15 +67,18 @@ Default: default(0, align(1m, ${Count}))
 ```
 
 
-# Node CPU, Memory request/allocated (combinded charts using aliasMetric function)
+# Combining multiple metrics into single chart.
+sometimes, putting relevent metrics into a single chart is useful with aliasMetric function. 
 
+### cpu, memory metrics for kubernetes nodes
 ```
 alloc_cpu_cores: aliasMetric(limit(250, ts("kubernetes.node.cpu.node_allocatable", cluster="${cluster_name}" and nodename="${node_name}")), "CPU Cores")/1000
 request_cpu_cores: aliasMetric(limit(250, ts("kubernetes.node.cpu.request", cluster="${cluster_name}" and nodename="${node_name}")), "CPU Request")/1000
 alloc_mem_bytes: aliasMetric(limit(250, ts("kubernetes.node.memory.node_allocatable", cluster="${cluster_name}" and nodename="${node_name}")), "Memory Bytes")
 request_mem_bytes: aliasMetric(limit(250, ts("kubernetes.node.memory.request", cluster="${cluster_name}" and nodename="${node_name}")), "Memory Request")
 ```
-# Node storage (aliasMetric function)
+
+###  Node storage
 - check column > group by source
 ```
 Total: round(aliasMetric(limit(250, ts("kubernetes.node.filesystem.limit", cluster="${cluster_name}" and nodename="${node_name}")), " Total(MB)")/(1024*1024))
@@ -84,19 +87,12 @@ UsageRate: round(aliasMetric(limit(250, ts("kubernetes.node.filesystem.usage", c
 ```
 
 # Pod status
-### POD status by platform process (TKG only)
-- this metric only valid to show running pod list. it cannot distinguish the failed pod list.
-- this metic doesn't compatible with openshift
-```
-etcd: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="etcd*" and condition=true)
-coredns: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="coredns*" and condition=true)
-kube-*: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="kube-*" and condition=true)
-```
+`kubernetes.pod.status.phase` metric is useful for checking availability, because the metric can distinguish the pod stauts.
 
-### POD status(TKG + openshift)
-- if pod fail, or not exist, then the Running metric disapears, so that we can check pod status.
+### POD status
+shows only pod with `Running` status, so useful to alert if it is not running. this metric can apply to TKG and Openshift
 ```
-ts("kubernetes.pod.status.phase", cluster="<APP CLUSTERNAME>" and nodename="*" and namespace_name="<APP_NAMESPACE>" and pod_name="yelb-ui-*" and phase="Running")
+ts("kubernetes.pod.status.phase", cluster="<APP CLUSTERNAME>" and nodename="*" and namespace_name="<APP_NAMESPACE>" and pod_name="*" and phase="Running")
 ```
 
 ### Failing Pod Alert rule for specific App.
@@ -104,10 +100,18 @@ ts("kubernetes.pod.status.phase", cluster="<APP CLUSTERNAME>" and nodename="*" a
 count(ts("kubernetes.pod.status.phase", cluster="<APP CLUSTERNAME>" and nodename="*" and namespace_name="<APP_NAMESPACE>" and pod_name="yelb-ui-*" and phase="Running")) < 1 
 ```
 
+###  kubernetes component Pod status (TKG only)
+metric `kube.pod.status.ready.gauge` was not able to distinguish the failed status.
+```
+etcd: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="etcd*" and condition=true)
+coredns: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="coredns*" and condition=true)
+kube-*: ts("kube.pod.status.ready.gauge", cluster="${cluster_name}" and pod="kube-*" and condition=true)
+```
 
-# PVC summary ( no join key)
-- install kube-state-metrics for "kube.persistentvolumeclaim.resource.requests.storage.bytes.gauge"
-- there is no common key between the two metrics for Join.
+
+# PVC summary
+it is common requirement to see usage of PV. `kube.persistentvolumeclaim.resource.requests.storage.bytes.gauge` metric only shows the request size of PV. and you need to install [`kube-state-metrics`](https://github.com/kubernetes/kube-state-metrics) for used size of PV. refer to the [Wavefront guide](https://docs.wavefront.com/kubernetes.html#step-3-optional-deploy-the-kube-state-metrics-service) for `kube-state-metrics` installation.
+but issues here is that there is no common key between the two metrics for joining.
 ```
 Used: aliasMetric(ts("kubernetes.pod.filesystem.usage" , cluster="${cluster_name}" and namespace_name="${namespace}"), "Used")
 Capacity: aliasMetric(ts("kube.persistentvolumeclaim.resource.requests.storage.bytes.gauge" and cluster="${cluster_name}" and namespace="${namespace}"), "Capacity")
