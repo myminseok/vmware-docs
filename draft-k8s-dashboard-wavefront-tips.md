@@ -23,9 +23,9 @@ by VMware.  Wavefront Query Language(WQL) is the language used to build queries
 implemented in these dashboards. For more detailed information, refer to the 
 [Wavefront documentation](https://docs.wavefront.com/query_language_reference.html).
 
-## General Consideration for WQL
-- It is easier to debug if WQL is composed into smaller units. Better debugging 
-visibility is achieved by changing the chart type to `table`
+## General Considerations for WQL
+- It is easier to debug if WQL is composed into smaller units. 
+- Better debugging visibility is achieved by changing the chart type to `table`
 - For any charts showing it's current status, such as Active/Inactive charts, use the last 2 mins metrics for stable dashboard alerting to minimizing flip-flopping of events.  This is assuming that the Wavefront-proxy agent, by default, reports to Wavefront every 30 seconds. 
 Also, apply the `at` function to use the latest time-series data. 
 - For alerting, use the same WQL from the chart.
@@ -144,8 +144,8 @@ some examples:
 
 `kubernetes.pod.status.phase` metric is useful for checking availability. 
 This is because the metric can distinguish the pod status.  We can use this to 
-show a Pod Health via it's `Running` status. This is useful to alert on, when a 
-pod is not running. This metric can be appled to TKG and Openshift.
+show a Pod Health via it's `Running` status. This is useful to alert on when a 
+pod is not running. This metric can be applied to TKG and OpenShift.
 
 ```
 ts("kubernetes.pod.status.phase", cluster="<APP CLUSTERNAME>" and nodename="*" and namespace_name="<APP_NAMESPACE>" and pod_name="*" and phase="Running")
