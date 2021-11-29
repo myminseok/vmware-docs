@@ -164,7 +164,7 @@ only shows the `requested` size of PV. In order to get the `used` capacity metri
 install the [`kube-state-metrics`](https://github.com/kubernetes/kube-state-metrics).
 Refer to the [Wavefront guide](https://docs.wavefront.com/kubernetes.html#step-3-optional-deploy-the-kube-state-metrics-service) 
 on how to install `kube-state-metrics`. The only disadvantage of this metric is that 
-it there is no common key between these two metrics to do a join.  
+it does not have a common key between these two metrics to do a join.  
 
 Here is an example of using the `used` capacity metric:
 
