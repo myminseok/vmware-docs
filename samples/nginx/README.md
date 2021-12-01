@@ -21,5 +21,6 @@ curl https://nginx-test.lab.pcfdemo.net -k
 ```
 
 ## httpproxy-passthrough.yml
-it takes HTTPS connection but does not terminate TLS but forward to https backend. https://projectcontour.io/docs/v1.19.0/config/tls-termination/
+it takes HTTPS connection but does not terminate TLS but forward to https backend. https://projectcontour.io/docs/v1.19.0/config/tls-termination.
+- it works ClusterIP, NodePort service type of the backend
 
