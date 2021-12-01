@@ -1,0 +1,13 @@
+apiVersion: projectcontour.io/v1
+kind: TLSCertificateDelegation
+metadata:
+  name: tls-testcom-delegate
+  namespace: default
+spec:
+  delegations:
+    - secretName: tls-testcom
+      targetNamespaces:
+      - test-ingress
+    - secretName: tls-testcom
+      targetNamespaces:
+      - "*"
