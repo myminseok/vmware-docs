@@ -1,0 +1,22 @@
+# kubectl create secret tls nginx-tls --cert=./domain.crt --key=./domain.key
+# curl https://nginx-test.lab.pcfdemo.net -kit works evenif server pool for default-tkc-1--default-nginx-test.lab.pcfdemo.net-nginx-ingress is down on AVI as long as  default-tkc-1--tanzu-system-ingress-envoy--443 is alive.
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+    kubernetes.io/ingress.allow-http: "true"
+  name: nginx-ingress
+spec:
+  tls:
+  - hosts:
+    - nginx-test.lab.pcfdemo.net
+    secretName: nginx-tls
+  rules:
+  - host: nginx-test.lab.pcfdemo.net
+    http:
+      paths:
+      - backend:
+          serviceName: nginx-app-service
+          servicePort: 80

@@ -1,0 +1,14 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: nginx-httpproxy-bypass
+spec:
+  virtualhost:
+    fqdn: nginx-test.lab.pcfdemo.net
+    tls:
+      passthrough: true
+  tcpproxy:
+    services:
+    - name: nginx-app-service
+      port: 443
+
