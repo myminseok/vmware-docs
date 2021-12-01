@@ -97,7 +97,8 @@ metadata:
   name: nginx-app-service
 spec:
         #type: LoadBalancer
-  type: ClusterIP
+        #type: ClusterIP
+  type: NodePort
   selector:
     app: nginx
   ports:
