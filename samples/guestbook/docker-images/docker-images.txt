@@ -1,0 +1,5 @@
+nginx:latest
+busybox:latest
+redis:latest
+gcr.io/google_samples/gb-frontend:v5
+gcr.io/google_samples/gb-redis-follower:v2

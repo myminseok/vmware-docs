@@ -48,8 +48,8 @@ kind: Service
 metadata:
   name: nginx-app-service
 spec:
-        #type: LoadBalancer
-  type: ClusterIP
+  type: LoadBalancer
+  #type: ClusterIP
   selector:
     app: nginx
   ports:
