@@ -6,7 +6,8 @@ spec:
   virtualhost:
     fqdn: nginx-test.lab.pcfdemo.net
     tls:
-      secretName: default/nginx-tls
+            #secretName: default/nginx-tls
+      secretName: nginx-test/nginx-tls
   routes:
     - services:
         - name: nginx-app-service
