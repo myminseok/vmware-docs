@@ -7,6 +7,7 @@
 - https://github.com/vmware-tanzu/velero
 - https://velero.io/blog/velero-v1-1-stateful-backup-vsphere
 - https://github.com/vmware-tanzu/velero-plugin-for-aws
+- https://velero.io/docs/v1.7/basic-install/
 
 
 # Prerequisites 
