@@ -1,4 +1,4 @@
-## vsphere thumbprint
+## update vsphere thumbprint (manual)
 
 ```
 kubectl config use-context mgmt-admin@mgmt
