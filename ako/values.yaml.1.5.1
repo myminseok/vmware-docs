@@ -16,9 +16,8 @@ AKOSettings:
   deleteConfig: 'false' # Has to be set to true in configmap if user wants to delete AKO created objects from AVI 
   disableStaticRouteSync: 'false' # If the POD networks are reachable from the Avi SE, set this knob to true.
   clusterName: tkc-noavi   # A unique identifier for the kubernetes cluster, that helps distinguish the objects for this cluster in the avi controller. // MUST-EDIT
-  cniPlugin: 'anthera' # Set the string if your CNI is calico or openshift. enum: calico|canal|flannel|openshift|antrea
+  cniPlugin: 'anthera' # Set the string if your CNI is calico or openshift. enum: calico|canal|flannel|openshift|antrea|ncp
   enableEVH: false # This enables the Enhanced Virtual Hosting Model in Avi Controller for the Virtual Services
-  GRBAC: false # Granular RBAC support, switched off by default
   layer7Only: false # If this flag is switched on, then AKO will only do layer 7 loadbalancing.
   # NamespaceSelector contains label key and value used for namespacemigration
   # Same label has to be present on namespace/s which needs migration/sync to AKO
@@ -37,14 +36,17 @@ NetworkSettings:
   - networkName: "VM Network"
     cidrs:
     - 192.168.0.0/16
-  subnetIP: '192.168.0.0' # Subnet IP of the vip network
-  subnetPrefix: '16' # Subnet Prefix of the vip network
   enableRHI: false # This is a cluster wide setting for BGP peering.
-  #vipNetworkList: [] # Network Name of the VIP network, multiple networks allowed only for AWS Cloud.
+  nsxtT1LR: '' # T1 Logical Segment mapping for backend network. Only applies to NSX-T cloud.
+  bgpPeerLabels: [] # Select BGP peers using bgpPeerLabels, for selective VsVip advertisement.
+  # bgpPeerLabels:
+  #   - peer1
+  #   - peer2
+  #vipNetworkList: [] # Network information of the VIP network. Multiple networks allowed only for AWS Cloud.
   vipNetworkList:
-  - networkName: "VM Network" 
-  # vipNetworkList:
+  - networkName: "VM Network"
   #  - networkName: net1
+  #    cidr: 100.1.1.0/24
 
 ### This section outlines all the knobs  used to control Layer 7 loadbalancing settings in AKO.
 L7Settings:
@@ -62,10 +64,13 @@ L4Settings:
 
 ### This section outlines settings on the Avi controller that affects AKO's functionality.
 ControllerSettings:
-  serviceEngineGroupName: DMZ   # Name of the ServiceEngine Group.
+  serviceEngineGroupName: Default-Group   # Name of the ServiceEngine Group.
+  #serviceEngineGroupName: INT   # Name of the ServiceEngine Group.
+  #controllerVersion: 21.1.1   # The controller API version
   controllerVersion: 20.1.6   # The controller API version
   cloudName: Default-Cloud   # The configured cloud name on the Avi controller.
-  controllerHost: 'avi.lab.pcfdemo.net' # IP address or Hostname of Avi Controller
+  #controllerHost: 'avi.lab.pcfdemo.net' # IP address or Hostname of Avi Controller
+  controllerHost: '192.168.0.16' # IP address or Hostname of Avi Controller
   tenantsPerCluster: 'false' # If set to true, AKO will map each kubernetes cluster uniquely to a tenant in Avi
   tenantName: admin   # Name of the tenant where all the AKO objects will be created in AVI. // Required only if tenantsPerCluster is set to True
 
@@ -92,11 +97,6 @@ avicredentials:
   username: ''
   password: ''
   certificateAuthorityData:
-
-
-service:
-  type: ClusterIP
-  port: 80
 
 
 persistentVolumeClaim: ''
