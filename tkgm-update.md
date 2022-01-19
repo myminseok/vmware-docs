@@ -6,16 +6,22 @@
 replace CLUSTER_NAME with real cluster name.
 ```
 kubectl config use-context mgmt-admin@mgmt
+```
+```
 kubectl get secret -A | grep vsphere
+```
+```
 export CLUSTER_NAME=mgmt
-
+```
+```
 kubectl get secret  -n tkg-system $CLUSTER_NAME-vsphere-cpi-addon -o jsonpath='{.data.values\.yaml}' | base64 -d > $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
-
-## edit vsphere credentials
+```
+edit vsphere credentials
+```
 vi $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
-
+```
+```
 kubectl create secret generic $CLUSTER_NAME-vsphere-cpi-addon -n tkg-system --type=tkg.tanzu.vmware.com/addon --from-file=values.yaml=$CLUSTER_NAME-vsphere-cpi-addon-values.yaml --dry-run=client -o yaml | kubectl replace -f -
-
 unset CLUSTER_NAME
 ```
 
@@ -24,10 +30,12 @@ unset CLUSTER_NAME
 kubectl config use-context mgmt-admin@mgmt
 kubectl get secret -A | grep vsphere
 kubectl get secret  -n tkg-system vsphere-cpi-data-values  -o yaml -o jsonpath='{.data.values\.yaml}' | base64 -d > ./vsphere-cpi-data-values.yml
-
-## edit vsphere credentials
+```
+edit vsphere credentials
+```
 vi ./vsphere-cpi-data-values.yml
-
+```
+```
 kubectl create secret generic vsphere-cpi-data-values -n tkg-system --from-file=values.yaml=vsphere-cpi-data-values.yml --dry-run=client -o yaml | kubectl replace -f -
 ``` 
 
@@ -35,7 +43,11 @@ kubectl create secret generic vsphere-cpi-data-values -n tkg-system --from-file=
 check if updated.
 ```
 kubectl config use-context mgmt-admin@mgmt
+```
+```
 watch -n 5 kubectl get cm vsphere-cloud-config -n kube-system -o yaml
+```
+```
 apiVersion: v1
 data:
   vsphere.conf: |
@@ -61,35 +73,47 @@ kubectl get po -A | grep vsphere-cloud-controller-manager
 replace CLUSTER_NAME with real cluster name.
 ```
 kubectl config use-context mgmt-admin@mgmt
+```
+```
 kubectl get secret -A | grep vsphere
+```
+```  
 export CLUSTER_NAME=WORKLOAD_CLUSTER_NAME
-
+```
+```
 kubectl get secret $CLUSTER_NAME-vsphere-cpi-addon -o jsonpath='{.data.values\.yaml}' | base64 -d > $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
-
-## edit vsphere credentials
+```
+edit vsphere credentials
+```
 vi $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
-
+```
+```
 kubectl create secret generic $CLUSTER_NAME-vsphere-cpi-addon --type=tkg.tanzu.vmware.com/addon --from-file=values.yaml=$CLUSTER_NAME-vsphere-cpi-addon-values.yaml --dry-run=client -o yaml | kubectl replace -f -
-
+```
+```
 unset CLUSTER_NAME
 ```
   
 2. vsphere-cpi-data-values in tkg-system namespace in WORKLOAD cluster
 ```
 kubectl config use-context WORKLOAD_CLUSTER_NAME-admin@WORKLOAD_CLUSTER_NAME
+```
+```
 kubectl get secret -A | grep vsphere
 kubectl get secret  -n tkg-system vsphere-cpi-data-values  -o yaml -o jsonpath='{.data.values\.yaml}' | base64 -d > ./vsphere-cpi-data-values.yml
-
-## edit vsphere credentials
+```
+edit vsphere credentials
+```
 vi ./vsphere-cpi-data-values.yml
-
+```
+```
 kubectl create secret generic vsphere-cpi-data-values -n tkg-system --from-file=values.yaml=vsphere-cpi-data-values.yml --dry-run=client -o yaml | kubectl replace -f -
-
 ```  
 
 3. wait for reconciliation to update the configmap and secret  in kube-system 
-  
+```
 kubectl get cm vsphere-cloud-config -n kube-system -o yaml
+```
 ```
 apiVersion: v1
 data:
@@ -103,8 +127,9 @@ data:
     insecure-flag = "1"
 kind: ConfigMap
 ```
-  
+```
 kubectl get secret cloud-provider-vsphere-credentials -n kube-system  -o yaml
+```
 ```
 apiVersion: v1
 data:
