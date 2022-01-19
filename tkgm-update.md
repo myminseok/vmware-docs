@@ -119,16 +119,6 @@ data:
     insecure-flag = "1"
 kind: ConfigMap
 ```
-```
-kubectl get secret cloud-provider-vsphere-credentials -n kube-system  -o yaml
-```
-```
-apiVersion: v1
-data:
-  vcenter.lab.pcfdemo.net.password: xxxx
-  vcenter.lab.pcfdemo.net.username: xxxx=
-kind: Secret
-```
     
 4. restart the pod vsphere-cloud-controller-manager
 ```
@@ -146,6 +136,18 @@ tanzu management-cluster credentials update
 
 tanzu cluster credentials update CLUSTER_NAME
 ```
+  
+```
+kubectl get secret cloud-provider-vsphere-credentials -n kube-system  -o yaml
+```
+```
+apiVersion: v1
+data:
+  vcenter.lab.pcfdemo.net.password: xxxx
+  vcenter.lab.pcfdemo.net.username: xxxx=
+kind: Secret
+```
+  
 https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.4/vmware-tanzu-kubernetes-grid-14/GUID-cluster-lifecycle-secrets.html#update-management-and-workload-cluster-credentials-vsphere-0
 
 ## update ntp,hosts (after cluster creation)
