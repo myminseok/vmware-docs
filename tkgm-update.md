@@ -1,9 +1,9 @@
-## TKGm 1.4.0 - update vsphere thumbprint (manual)
+# TKGm 1.4.0 
 
-### To update for the MANAGEMENT cluster
+## To update  vsphere thumbprint for MANAGEMENT cluster
 
 1. Update the secrets MGMT_CLUSTER_NAME-vsphere-cpi-addon in tkg-system namespace in MGMT CLUSTER
-replace CLUSTER_NAME with real cluster name.
+> replace CLUSTER_NAME with real cluster name.
 ```
 kubectl config use-context mgmt-admin@mgmt
 kubectl get secret -A | grep vsphere
@@ -64,11 +64,11 @@ data:
 kubectl rollout restart daemonset.apps/vsphere-cloud-controller-manager -n kube-system
 kubectl get po -A | grep vsphere-cloud-controller-manager
 ```
+## To update vsphere thumbprint for WORKLOAD cluster
 
-### To update for the WORKLOAD cluster
-
-1. Update the secrets <workload-clustername>-vsphere-cpi-addon in tkg-system namespace in MGMT CLUSTER
-replace CLUSTER_NAME with real cluster name.
+1. Update the secrets <workload-clustername>-vsphere-cpi-addon in tkg-system namespace
+> set config to MGMT CLUSTER
+> replace CLUSTER_NAME with you workload cluster name.
 ```
 kubectl config use-context mgmt-admin@mgmt
 kubectl get secret -A | grep vsphere
@@ -126,11 +126,11 @@ kubectl rollout restart daemonset.apps/vsphere-cloud-controller-manager -n kube-
 kubectl get po -A | grep vsphere-cloud-controller-manager
 ```
   
-### reference
+#### reference
   - https://github.com/vmware-tanzu/tanzu-framework/blob/main/pkg/v1/providers/ytt/02_addons/cpi/cpi_secret.yaml
   
   
-## update vsphere credential
+## Update vsphere credential
 ```
 tanzu management-cluster credentials update
 
@@ -165,10 +165,7 @@ kubectl edit KubeadmConfigTemplate tkc-noavi-md-0
 
 - https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.4/vmware-tanzu-kubernetes-grid-14/GUID-tanzu-k8s-clusters-config-plans.html#configuring-ntp-without-dhcp-option-42-vsphere-7
 
-
-
-## update trusted CA (after cluster creation) 
-
+## Update trusted CA (after cluster creation) 
 
 ```
 kubectl edit KubeadmConfigTemplate tkc-noavi-md-0
@@ -246,8 +243,6 @@ etcd-ca                 Dec 11, 2031 12:07 UTC   9y              no
 front-proxy-ca          Dec 11, 2031 12:07 UTC   9y              no
 root@mgmt-control-plane-l764z:/home/capv# kubeadm certs renew -h
 This command is not meant to be run on its own. See list of available subcommands.
-
-
 
 
 kubeadm certs renew all
