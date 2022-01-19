@@ -49,7 +49,7 @@ data:
     
 ```
 
-4. delete the pod vsphere-cloud-controller-manager
+4. restart the pod vsphere-cloud-controller-manager
 ```
 kubectl rollout restart daemonset.apps/vsphere-cloud-controller-manager -n kube-system
 kubectl get po -A | grep vsphere-cloud-controller-manager
@@ -64,12 +64,12 @@ kubectl config use-context mgmt-admin@mgmt
 kubectl get secret -A | grep vsphere
 export CLUSTER_NAME=WORKLOAD_CLUSTER_NAME
 
-kubectl get secret  -n tkg-system $CLUSTER_NAME-vsphere-cpi-addon -o jsonpath='{.data.values\.yaml}' | base64 -d > $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
+kubectl get secret $CLUSTER_NAME-vsphere-cpi-addon -o jsonpath='{.data.values\.yaml}' | base64 -d > $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
 
 ## edit vsphere credentials
 vi $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
 
-kubectl create secret generic $CLUSTER_NAME-vsphere-cpi-addon -n tkg-system --type=tkg.tanzu.vmware.com/addon --from-file=values.yaml=$CLUSTER_NAME-vsphere-cpi-addon-values.yaml --dry-run=client -o yaml | kubectl replace -f -
+kubectl create secret generic $CLUSTER_NAME-vsphere-cpi-addon --type=tkg.tanzu.vmware.com/addon --from-file=values.yaml=$CLUSTER_NAME-vsphere-cpi-addon-values.yaml --dry-run=client -o yaml | kubectl replace -f -
 
 unset CLUSTER_NAME
 ```
@@ -84,28 +84,41 @@ kubectl get secret  -n tkg-system vsphere-cpi-data-values  -o yaml -o jsonpath='
 vi ./vsphere-cpi-data-values.yml
 
 kubectl create secret generic vsphere-cpi-data-values -n tkg-system --from-file=values.yaml=vsphere-cpi-data-values.yml --dry-run=client -o yaml | kubectl replace -f -
+
 ```  
 
-3. wait for reconciliation to update the configmap vsphere-cpi-data-values in kube-system and then delete the pod vsphere-cloud-controller-manager
-check if updated.
-```
-kubectl config use-context mgmt-admin@mgmt
+3. wait for reconciliation to update the configmap and secret  in kube-system 
+  
 kubectl get cm vsphere-cloud-config -n kube-system -o yaml
+```
 apiVersion: v1
 data:
   vsphere.conf: |
     [Global]
     secret-name = "cloud-provider-vsphere-credentials"
     secret-namespace = "kube-system"
-    thumbprint = "27:8F:1B:9A:F2:DC:20:BA:67:97:E1:C6:AE:51:07:48:B0:D4:6A:43"
+    insecure-flag = "1"
     [VirtualCenter "vcenter.lab.pcfdemo.net"]
     datacenters = "/Datacenter"
-    thumbprint = "27:8F:1B:9A:F2:DC:20:BA:67:97:E1:C6:AE:51:07:48:B0:D4:6A:43"
-    
-kubectl edit cm vsphere-cloud-config -n kube-system 
+    insecure-flag = "1"
+kind: ConfigMap
 ```
-4. Delete the pod vsphere-cloud-controller 
-
+  
+kubectl get secret cloud-provider-vsphere-credentials -n kube-system  -o yaml
+```
+apiVersion: v1
+data:
+  vcenter.lab.pcfdemo.net.password: xxxx
+  vcenter.lab.pcfdemo.net.username: xxxx=
+kind: Secret
+```
+    
+4. restart the pod vsphere-cloud-controller-manager
+```
+kubectl rollout restart daemonset.apps/vsphere-cloud-controller-manager -n kube-system
+kubectl get po -A | grep vsphere-cloud-controller-manager
+```
+  
 ### reference
   - https://github.com/vmware-tanzu/tanzu-framework/blob/main/pkg/v1/providers/ytt/02_addons/cpi/cpi_secret.yaml
   
