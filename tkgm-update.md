@@ -105,6 +105,9 @@ data:
 kubectl edit cm vsphere-cloud-config -n kube-system 
 ```
 4. Delete the pod vsphere-cloud-controller 
+
+### reference
+  - https://github.com/vmware-tanzu/tanzu-framework/blob/main/pkg/v1/providers/ytt/02_addons/cpi/cpi_secret.yaml
   
   
 ## update vsphere credential
