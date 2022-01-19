@@ -1,6 +1,6 @@
-## update vsphere thumbprint (manual)
+## TKGm 1.4.0 - update vsphere thumbprint (manual)
 
-### To update the TLS thumbprint on the MANAGEMENT cluster
+### To update for the MANAGEMENT cluster
 
 1. Update the secrets MGMT_CLUSTER_NAME-vsphere-cpi-addon in tkg-system namespace in MGMT CLUSTER
 replace CLUSTER_NAME with real cluster name.
@@ -8,40 +8,83 @@ replace CLUSTER_NAME with real cluster name.
 kubectl config use-context mgmt-admin@mgmt
 kubectl get secret -A | grep vsphere
 export CLUSTER_NAME=mgmt
-kubectl get secret  -n tkg-system $CLUSTER_NAME-vsphere-cpi-addon -o jsonpath='{.data.values\.yaml}' | base64 -d > values.yaml
-cp ./values.yaml   ./values.yaml.orig
-vi values.yaml
-kubectl delete  secret   -n tkg-system  $CLUSTER_NAME-vsphere-cpi-addon
-kubectl create secret generic  -n tkg-system  $CLUSTER_NAME-vsphere-cpi-addon  --from-file ./values.yaml
-```
-2. vsphere-cpi-data-values in tkg-system namespace in MGMT CLUSTER
--> no values in TKG 1.4.1
 
+kubectl get secret  -n tkg-system $CLUSTER_NAME-vsphere-cpi-addon -o jsonpath='{.data.values\.yaml}' | base64 -d > $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
+
+## edit vsphere credentials
+vi $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
+
+kubectl create secret generic $CLUSTER_NAME-vsphere-cpi-addon -n tkg-system --type=tkg.tanzu.vmware.com/addon --from-file=values.yaml=$CLUSTER_NAME-vsphere-cpi-addon-values.yaml --dry-run=client -o yaml | kubectl replace -f -
+
+unset CLUSTER_NAME
+```
+
+2. vsphere-cpi-data-values in tkg-system namespace in MGMT CLUSTER
+```
+kubectl config use-context mgmt-admin@mgmt
+kubectl get secret -A | grep vsphere
+kubectl get secret  -n tkg-system vsphere-cpi-data-values  -o yaml -o jsonpath='{.data.values\.yaml}' | base64 -d > ./vsphere-cpi-data-values.yml
+
+## edit vsphere credentials
+vi ./vsphere-cpi-data-values.yml
+
+kubectl create secret generic vsphere-cpi-data-values -n tkg-system --from-file=values.yaml=vsphere-cpi-data-values.yml --dry-run=client -o yaml | kubectl replace -f -
+``` 
+
+3. wait for reconciliation to update the configmap vsphere-cpi-data-values in kube-system and then delete the pod vsphere-cloud-controller-manager
+check if updated.
+```
+kubectl config use-context mgmt-admin@mgmt
+watch -n 5 kubectl get cm vsphere-cloud-config -n kube-system -o yaml
+apiVersion: v1
+data:
+  vsphere.conf: |
+    [Global]
+    secret-name = "cloud-provider-vsphere-credentials"
+    secret-namespace = "kube-system"
+    thumbprint = "27:8F:1B:9A:F2:DC:20:BA:67:97:E1:C6:AE:51:07:48:B0:D4:6A:43"
+    [VirtualCenter "vcenter.lab.pcfdemo.net"]
+    datacenters = "/Datacenter"
+    thumbprint = "27:8F:1B:9A:F2:DC:20:BA:67:97:E1:C6:AE:51:07:48:B0:D4:6A:43"
+    
+```
 
 4. delete the pod vsphere-cloud-controller-manager
--> no pod in TKG 1.4.1
+```
+kubectl rollout restart daemonset.apps/vsphere-cloud-controller-manager -n kube-system
+kubectl get po -A | grep vsphere-cloud-controller-manager
+```
 
+### To update for the WORKLOAD cluster
 
-### To update the TLS thumbprint on the WORKLOAD cluster
-
-1. Update the secrets <workload-clustername>-vsphere-cpi-addon in tkg-system namespace
+1. Update the secrets <workload-clustername>-vsphere-cpi-addon in tkg-system namespace in MGMT CLUSTER
 replace CLUSTER_NAME with real cluster name.
 ```
+kubectl config use-context mgmt-admin@mgmt
 kubectl get secret -A | grep vsphere
-kubectl get secret  -n tkg-system CLUSTER_NAME-vsphere-cpi-addon -o jsonpath='{.data.values\.yaml}' | base64 -d > CLUSTER_NAME-vsphere-cpi-addon.yml
-cp ./CLUSTER_NAME-vsphere-cpi-addon.yml   ./CLUSTER_NAME-vsphere-cpi-addon.yml.orig
-edit CLUSTER_NAME-vsphere-cpi-addon.yml
-kubectl delete  secret   -n tkg-system  CLUSTER_NAME-vsphere-cpi-addon
-kubectl create secret generic  -n tkg-system  CLUSTER_NAME-vsphere-cpi-addon  --from-file ./CLUSTER_NAME-vsphere-cpi-addon.yml
+export CLUSTER_NAME=WORKLOAD_CLUSTER_NAME
+
+kubectl get secret  -n tkg-system $CLUSTER_NAME-vsphere-cpi-addon -o jsonpath='{.data.values\.yaml}' | base64 -d > $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
+
+## edit vsphere credentials
+vi $CLUSTER_NAME-vsphere-cpi-addon-values.yaml
+
+kubectl create secret generic $CLUSTER_NAME-vsphere-cpi-addon -n tkg-system --type=tkg.tanzu.vmware.com/addon --from-file=values.yaml=$CLUSTER_NAME-vsphere-cpi-addon-values.yaml --dry-run=client -o yaml | kubectl replace -f -
+
+unset CLUSTER_NAME
 ```
+  
 2. vsphere-cpi-data-values in tkg-system namespace in WORKLOAD cluster
 ```
+kubectl config use-context WORKLOAD_CLUSTER_NAME-admin@WORKLOAD_CLUSTER_NAME
+kubectl get secret -A | grep vsphere
 kubectl get secret  -n tkg-system vsphere-cpi-data-values  -o yaml -o jsonpath='{.data.values\.yaml}' | base64 -d > ./vsphere-cpi-data-values.yml
-cp ./vsphere-cpi-data-values.yml ./vsphere-cpi-data-values.yml.orig
-edit ./vsphere-cpi-data-values.yml
-kubectl delete  secret   -n tkg-system vsphere-cpi-data-values  
-kubectl create secret generic  -n tkg-system vsphere-cpi-data-values   --from-file ./vsphere-cpi-data-values.yml 
-``` 
+
+## edit vsphere credentials
+vi ./vsphere-cpi-data-values.yml
+
+kubectl create secret generic vsphere-cpi-data-values -n tkg-system --from-file=values.yaml=vsphere-cpi-data-values.yml --dry-run=client -o yaml | kubectl replace -f -
+```  
 
 3. wait for reconciliation to update the configmap vsphere-cpi-data-values in kube-system and then delete the pod vsphere-cloud-controller-manager
 check if updated.
