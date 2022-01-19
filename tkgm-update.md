@@ -66,7 +66,7 @@ kubectl create secret generic  -n tkg-system vsphere-cpi-data-values   --from-fi
 check if updated.
 ```
 kubectl get cm vsphere-cloud-config -n kube-system -o yaml
-``
+```
 4. Delete the pod vsphere-cloud-controller 
   
   
