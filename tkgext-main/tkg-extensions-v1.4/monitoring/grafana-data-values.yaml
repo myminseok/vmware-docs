@@ -61,7 +61,7 @@ grafana:
     admin_password: "Vk13YXJlMSE="
 ingress:
   enabled: true
-  virtual_host_fqdn: "grafana.mvp.bsl.local"
+  virtual_host_fqdn: "grafana.lab.pcfdemo.net"
   prefix: "/"
   servicePort: 80
   tlsCertificate:
