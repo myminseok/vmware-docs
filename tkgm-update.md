@@ -1,4 +1,4 @@
-# TKGm 1.4.0 
+# TKGm 1.4
 
 ## To update  vsphere thumbprint for MANAGEMENT cluster
 
