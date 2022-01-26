@@ -1,3 +1,4 @@
+# WARINING: this is experimental. please donot apply this on production environment.
 # TKGm 1.4
 
 ## To update  vsphere thumbprint for MANAGEMENT cluster
