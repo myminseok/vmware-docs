@@ -1,0 +1,9 @@
+#@ load("@ytt:overlay", "overlay")
+#@overlay/match by=overlay.subset({"kind":"MachineDeployment"}), expects="0+"
+---
+kind: MachineDeployment
+spec:
+  template:
+    spec:
+      #@overlay/match missing_ok=True
+      failureDomain:

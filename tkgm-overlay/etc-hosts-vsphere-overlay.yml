@@ -1,0 +1,26 @@
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: KubeadmControlPlane
+spec:
+  kubeadmConfigSpec:
+    preKubeadmCommands:
+    #! Add nameserver to all k8s nodes
+    #@overlay/append
+    - echo "192.168.0.5   infra-harbor.lab.pcfdemo.net" >> /etc/hosts
+    - echo "192.168.0.5   nsx-alb.lab.pcfdemo.net" >> /etc/hosts
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"})
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+kind: KubeadmConfigTemplate
+spec:
+  template:
+    spec:
+      preKubeadmCommands:
+      #! Add nameserver to all k8s nodes
+      #@overlay/append
+      - echo "192.168.0.5   infra-harbor.lab.pcfdemo.net" >> /etc/hosts
+      - echo "192.168.0.5   nsx-alb.lab.pcfdemo.net" >> /etc/hosts

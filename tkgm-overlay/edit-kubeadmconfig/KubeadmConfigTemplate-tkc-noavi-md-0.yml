@@ -1,0 +1,77 @@
+apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+kind: KubeadmConfigTemplate
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"bootstrap.cluster.x-k8s.io/v1alpha3","kind":"KubeadmConfigTemplate","metadata":{"annotations":{},"name":"tkc-noavi-md-0","namespace":"default"},"spec":{"template":{"spec":{"files":[{"content":"LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUR1VENDQXFHZ0F3SUJBZ0lVQlJiTnM0bSs2UVZSdWEzS2ZqZHo3TzhDS3d3d0RRWUpLb1pJaHZjTkFRRUwKQlFBd09qRUxNQWtHQTFVRUJoTUNTMUl4RFRBTEJnTlZCQW9NQkUxNVEwRXhIREFhQmdOVkJBTU1FM0p2YjNRZwpVMlZzWmlCVGFXZHVaV1FnUTBFd0hoY05NakV4TURJeU1USXdPVEF6V2hjTk16RXhNREl3TVRJd09UQXpXakJECk1Rc3dDUVlEVlFRR0V3SkxVakVPTUF3R0ExVUVDZ3dGVFhsUGNtY3hEakFNQmdOVkJBc01CVTE1VDNKbk1SUXcKRWdZRFZRUUREQXR3WTJaa1pXMXZMbTVsZERDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQwpnZ0VCQUtvQTRnT1EySHFobVcvaGhZZjRXTUJrcUMvV3dzcVRVRVQvakxSZjkxa2VsSk5zY2UwYnFNeTlWLzdDCnJNRG5BcHIxUnloYzg3anhjbURtUGtFblNDcjg3cnc4eXdhWElnWDJjVGMxNitBZmJqTG5sK0ZJR3NldFlrOGIKMVgrTjJGTEMvNzd4RmJUVEdLYzE4aVYrSmFxd0Vta2JCWDAwNDJHZkI5Q3ZiYUtvajRwTlFqY2puOFN1akdSaAo3VmpBcEpzUEwySU5jM3RYc3l4cVBoZWNwUE5GWXU4ZEVuOFVidjRmbU9lNVB5NFRoWkY4cERIcXJwUFBqQnhmCjhRSlk4cCtXa2NZZWFRaGJKMGZsc3VNVGhMVTVEaTN3d3ZDNnBia1ZTZk02OE5KOXR3Q3dWZVlIRzljTTJZYnAKMlUwWElZVEtkZjd6T29NZ2RJdVdGZUFOeHFFQ0F3RUFBYU9CclRDQnFqQUpCZ05WSFJNRUFqQUFNQjBHQTFVZApEZ1FXQkJTbUtYcXJYbnB1WVl2NHkvTlFQTnZIN1JLN0JUQUxCZ05WSFE4RUJBTUNCYUF3SFFZRFZSMGxCQll3CkZBWUlLd1lCQlFVSEF3RUdDQ3NHQVFVRkJ3TUNNRklHQTFVZEVRUkxNRW1DQ2lvdWRHVnpkQzVqYjIyQ0VTb3UKYkdGaUxuQmpabVJsYlc4dWJtVjBnaHhwYm1aeVlTMW9ZWEppYjNJdWJHRmlMbkJqWm1SbGJXOHVibVYwaHdSLwpBQUFCaHdUQXFBQUZNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUJpZTAwR0VpQ2M1c1BreVl3N0hReFV1cjFvClBVbGFTb3c3d080YW10ODNOYzJDQ0VLQVlIdExqVXZ6eTBiMStBWXVyTE1wVFRkVVE0VmQwb3ZpUGJ1Y2tYdXgKOXM4NlJyNW9jdzVpUzQ0TmtLRTU5SVhwUmQyOWdnUG5UcUZaKzVhcHNqY2xoaEhVL0ZEOVJQcWxNeUxrNXZsTQplTENXSjNDVExibzlOZllkZGdHNG9JcmFsSVpsK2lJQ2hZMHcvWDJIZVBVbFJaY0xEdTU4MVhqeFpWQnc2VmNNCnN4UDVqWU9qVm1qRmJNRXFWNjhDN25vV1REUTBZUWphQk9rdG9kOFQzbzVabFowV2tqYjZIa2dBdkQxbnNSbTMKQ2drZVlXZW44OEpKUU94V1djaEtqMUZCc3pkVkN4aEZBWEtoUUUwZWVXcG5lbVdWazZDWllNUy8zWUdrCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K","encoding":"base64","path":"/etc/containerd/infra-harbor.lab.pcfdemo.net.crt","permissions":"0444"}],"joinConfiguration":{"nodeRegistration":{"criSocket":"/var/run/containerd/containerd.sock","kubeletExtraArgs":{"cloud-provider":"external","tls-cipher-suites":"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"},"name":"{{ ds.meta_data.hostname }}"}},"preKubeadmCommands":["hostname \"{{ ds.meta_data.hostname }}\"","echo \"::1         ipv6-localhost ipv6-loopback\" \u003e/etc/hosts","echo \"127.0.0.1   localhost\" \u003e\u003e/etc/hosts","echo \"127.0.0.1   {{ ds.meta_data.hostname }}\" \u003e\u003e/etc/hosts","echo \"{{ ds.meta_data.hostname }}\" \u003e/etc/hostname","echo '[plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"infra-harbor.lab.pcfdemo.net\".tls]' \u003e\u003e /etc/containerd/config.toml","echo '  ca_file = \"/etc/containerd/infra-harbor.lab.pcfdemo.net.crt\"' \u003e\u003e /etc/containerd/config.toml","systemctl restart containerd","sed -i 's|\".*/pause|\"infra-harbor.lab.pcfdemo.net/tkg/pause|' /etc/containerd/config.toml","systemctl restart containerd"],"useExperimentalRetryJoin":true,"users":[{"name":"capv","sshAuthorizedKeys":["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDe9NJNp/GyCcFBp07uvHqj48ssdteNjP5a6k/OLDUtN2YW9vcimiw14ScqUxelheFpK9uC6qPmS3EYIO+mT82s9GV+HjAf/odVbYIOXzDaG/gqPhhOWDrKhdpB+Jh53RNruspmrc08YyIae5UK7/Tv5aNe1gBgDXPnWcgOa0Qml7GjjgyGNQ5hZVvavJfPKVdD51A6d25pVLcvtSumxARE8cy4WmRad+eNG1p8RayLgy8FL42BAeZmWAmnhU8fIshAVgTQA/Bl2X4Gz8RdzsPogoNnEezNG4ulRyxubKCjWL6UoKVdzWl673hdD8ymB0i9UWM5qRxDuHKBWN7xIYx454tAPfZrERBC3CaxJseHAw3Di4sLyM5Qpx/vrqiqUEB22wgJDDPxdYJX3WhxzMyw3oZGi3cXwzK4dxqzWizVUfN0O+0yjr1VaoRuI/DZD8sRuUaDPTYnXd5AyvZoVxEGWcFvnL/iGLv4AzLZHmHfE5L6UO8LLcqKWirFQ3KlpGs="],"sudo":"ALL=(ALL) NOPASSWD:ALL"}]}}}}
+  creationTimestamp: "2022-01-19T10:44:40Z"
+  generation: 1
+  name: tkc-noavi-md-0
+  namespace: default
+  ownerReferences:
+  - apiVersion: cluster.x-k8s.io/v1alpha3
+    kind: Cluster
+    name: tkc-noavi
+    uid: 95b1defe-5fce-4a5c-b1fe-3cc47e225f01
+  resourceVersion: "4551"
+  uid: f5669b2d-c52b-42de-a2a4-fb0b6f3559d6
+spec:
+  template:
+    spec:
+      files:
+      - content: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUR1VENDQXFHZ0F3SUJBZ0lVQlJiTnM0bSs2UVZSdWEzS2ZqZHo3TzhDS3d3d0RRWUpLb1pJaHZjTkFRRUwKQlFBd09qRUxNQWtHQTFVRUJoTUNTMUl4RFRBTEJnTlZCQW9NQkUxNVEwRXhIREFhQmdOVkJBTU1FM0p2YjNRZwpVMlZzWmlCVGFXZHVaV1FnUTBFd0hoY05NakV4TURJeU1USXdPVEF6V2hjTk16RXhNREl3TVRJd09UQXpXakJECk1Rc3dDUVlEVlFRR0V3SkxVakVPTUF3R0ExVUVDZ3dGVFhsUGNtY3hEakFNQmdOVkJBc01CVTE1VDNKbk1SUXcKRWdZRFZRUUREQXR3WTJaa1pXMXZMbTVsZERDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQwpnZ0VCQUtvQTRnT1EySHFobVcvaGhZZjRXTUJrcUMvV3dzcVRVRVQvakxSZjkxa2VsSk5zY2UwYnFNeTlWLzdDCnJNRG5BcHIxUnloYzg3anhjbURtUGtFblNDcjg3cnc4eXdhWElnWDJjVGMxNitBZmJqTG5sK0ZJR3NldFlrOGIKMVgrTjJGTEMvNzd4RmJUVEdLYzE4aVYrSmFxd0Vta2JCWDAwNDJHZkI5Q3ZiYUtvajRwTlFqY2puOFN1akdSaAo3VmpBcEpzUEwySU5jM3RYc3l4cVBoZWNwUE5GWXU4ZEVuOFVidjRmbU9lNVB5NFRoWkY4cERIcXJwUFBqQnhmCjhRSlk4cCtXa2NZZWFRaGJKMGZsc3VNVGhMVTVEaTN3d3ZDNnBia1ZTZk02OE5KOXR3Q3dWZVlIRzljTTJZYnAKMlUwWElZVEtkZjd6T29NZ2RJdVdGZUFOeHFFQ0F3RUFBYU9CclRDQnFqQUpCZ05WSFJNRUFqQUFNQjBHQTFVZApEZ1FXQkJTbUtYcXJYbnB1WVl2NHkvTlFQTnZIN1JLN0JUQUxCZ05WSFE4RUJBTUNCYUF3SFFZRFZSMGxCQll3CkZBWUlLd1lCQlFVSEF3RUdDQ3NHQVFVRkJ3TUNNRklHQTFVZEVRUkxNRW1DQ2lvdWRHVnpkQzVqYjIyQ0VTb3UKYkdGaUxuQmpabVJsYlc4dWJtVjBnaHhwYm1aeVlTMW9ZWEppYjNJdWJHRmlMbkJqWm1SbGJXOHVibVYwaHdSLwpBQUFCaHdUQXFBQUZNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUJpZTAwR0VpQ2M1c1BreVl3N0hReFV1cjFvClBVbGFTb3c3d080YW10ODNOYzJDQ0VLQVlIdExqVXZ6eTBiMStBWXVyTE1wVFRkVVE0VmQwb3ZpUGJ1Y2tYdXgKOXM4NlJyNW9jdzVpUzQ0TmtLRTU5SVhwUmQyOWdnUG5UcUZaKzVhcHNqY2xoaEhVL0ZEOVJQcWxNeUxrNXZsTQplTENXSjNDVExibzlOZllkZGdHNG9JcmFsSVpsK2lJQ2hZMHcvWDJIZVBVbFJaY0xEdTU4MVhqeFpWQnc2VmNNCnN4UDVqWU9qVm1qRmJNRXFWNjhDN25vV1REUTBZUWphQk9rdG9kOFQzbzVabFowV2tqYjZIa2dBdkQxbnNSbTMKQ2drZVlXZW44OEpKUU94V1djaEtqMUZCc3pkVkN4aEZBWEtoUUUwZWVXcG5lbVdWazZDWllNUy8zWUdrCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+        encoding: base64
+        path: /etc/containerd/infra-harbor.lab.pcfdemo.net.crt
+        permissions: "0444"
+      - content: |
+          -----BEGIN CERTIFICATE-----
+          MIIDtDCCApygAwIBAgIUBRbNs4m+6QVRua3Kfjdz7O8CKw0wDQYJKoZIhvcNAQEL
+          BQAwOjELMAkGA1UEBhMCS1IxDTALBgNVBAoMBE15Q0ExHDAaBgNVBAMME3Jvb3Qg
+          U2VsZiBTaWduZWQgQ0EwHhcNMjExMTA4MDY1OTUwWhcNMzExMTA2MDY1OTUwWjBD
+          MQswCQYDVQQGEwJLUjEOMAwGA1UECgwFTXlPcmcxDjAMBgNVBAsMBU15T3JnMRQw
+          EgYDVQQDDAtwY2ZkZW1vLm5ldDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+          ggEBAMXzQg+fIj0fc/WmExiv9JCbQpn7d4Uq/IWpm5sN8p0fippza4271HLEUFpB
+          0rGtcHEQfuWgqLX/YMODbnnd47/fzpa7010ZpfbUakfLgsOCk3GuiNMERTaQjQ3L
+          E+EsRfyX2M49uSc3vZR5mQbWNRmNtnyKqIpOV5911ZfmmJvGRlzOEqpHTP8KUz27
+          PC8OoLmOXTclEFlpgZfptTgpVP+Y25u/Zfwz542Wz+H6DDJ5Uwy1EEm0WAnpWTtj
+          PUr6BIj9/qr7UW9xvLO90usn6pdEGFj5cYMXuUyoFqEvZ8AdHfQ6hJybnonbkwRx
+          kZeG/AtYhkiRY7JsHEZHB5tN9XUCAwEAAaOBqDCBpTAJBgNVHRMEAjAAMB0GA1Ud
+          DgQWBBTC43www3xuyy9BK0epX1To1rNdgTALBgNVHQ8EBAMCBaAwHQYDVR0lBBYw
+          FAYIKwYBBQUHAwEGCCsGAQUFBwMCME0GA1UdEQRGMESCCioudGVzdC5jb22CESou
+          bGFiLnBjZmRlbW8ubmV0ghdnaXRsYWIyLmxhYi5wY2ZkZW1vLm5ldIcEfwAAAYcE
+          wKgABjANBgkqhkiG9w0BAQsFAAOCAQEAoWOOcvXS/nbXMvOQGiUSow0BGPAI+7fH
+          BdMtnKtUD6Y6ppAWIZuxlUJY20dCf6WjXC6EP0bWPqVswpjoC6X5uCs4fsg71w7J
+          nl+S231Ly8IQZwROc0w/XfROu44VGyZhpgaT1Ge+6vp0lKVj5aH+VwpUolIpZ4wh
+          3gG6Pe42z0EbyyqNPT4mCNocq2dELzCUp60raAohMoF1+v45JfA9yvmwB++ufa7Q
+          MnQ/tlGhcdih0VgKQ5B+XHAdmOEgZMUS33gxOOX9vOmbS8U5VRh+MZE/MiVGe9S5
+          H5gBczpKPL74ZP1EauP1Lgv82Hjc+nNbJKX7UX/V8R+3cOLIaOjIKg==
+          -----END CERTIFICATE-----
+        owner: root:root
+        permissions: "0644"
+        path: /etc/ssl/certs/tkg-custom-ca.pem
+      joinConfiguration:
+        nodeRegistration:
+          criSocket: /var/run/containerd/containerd.sock
+          kubeletExtraArgs:
+            cloud-provider: external
+            tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          name: '{{ ds.meta_data.hostname }}'
+      preKubeadmCommands:
+      - hostname "{{ ds.meta_data.hostname }}"
+      - '! which update-ca-certificates 2>/dev/null || (mv /etc/ssl/certs/tkg-custom-ca.pem /usr/local/share/ca-certificates/tkg-custom-ca.crt && update-ca-certificates)'
+      - echo "::1         ipv6-localhost ipv6-loopback" >/etc/hosts
+      - echo "127.0.0.1   localhost" >>/etc/hosts
+      - echo "127.0.0.1   {{ ds.meta_data.hostname }}" >>/etc/hosts
+      - echo "{{ ds.meta_data.hostname }}" >/etc/hostname
+      - echo '[plugins."io.containerd.grpc.v1.cri".registry.configs."infra-harbor.lab.pcfdemo.net".tls]'
+        >> /etc/containerd/config.toml
+      - echo '  ca_file = "/etc/containerd/infra-harbor.lab.pcfdemo.net.crt"' >> /etc/containerd/config.toml
+      - systemctl restart containerd
+      - sed -i 's|".*/pause|"infra-harbor.lab.pcfdemo.net/tkg/pause|' /etc/containerd/config.toml
+      - systemctl restart containerd
+      useExperimentalRetryJoin: true
+      users:
+      - name: capv
+        sshAuthorizedKeys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDe9NJNp/GyCcFBp07uvHqj48ssdteNjP5a6k/OLDUtN2YW9vcimiw14ScqUxelheFpK9uC6qPmS3EYIO+mT82s9GV+HjAf/odVbYIOXzDaG/gqPhhOWDrKhdpB+Jh53RNruspmrc08YyIae5UK7/Tv5aNe1gBgDXPnWcgOa0Qml7GjjgyGNQ5hZVvavJfPKVdD51A6d25pVLcvtSumxARE8cy4WmRad+eNG1p8RayLgy8FL42BAeZmWAmnhU8fIshAVgTQA/Bl2X4Gz8RdzsPogoNnEezNG4ulRyxubKCjWL6UoKVdzWl673hdD8ymB0i9UWM5qRxDuHKBWN7xIYx454tAPfZrERBC3CaxJseHAw3Di4sLyM5Qpx/vrqiqUEB22wgJDDPxdYJX3WhxzMyw3oZGi3cXwzK4dxqzWizVUfN0O+0yjr1VaoRuI/DZD8sRuUaDPTYnXd5AyvZoVxEGWcFvnL/iGLv4AzLZHmHfE5L6UO8LLcqKWirFQ3KlpGs=
+        sudo: ALL=(ALL) NOPASSWD:ALL

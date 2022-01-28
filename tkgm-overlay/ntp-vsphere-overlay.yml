@@ -1,0 +1,27 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+spec:
+  kubeadmConfigSpec:
+    #@overlay/match missing_ok=True
+    ntp:
+      #@overlay/match missing_ok=True
+      enabled: true
+      #@overlay/match missing_ok=True
+      servers:
+        - 192.168.0.5
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"})
+---
+spec:
+  template:
+    spec:
+      #@overlay/match missing_ok=True
+      ntp:
+        #@overlay/match missing_ok=True
+        enabled: true
+        #@overlay/match missing_ok=True
+        servers:
+          - 192.168.0.5
