@@ -19,13 +19,14 @@ spec:
     #@overlay/match by=overlay.subset('! which rehash_ca_certificates.sh 2>/dev/null || rehash_ca_certificates.sh'), expects="0+"
     #@overlay/remove
     -
-
     #@overlay/match by=overlay.subset('! which update-ca-certificates 2>/dev/null || (mv /etc/ssl/certs/tkg-custom-ca.pem /usr/local/share/ca-certificates/tkg-custom-ca.crt && update-ca-certificates)'), expects="0+"
     #@overlay/remove
     -
     #! For Photon OS
     #@overlay/append
     - '! which rehash_ca_certificates.sh 2>/dev/null || rehash_ca_certificates.sh'
+    - systemctl restart containerd
     #! For Ubuntu
     #@overlay/append
     - '! which update-ca-certificates 2>/dev/null || (mv /etc/ssl/certs/tkg-custom-ca.pem /usr/local/share/ca-certificates/tkg-custom-ca.crt && update-ca-certificates)'
+    - systemctl restart containerd

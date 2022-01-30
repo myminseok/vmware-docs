@@ -1,16 +1,14 @@
 #@ load("@ytt:overlay", "overlay")
 #@ load("@ytt:data", "data")
-
-#! This ytt overlay adds additional custom CA certificates on TKG cluster nodes, so containerd and other tools trust these CA certificates.
-#! It works when using Photon or Ubuntu as the TKG node template on all TKG infrastructure providers.
-
-#! Trust your custom CA certificates on all Control Plane nodes.
-#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+#@overlay/match by=overlay.subset({"kind": "KubeadmControlPlane" }), expects="0+"
 ---
 spec:
   kubeadmConfigSpec:
     #@overlay/match missing_ok=True
     files:
+      #@overlay/remove
+      #@overlay/match by="path", expects="0+"
+      - path: /etc/ssl/certs/tkg-custom-ca.pem
       #@overlay/append
       - content: #@ data.read("tkg-custom-ca.pem")
         owner: root:root
@@ -18,21 +16,29 @@ spec:
         path: /etc/ssl/certs/tkg-custom-ca.pem
     #@overlay/match missing_ok=True
     preKubeadmCommands:
+      #@overlay/match by=overlay.subset('! which rehash_ca_certificates.sh 2>/dev/null || rehash_ca_certificates.sh'), expects="0+"
+      #@overlay/remove
+      -
+      #@overlay/match by=overlay.subset('! which update-ca-certificates 2>/dev/null || (mv /etc/ssl/certs/tkg-custom-ca.pem /usr/local/share/ca-certificates/tkg-custom-ca.crt && update-ca-certificates)'), expects="0+"
+      #@overlay/remove
+      -
       #! For Photon OS
       #@overlay/append
       - '! which rehash_ca_certificates.sh 2>/dev/null || rehash_ca_certificates.sh'
       #! For Ubuntu
       #@overlay/append
       - '! which update-ca-certificates 2>/dev/null || (mv /etc/ssl/certs/tkg-custom-ca.pem /usr/local/share/ca-certificates/tkg-custom-ca.crt && update-ca-certificates)'
-
-#! Trust your custom CA certificates on all worker nodes.
-#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"}), expects="1+"
+      - echo "test"
+#@overlay/match by=overlay.subset({"kind": "KubeadmConfigTemplate" }), expects="0+"
 ---
 spec:
   template:
     spec:
       #@overlay/match missing_ok=True
       files:
+        #@overlay/remove
+        #@overlay/match by="path", expects="0+"
+        - path: /etc/ssl/certs/tkg-custom-ca.pem
         #@overlay/append
         - content: #@ data.read("tkg-custom-ca.pem")
           owner: root:root
@@ -40,9 +46,17 @@ spec:
           path: /etc/ssl/certs/tkg-custom-ca.pem
       #@overlay/match missing_ok=True
       preKubeadmCommands:
+        #@overlay/match by=overlay.subset('! which rehash_ca_certificates.sh 2>/dev/null || rehash_ca_certificates.sh'), expects="0+"
+        #@overlay/remove
+        -
+        #@overlay/match by=overlay.subset('! which update-ca-certificates 2>/dev/null || (mv /etc/ssl/certs/tkg-custom-ca.pem /usr/local/share/ca-certificates/tkg-custom-ca.crt && update-ca-certificates)'), expects="0+"
+        #@overlay/remove
+        -
         #! For Photon OS
         #@overlay/append
         - '! which rehash_ca_certificates.sh 2>/dev/null || rehash_ca_certificates.sh'
+        - systemctl restart containerd
         #! For Ubuntu
         #@overlay/append
         - '! which update-ca-certificates 2>/dev/null || (mv /etc/ssl/certs/tkg-custom-ca.pem /usr/local/share/ca-certificates/tkg-custom-ca.crt && update-ca-certificates)'
+        - systemctl restart containerd

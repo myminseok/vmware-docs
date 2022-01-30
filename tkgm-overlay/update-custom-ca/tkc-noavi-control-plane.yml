@@ -1,0 +1,233 @@
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: KubeadmControlPlane
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"controlplane.cluster.x-k8s.io/v1alpha3","kind":"KubeadmControlPlane","metadata":{"annotations":{},"creationTimestamp":"2022-01-19T10:44:40Z","finalizers":["kubeadm.controlplane.cluster.x-k8s.io"],"generation":5,"labels":{"cluster.x-k8s.io/cluster-name":"tkc-noavi"},"name":"tkc-noavi-control-plane","namespace":"default","ownerReferences":[{"apiVersion":"cluster.x-k8s.io/v1alpha3","blockOwnerDeletion":true,"controller":true,"kind":"Cluster","name":"tkc-noavi","uid":"95b1defe-5fce-4a5c-b1fe-3cc47e225f01"}],"resourceVersion":"920233","uid":"6b7b1eb4-1a17-4351-af2f-aa7cb2de3b56"},"spec":{"infrastructureTemplate":{"apiVersion":"infrastructure.cluster.x-k8s.io/v1alpha3","kind":"VSphereMachineTemplate","name":"tkc-noavi-control-plane","namespace":"default"},"kubeadmConfigSpec":{"clusterConfiguration":{"apiServer":{"extraArgs":{"audit-log-maxage":"30","audit-log-maxbackup":"10","audit-log-maxsize":"100","audit-log-path":"/var/log/kubernetes/audit.log","audit-policy-file":"/etc/kubernetes/audit-policy.yaml","cloud-provider":"external","tls-cipher-suites":"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"},"extraVolumes":[{"hostPath":"/etc/kubernetes/audit-policy.yaml","mountPath":"/etc/kubernetes/audit-policy.yaml","name":"audit-policy"},{"hostPath":"/var/log/kubernetes","mountPath":"/var/log/kubernetes","name":"audit-logs"}],"timeoutForControlPlane":"8m0s"},"controllerManager":{"extraArgs":{"cloud-provider":"external","tls-cipher-suites":"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"}},"dns":{"imageRepository":"infra-harbor.lab.pcfdemo.net/tkg","imageTag":"v1.8.0_vmware.5","type":"CoreDNS"},"etcd":{"local":{"dataDir":"/var/lib/etcd","extraArgs":{"cipher-suites":"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"},"imageRepository":"infra-harbor.lab.pcfdemo.net/tkg","imageTag":"v3.4.13_vmware.15"}},"imageRepository":"infra-harbor.lab.pcfdemo.net/tkg","networking":{},"scheduler":{"extraArgs":{"tls-cipher-suites":"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"}}},"files":[{"content":"apiVersion: v1\nkind: Pod\nmetadata:\n  creationTimestamp: null\n  name: kube-vip\n  namespace: kube-system\nspec:\n  containers:\n  - args:\n    - start\n    env:\n    - name: vip_arp\n      value: \"true\"\n    - name: vip_leaderelection\n      value: \"true\"\n    - name: address\n      value: 192.168.0.25\n    - name: vip_interface\n      value: eth0\n    - name: vip_leaseduration\n      value: \"30\"\n    - name: vip_renewdeadline\n      value: \"20\"\n    - name: vip_retryperiod\n      value: \"4\"\n    image: infra-harbor.lab.pcfdemo.net/tkg/kube-vip:v0.3.3_vmware.1\n    imagePullPolicy: IfNotPresent\n    name: kube-vip\n    resources: {}\n    securityContext:\n      capabilities:\n        add:\n        - NET_ADMIN\n        - SYS_TIME\n    volumeMounts:\n    - mountPath: /etc/kubernetes/admin.conf\n      name: kubeconfig\n  hostNetwork: true\n  volumes:\n  - hostPath:\n      path: /etc/kubernetes/admin.conf\n      type: FileOrCreate\n    name: kubeconfig\nstatus: {}\n","owner":"root:root","path":"/etc/kubernetes/manifests/kube-vip.yaml"},{"content":"YXBpVmVyc2lvbjogYXVkaXQuazhzLmlvL3YxYmV0YTEKa2luZDogUG9saWN5CnJ1bGVzOgotIGxldmVsOiBOb25lCiAgdXNlcnM6CiAgLSBzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06a3ViZS1wcm94eQogIHZlcmJzOgogIC0gd2F0Y2gKICByZXNvdXJjZXM6CiAgLSBncm91cDogIiIKICAgIHJlc291cmNlczoKICAgIC0gZW5kcG9pbnRzCiAgICAtIHNlcnZpY2VzCiAgICAtIHNlcnZpY2VzL3N0YXR1cwotIGxldmVsOiBOb25lCiAgdXNlckdyb3VwczoKICAtIHN5c3RlbTpub2RlcwogIHZlcmJzOgogIC0gZ2V0CiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6ICIiCiAgICByZXNvdXJjZXM6CiAgICAtIG5vZGVzCiAgICAtIG5vZGVzL3N0YXR1cwotIGxldmVsOiBOb25lCiAgdXNlcnM6CiAgLSBzeXN0ZW06a3ViZS1jb250cm9sbGVyLW1hbmFnZXIKICAtIHN5c3RlbTprdWJlLXNjaGVkdWxlcgogIC0gc3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmVuZHBvaW50LWNvbnRyb2xsZXIKICB2ZXJiczoKICAtIGdldAogIC0gdXBkYXRlCiAgbmFtZXNwYWNlczoKICAtIGt1YmUtc3lzdGVtCiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6ICIiCiAgICByZXNvdXJjZXM6CiAgICAtIGVuZHBvaW50cwotIGxldmVsOiBOb25lCiAgdXNlcnM6CiAgLSBzeXN0ZW06YXBpc2VydmVyCiAgdmVyYnM6CiAgLSBnZXQKICByZXNvdXJjZXM6CiAgLSBncm91cDogIiIKICAgIHJlc291cmNlczoKICAgIC0gbmFtZXNwYWNlcwogICAgLSBuYW1lc3BhY2VzL3N0YXR1cwogICAgLSBuYW1lc3BhY2VzL2ZpbmFsaXplCi0gbGV2ZWw6IE5vbmUKICB1c2VyczoKICAtIHN5c3RlbTprdWJlLWNvbnRyb2xsZXItbWFuYWdlcgogIHZlcmJzOgogIC0gZ2V0CiAgLSBsaXN0CiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6IG1ldHJpY3MuazhzLmlvCi0gbGV2ZWw6IE5vbmUKICBub25SZXNvdXJjZVVSTHM6CiAgLSAvaGVhbHRoeioKICAtIC92ZXJzaW9uCiAgLSAvc3dhZ2dlcioKLSBsZXZlbDogTm9uZQogIHJlc291cmNlczoKICAtIGdyb3VwOiAiIgogICAgcmVzb3VyY2VzOgogICAgLSBldmVudHMKLSBsZXZlbDogTm9uZQogIHVzZXJHcm91cHM6CiAgLSBzeXN0ZW06c2VydmljZWFjY291bnRzOnZtd2FyZS1zeXN0ZW0tdG1jCiAgdmVyYnM6CiAgLSBnZXQKICAtIGxpc3QKICAtIHdhdGNoCi0gbGV2ZWw6IE5vbmUKICB1c2VyczoKICAtIHN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTpnZW5lcmljLWdhcmJhZ2UtY29sbGVjdG9yCiAgdmVyYnM6CiAgLSBnZXQKICAtIGxpc3QKICAtIHdhdGNoCi0gbGV2ZWw6IFJlcXVlc3QKICB1c2VyR3JvdXBzOgogIC0gc3lzdGVtOm5vZGVzCiAgdmVyYnM6CiAgLSB1cGRhdGUKICAtIHBhdGNoCiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6ICIiCiAgICByZXNvdXJjZXM6CiAgICAtIG5vZGVzL3N0YXR1cwogICAgLSBwb2RzL3N0YXR1cwogIG9taXRTdGFnZXM6CiAgLSBSZXF1ZXN0UmVjZWl2ZWQKLSBsZXZlbDogUmVxdWVzdAogIHVzZXJzOgogIC0gc3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOm5hbWVzcGFjZS1jb250cm9sbGVyCiAgdmVyYnM6CiAgLSBkZWxldGVjb2xsZWN0aW9uCiAgb21pdFN0YWdlczoKICAtIFJlcXVlc3RSZWNlaXZlZAotIGxldmVsOiBNZXRhZGF0YQogIHJlc291cmNlczoKICAtIGdyb3VwOiAiIgogICAgcmVzb3VyY2VzOgogICAgLSBzZWNyZXRzCiAgICAtIGNvbmZpZ21hcHMKICAtIGdyb3VwOiBhdXRoZW50aWNhdGlvbi5rOHMuaW8KICAgIHJlc291cmNlczoKICAgIC0gdG9rZW5yZXZpZXdzCiAgb21pdFN0YWdlczoKICAtIFJlcXVlc3RSZWNlaXZlZAotIGxldmVsOiBSZXF1ZXN0CiAgdmVyYnM6CiAgLSBnZXQKICAtIGxpc3QKICAtIHdhdGNoCiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6ICIiCiAgLSBncm91cDogYWRtaXNzaW9ucmVnaXN0cmF0aW9uLms4cy5pbwogIC0gZ3JvdXA6IGFwaWV4dGVuc2lvbnMuazhzLmlvCiAgLSBncm91cDogYXBpcmVnaXN0cmF0aW9uLms4cy5pbwogIC0gZ3JvdXA6IGFwcHMKICAtIGdyb3VwOiBhdXRoZW50aWNhdGlvbi5rOHMuaW8KICAtIGdyb3VwOiBhdXRob3JpemF0aW9uLms4cy5pbwogIC0gZ3JvdXA6IGF1dG9zY2FsaW5nCiAgLSBncm91cDogYmF0Y2gKICAtIGdyb3VwOiBjZXJ0aWZpY2F0ZXMuazhzLmlvCiAgLSBncm91cDogZXh0ZW5zaW9ucwogIC0gZ3JvdXA6IG1ldHJpY3MuazhzLmlvCiAgLSBncm91cDogbmV0d29ya2luZy5rOHMuaW8KICAtIGdyb3VwOiBwb2xpY3kKICAtIGdyb3VwOiByYmFjLmF1dGhvcml6YXRpb24uazhzLmlvCiAgLSBncm91cDogc2V0dGluZ3MuazhzLmlvCiAgLSBncm91cDogc3RvcmFnZS5rOHMuaW8KICBvbWl0U3RhZ2VzOgogIC0gUmVxdWVzdFJlY2VpdmVkCi0gbGV2ZWw6IFJlcXVlc3RSZXNwb25zZQogIHJlc291cmNlczoKICAtIGdyb3VwOiAiIgogIC0gZ3JvdXA6IGFkbWlzc2lvbnJlZ2lzdHJhdGlvbi5rOHMuaW8KICAtIGdyb3VwOiBhcGlleHRlbnNpb25zLms4cy5pbwogIC0gZ3JvdXA6IGFwaXJlZ2lzdHJhdGlvbi5rOHMuaW8KICAtIGdyb3VwOiBhcHBzCiAgLSBncm91cDogYXV0aGVudGljYXRpb24uazhzLmlvCiAgLSBncm91cDogYXV0aG9yaXphdGlvbi5rOHMuaW8KICAtIGdyb3VwOiBhdXRvc2NhbGluZwogIC0gZ3JvdXA6IGJhdGNoCiAgLSBncm91cDogY2VydGlmaWNhdGVzLms4cy5pbwogIC0gZ3JvdXA6IGV4dGVuc2lvbnMKICAtIGdyb3VwOiBtZXRyaWNzLms4cy5pbwogIC0gZ3JvdXA6IG5ldHdvcmtpbmcuazhzLmlvCiAgLSBncm91cDogcG9saWN5CiAgLSBncm91cDogcmJhYy5hdXRob3JpemF0aW9uLms4cy5pbwogIC0gZ3JvdXA6IHNldHRpbmdzLms4cy5pbwogIC0gZ3JvdXA6IHN0b3JhZ2UuazhzLmlvCiAgb21pdFN0YWdlczoKICAtIFJlcXVlc3RSZWNlaXZlZAotIGxldmVsOiBNZXRhZGF0YQogIG9taXRTdGFnZXM6CiAgLSBSZXF1ZXN0UmVjZWl2ZWQK","encoding":"base64","owner":"root:root","path":"/etc/kubernetes/audit-policy.yaml","permissions":"0600"},{"content":"LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUR1VENDQXFHZ0F3SUJBZ0lVQlJiTnM0bSs2UVZSdWEzS2ZqZHo3TzhDS3d3d0RRWUpLb1pJaHZjTkFRRUwKQlFBd09qRUxNQWtHQTFVRUJoTUNTMUl4RFRBTEJnTlZCQW9NQkUxNVEwRXhIREFhQmdOVkJBTU1FM0p2YjNRZwpVMlZzWmlCVGFXZHVaV1FnUTBFd0hoY05NakV4TURJeU1USXdPVEF6V2hjTk16RXhNREl3TVRJd09UQXpXakJECk1Rc3dDUVlEVlFRR0V3SkxVakVPTUF3R0ExVUVDZ3dGVFhsUGNtY3hEakFNQmdOVkJBc01CVTE1VDNKbk1SUXcKRWdZRFZRUUREQXR3WTJaa1pXMXZMbTVsZERDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQwpnZ0VCQUtvQTRnT1EySHFobVcvaGhZZjRXTUJrcUMvV3dzcVRVRVQvakxSZjkxa2VsSk5zY2UwYnFNeTlWLzdDCnJNRG5BcHIxUnloYzg3anhjbURtUGtFblNDcjg3cnc4eXdhWElnWDJjVGMxNitBZmJqTG5sK0ZJR3NldFlrOGIKMVgrTjJGTEMvNzd4RmJUVEdLYzE4aVYrSmFxd0Vta2JCWDAwNDJHZkI5Q3ZiYUtvajRwTlFqY2puOFN1akdSaAo3VmpBcEpzUEwySU5jM3RYc3l4cVBoZWNwUE5GWXU4ZEVuOFVidjRmbU9lNVB5NFRoWkY4cERIcXJwUFBqQnhmCjhRSlk4cCtXa2NZZWFRaGJKMGZsc3VNVGhMVTVEaTN3d3ZDNnBia1ZTZk02OE5KOXR3Q3dWZVlIRzljTTJZYnAKMlUwWElZVEtkZjd6T29NZ2RJdVdGZUFOeHFFQ0F3RUFBYU9CclRDQnFqQUpCZ05WSFJNRUFqQUFNQjBHQTFVZApEZ1FXQkJTbUtYcXJYbnB1WVl2NHkvTlFQTnZIN1JLN0JUQUxCZ05WSFE4RUJBTUNCYUF3SFFZRFZSMGxCQll3CkZBWUlLd1lCQlFVSEF3RUdDQ3NHQVFVRkJ3TUNNRklHQTFVZEVRUkxNRW1DQ2lvdWRHVnpkQzVqYjIyQ0VTb3UKYkdGaUxuQmpabVJsYlc4dWJtVjBnaHhwYm1aeVlTMW9ZWEppYjNJdWJHRmlMbkJqWm1SbGJXOHVibVYwaHdSLwpBQUFCaHdUQXFBQUZNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUJpZTAwR0VpQ2M1c1BreVl3N0hReFV1cjFvClBVbGFTb3c3d080YW10ODNOYzJDQ0VLQVlIdExqVXZ6eTBiMStBWXVyTE1wVFRkVVE0VmQwb3ZpUGJ1Y2tYdXgKOXM4NlJyNW9jdzVpUzQ0TmtLRTU5SVhwUmQyOWdnUG5UcUZaKzVhcHNqY2xoaEhVL0ZEOVJQcWxNeUxrNXZsTQplTENXSjNDVExibzlOZllkZGdHNG9JcmFsSVpsK2lJQ2hZMHcvWDJIZVBVbFJaY0xEdTU4MVhqeFpWQnc2VmNNCnN4UDVqWU9qVm1qRmJNRXFWNjhDN25vV1REUTBZUWphQk9rdG9kOFQzbzVabFowV2tqYjZIa2dBdkQxbnNSbTMKQ2drZVlXZW44OEpKUU94V1djaEtqMUZCc3pkVkN4aEZBWEtoUUUwZWVXcG5lbVdWazZDWllNUy8zWUdrCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K","encoding":"base64","path":"/etc/containerd/infra-harbor.lab.pcfdemo.net.crt","permissions":"0444"},{"content":"-----BEGIN CERTIFICATE-----\nMIIDtDCCApygAwIBAgIUBRbNs4m+6QVRua3Kfjdz7O8CKw0wDQYJKoZIhvcNAQEL\nBQAwOjELMAkGA1UEBhMCS1IxDTALBgNVBAoMBE15Q0ExHDAaBgNVBAMME3Jvb3Qg\nU2VsZiBTaWduZWQgQ0EwHhcNMjExMTA4MDY1OTUwWhcNMzExMTA2MDY1OTUwWjBD\nMQswCQYDVQQGEwJLUjEOMAwGA1UECgwFTXlPcmcxDjAMBgNVBAsMBU15T3JnMRQw\nEgYDVQQDDAtwY2ZkZW1vLm5ldDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC\nggEBAMXzQg+fIj0fc/WmExiv9JCbQpn7d4Uq/IWpm5sN8p0fippza4271HLEUFpB\n0rGtcHEQfuWgqLX/YMODbnnd47/fzpa7010ZpfbUakfLgsOCk3GuiNMERTaQjQ3L\nE+EsRfyX2M49uSc3vZR5mQbWNRmNtnyKqIpOV5911ZfmmJvGRlzOEqpHTP8KUz27\nPC8OoLmOXTclEFlpgZfptTgpVP+Y25u/Zfwz542Wz+H6DDJ5Uwy1EEm0WAnpWTtj\nPUr6BIj9/qr7UW9xvLO90usn6pdEGFj5cYMXuUyoFqEvZ8AdHfQ6hJybnonbkwRx\nkZeG/AtYhkiRY7JsHEZHB5tN9XUCAwEAAaOBqDCBpTAJBgNVHRMEAjAAMB0GA1Ud\nDgQWBBTC43www3xuyy9BK0epX1To1rNdgTALBgNVHQ8EBAMCBaAwHQYDVR0lBBYw\nFAYIKwYBBQUHAwEGCCsGAQUFBwMCME0GA1UdEQRGMESCCioudGVzdC5jb22CESou\nbGFiLnBjZmRlbW8ubmV0ghdnaXRsYWIyLmxhYi5wY2ZkZW1vLm5ldIcEfwAAAYcE\nwKgABjANBgkqhkiG9w0BAQsFAAOCAQEAoWOOcvXS/nbXMvOQGiUSow0BGPAI+7fH\nBdMtnKtUD6Y6ppAWIZuxlUJY20dCf6WjXC6EP0bWPqVswpjoC6X5uCs4fsg71w7J\nnl+S231Ly8IQZwROc0w/XfROu44VGyZhpgaT1Ge+6vp0lKVj5aH+VwpUolIpZ4wh\n3gG6Pe42z0EbyyqNPT4mCNocq2dELzCUp60raAohMoF1+v45JfA9yvmwB++ufa7Q\nMnQ/tlGhcdih0VgKQ5B+XHAdmOEgZMUS33gxOOX9vOmbS8U5VRh+MZE/MiVGe9S5\nH5gBczpKPL74ZP1EauP1Lgv82Hjc+nNbJKX7UX/V8R+3cOLIaOjIKg==\n-----END CERTIFICATE-----\n","owner":"root:root","path":"/etc/ssl/certs/tkg-custom-ca.pem","permissions":"0644"}],"initConfiguration":{"localAPIEndpoint":{"advertiseAddress":"","bindPort":0},"nodeRegistration":{"criSocket":"/var/run/containerd/containerd.sock","kubeletExtraArgs":{"cloud-provider":"external","tls-cipher-suites":"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"},"name":"{{ ds.meta_data.hostname }}"}},"joinConfiguration":{"discovery":{},"nodeRegistration":{"criSocket":"/var/run/containerd/containerd.sock","kubeletExtraArgs":{"cloud-provider":"external","tls-cipher-suites":"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"},"name":"{{ ds.meta_data.hostname }}"}},"preKubeadmCommands":["hostname \"{{ ds.meta_data.hostname }}\"","echo \"::1         ipv6-localhost ipv6-loopback\" \u003e/etc/hosts","echo \"127.0.0.1   localhost\" \u003e\u003e/etc/hosts","echo \"127.0.0.1   {{ ds.meta_data.hostname }}\" \u003e\u003e/etc/hosts","echo \"{{ ds.meta_data.hostname }}\" \u003e/etc/hostname","echo '[plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"infra-harbor.lab.pcfdemo.net\".tls]' \u003e\u003e /etc/containerd/config.toml","echo '  ca_file = \"/etc/containerd/infra-harbor.lab.pcfdemo.net.crt\"' \u003e\u003e /etc/containerd/config.toml","systemctl restart containerd","sed -i 's|\".*/pause|\"infra-harbor.lab.pcfdemo.net/tkg/pause|' /etc/containerd/config.toml","systemctl restart containerd","echo \"test\"","echo \"test\"","echo \"test\"","! which rehash_ca_certificates.sh 2\u003e/dev/null || rehash_ca_certificates.sh","! which update-ca-certificates 2\u003e/dev/null || (mv /etc/ssl/certs/tkg-custom-ca.pem /usr/local/share/ca-certificates/tkg-custom-ca.crt \u0026\u0026 update-ca-certificates)","echo \"test\""],"useExperimentalRetryJoin":true,"users":[{"name":"capv","sshAuthorizedKeys":["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDe9NJNp/GyCcFBp07uvHqj48ssdteNjP5a6k/OLDUtN2YW9vcimiw14ScqUxelheFpK9uC6qPmS3EYIO+mT82s9GV+HjAf/odVbYIOXzDaG/gqPhhOWDrKhdpB+Jh53RNruspmrc08YyIae5UK7/Tv5aNe1gBgDXPnWcgOa0Qml7GjjgyGNQ5hZVvavJfPKVdD51A6d25pVLcvtSumxARE8cy4WmRad+eNG1p8RayLgy8FL42BAeZmWAmnhU8fIshAVgTQA/Bl2X4Gz8RdzsPogoNnEezNG4ulRyxubKCjWL6UoKVdzWl673hdD8ymB0i9UWM5qRxDuHKBWN7xIYx454tAPfZrERBC3CaxJseHAw3Di4sLyM5Qpx/vrqiqUEB22wgJDDPxdYJX3WhxzMyw3oZGi3cXwzK4dxqzWizVUfN0O+0yjr1VaoRuI/DZD8sRuUaDPTYnXd5AyvZoVxEGWcFvnL/iGLv4AzLZHmHfE5L6UO8LLcqKWirFQ3KlpGs="],"sudo":"ALL=(ALL) NOPASSWD:ALL"}]},"replicas":1,"rolloutStrategy":{"rollingUpdate":{"maxSurge":1},"type":"RollingUpdate"},"version":"v1.21.2+vmware.1"},"status":{"conditions":[{"lastTransitionTime":"2022-01-30T09:28:43Z","status":"True","type":"Ready"},{"lastTransitionTime":"2022-01-19T10:46:19Z","status":"True","type":"Available"},{"lastTransitionTime":"2022-01-19T10:44:43Z","status":"True","type":"CertificatesAvailable"},{"lastTransitionTime":"2022-01-30T09:27:16Z","status":"True","type":"ControlPlaneComponentsHealthy"},{"lastTransitionTime":"2022-01-30T09:28:59Z","status":"True","type":"EtcdClusterHealthyCondition"},{"lastTransitionTime":"2022-01-30T09:26:53Z","status":"True","type":"MachinesReady"},{"lastTransitionTime":"2022-01-30T09:28:43Z","status":"True","type":"MachinesSpecUpToDate"},{"lastTransitionTime":"2022-01-30T09:28:43Z","status":"True","type":"Resized"}],"initialized":true,"observedGeneration":5,"ready":true,"readyReplicas":1,"replicas":1,"selector":"cluster.x-k8s.io/cluster-name=tkc-noavi,cluster.x-k8s.io/control-plane","updatedReplicas":1}}
+  creationTimestamp: "2022-01-19T10:44:40Z"
+  finalizers:
+  - kubeadm.controlplane.cluster.x-k8s.io
+  generation: 6
+  labels:
+    cluster.x-k8s.io/cluster-name: tkc-noavi
+  name: tkc-noavi-control-plane
+  namespace: default
+  ownerReferences:
+  - apiVersion: cluster.x-k8s.io/v1alpha3
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: tkc-noavi
+    uid: 95b1defe-5fce-4a5c-b1fe-3cc47e225f01
+  resourceVersion: "921689"
+  uid: 6b7b1eb4-1a17-4351-af2f-aa7cb2de3b56
+spec:
+  infrastructureTemplate:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+    kind: VSphereMachineTemplate
+    name: tkc-noavi-control-plane
+    namespace: default
+  kubeadmConfigSpec:
+    clusterConfiguration:
+      apiServer:
+        extraArgs:
+          audit-log-maxage: "30"
+          audit-log-maxbackup: "10"
+          audit-log-maxsize: "100"
+          audit-log-path: /var/log/kubernetes/audit.log
+          audit-policy-file: /etc/kubernetes/audit-policy.yaml
+          cloud-provider: external
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        extraVolumes:
+        - hostPath: /etc/kubernetes/audit-policy.yaml
+          mountPath: /etc/kubernetes/audit-policy.yaml
+          name: audit-policy
+        - hostPath: /var/log/kubernetes
+          mountPath: /var/log/kubernetes
+          name: audit-logs
+        timeoutForControlPlane: 8m0s
+      controllerManager:
+        extraArgs:
+          cloud-provider: external
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+      dns:
+        imageRepository: infra-harbor.lab.pcfdemo.net/tkg
+        imageTag: v1.8.0_vmware.5
+        type: CoreDNS
+      etcd:
+        local:
+          dataDir: /var/lib/etcd
+          extraArgs:
+            cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          imageRepository: infra-harbor.lab.pcfdemo.net/tkg
+          imageTag: v3.4.13_vmware.15
+      imageRepository: infra-harbor.lab.pcfdemo.net/tkg
+      networking: {}
+      scheduler:
+        extraArgs:
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    files:
+    - content: |
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          creationTimestamp: null
+          name: kube-vip
+          namespace: kube-system
+        spec:
+          containers:
+          - args:
+            - start
+            env:
+            - name: vip_arp
+              value: "true"
+            - name: vip_leaderelection
+              value: "true"
+            - name: address
+              value: 192.168.0.25
+            - name: vip_interface
+              value: eth0
+            - name: vip_leaseduration
+              value: "30"
+            - name: vip_renewdeadline
+              value: "20"
+            - name: vip_retryperiod
+              value: "4"
+            image: infra-harbor.lab.pcfdemo.net/tkg/kube-vip:v0.3.3_vmware.1
+            imagePullPolicy: IfNotPresent
+            name: kube-vip
+            resources: {}
+            securityContext:
+              capabilities:
+                add:
+                - NET_ADMIN
+                - SYS_TIME
+            volumeMounts:
+            - mountPath: /etc/kubernetes/admin.conf
+              name: kubeconfig
+          hostNetwork: true
+          volumes:
+          - hostPath:
+              path: /etc/kubernetes/admin.conf
+              type: FileOrCreate
+            name: kubeconfig
+        status: {}
+      owner: root:root
+      path: /etc/kubernetes/manifests/kube-vip.yaml
+    - content: YXBpVmVyc2lvbjogYXVkaXQuazhzLmlvL3YxYmV0YTEKa2luZDogUG9saWN5CnJ1bGVzOgotIGxldmVsOiBOb25lCiAgdXNlcnM6CiAgLSBzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06a3ViZS1wcm94eQogIHZlcmJzOgogIC0gd2F0Y2gKICByZXNvdXJjZXM6CiAgLSBncm91cDogIiIKICAgIHJlc291cmNlczoKICAgIC0gZW5kcG9pbnRzCiAgICAtIHNlcnZpY2VzCiAgICAtIHNlcnZpY2VzL3N0YXR1cwotIGxldmVsOiBOb25lCiAgdXNlckdyb3VwczoKICAtIHN5c3RlbTpub2RlcwogIHZlcmJzOgogIC0gZ2V0CiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6ICIiCiAgICByZXNvdXJjZXM6CiAgICAtIG5vZGVzCiAgICAtIG5vZGVzL3N0YXR1cwotIGxldmVsOiBOb25lCiAgdXNlcnM6CiAgLSBzeXN0ZW06a3ViZS1jb250cm9sbGVyLW1hbmFnZXIKICAtIHN5c3RlbTprdWJlLXNjaGVkdWxlcgogIC0gc3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmVuZHBvaW50LWNvbnRyb2xsZXIKICB2ZXJiczoKICAtIGdldAogIC0gdXBkYXRlCiAgbmFtZXNwYWNlczoKICAtIGt1YmUtc3lzdGVtCiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6ICIiCiAgICByZXNvdXJjZXM6CiAgICAtIGVuZHBvaW50cwotIGxldmVsOiBOb25lCiAgdXNlcnM6CiAgLSBzeXN0ZW06YXBpc2VydmVyCiAgdmVyYnM6CiAgLSBnZXQKICByZXNvdXJjZXM6CiAgLSBncm91cDogIiIKICAgIHJlc291cmNlczoKICAgIC0gbmFtZXNwYWNlcwogICAgLSBuYW1lc3BhY2VzL3N0YXR1cwogICAgLSBuYW1lc3BhY2VzL2ZpbmFsaXplCi0gbGV2ZWw6IE5vbmUKICB1c2VyczoKICAtIHN5c3RlbTprdWJlLWNvbnRyb2xsZXItbWFuYWdlcgogIHZlcmJzOgogIC0gZ2V0CiAgLSBsaXN0CiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6IG1ldHJpY3MuazhzLmlvCi0gbGV2ZWw6IE5vbmUKICBub25SZXNvdXJjZVVSTHM6CiAgLSAvaGVhbHRoeioKICAtIC92ZXJzaW9uCiAgLSAvc3dhZ2dlcioKLSBsZXZlbDogTm9uZQogIHJlc291cmNlczoKICAtIGdyb3VwOiAiIgogICAgcmVzb3VyY2VzOgogICAgLSBldmVudHMKLSBsZXZlbDogTm9uZQogIHVzZXJHcm91cHM6CiAgLSBzeXN0ZW06c2VydmljZWFjY291bnRzOnZtd2FyZS1zeXN0ZW0tdG1jCiAgdmVyYnM6CiAgLSBnZXQKICAtIGxpc3QKICAtIHdhdGNoCi0gbGV2ZWw6IE5vbmUKICB1c2VyczoKICAtIHN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTpnZW5lcmljLWdhcmJhZ2UtY29sbGVjdG9yCiAgdmVyYnM6CiAgLSBnZXQKICAtIGxpc3QKICAtIHdhdGNoCi0gbGV2ZWw6IFJlcXVlc3QKICB1c2VyR3JvdXBzOgogIC0gc3lzdGVtOm5vZGVzCiAgdmVyYnM6CiAgLSB1cGRhdGUKICAtIHBhdGNoCiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6ICIiCiAgICByZXNvdXJjZXM6CiAgICAtIG5vZGVzL3N0YXR1cwogICAgLSBwb2RzL3N0YXR1cwogIG9taXRTdGFnZXM6CiAgLSBSZXF1ZXN0UmVjZWl2ZWQKLSBsZXZlbDogUmVxdWVzdAogIHVzZXJzOgogIC0gc3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOm5hbWVzcGFjZS1jb250cm9sbGVyCiAgdmVyYnM6CiAgLSBkZWxldGVjb2xsZWN0aW9uCiAgb21pdFN0YWdlczoKICAtIFJlcXVlc3RSZWNlaXZlZAotIGxldmVsOiBNZXRhZGF0YQogIHJlc291cmNlczoKICAtIGdyb3VwOiAiIgogICAgcmVzb3VyY2VzOgogICAgLSBzZWNyZXRzCiAgICAtIGNvbmZpZ21hcHMKICAtIGdyb3VwOiBhdXRoZW50aWNhdGlvbi5rOHMuaW8KICAgIHJlc291cmNlczoKICAgIC0gdG9rZW5yZXZpZXdzCiAgb21pdFN0YWdlczoKICAtIFJlcXVlc3RSZWNlaXZlZAotIGxldmVsOiBSZXF1ZXN0CiAgdmVyYnM6CiAgLSBnZXQKICAtIGxpc3QKICAtIHdhdGNoCiAgcmVzb3VyY2VzOgogIC0gZ3JvdXA6ICIiCiAgLSBncm91cDogYWRtaXNzaW9ucmVnaXN0cmF0aW9uLms4cy5pbwogIC0gZ3JvdXA6IGFwaWV4dGVuc2lvbnMuazhzLmlvCiAgLSBncm91cDogYXBpcmVnaXN0cmF0aW9uLms4cy5pbwogIC0gZ3JvdXA6IGFwcHMKICAtIGdyb3VwOiBhdXRoZW50aWNhdGlvbi5rOHMuaW8KICAtIGdyb3VwOiBhdXRob3JpemF0aW9uLms4cy5pbwogIC0gZ3JvdXA6IGF1dG9zY2FsaW5nCiAgLSBncm91cDogYmF0Y2gKICAtIGdyb3VwOiBjZXJ0aWZpY2F0ZXMuazhzLmlvCiAgLSBncm91cDogZXh0ZW5zaW9ucwogIC0gZ3JvdXA6IG1ldHJpY3MuazhzLmlvCiAgLSBncm91cDogbmV0d29ya2luZy5rOHMuaW8KICAtIGdyb3VwOiBwb2xpY3kKICAtIGdyb3VwOiByYmFjLmF1dGhvcml6YXRpb24uazhzLmlvCiAgLSBncm91cDogc2V0dGluZ3MuazhzLmlvCiAgLSBncm91cDogc3RvcmFnZS5rOHMuaW8KICBvbWl0U3RhZ2VzOgogIC0gUmVxdWVzdFJlY2VpdmVkCi0gbGV2ZWw6IFJlcXVlc3RSZXNwb25zZQogIHJlc291cmNlczoKICAtIGdyb3VwOiAiIgogIC0gZ3JvdXA6IGFkbWlzc2lvbnJlZ2lzdHJhdGlvbi5rOHMuaW8KICAtIGdyb3VwOiBhcGlleHRlbnNpb25zLms4cy5pbwogIC0gZ3JvdXA6IGFwaXJlZ2lzdHJhdGlvbi5rOHMuaW8KICAtIGdyb3VwOiBhcHBzCiAgLSBncm91cDogYXV0aGVudGljYXRpb24uazhzLmlvCiAgLSBncm91cDogYXV0aG9yaXphdGlvbi5rOHMuaW8KICAtIGdyb3VwOiBhdXRvc2NhbGluZwogIC0gZ3JvdXA6IGJhdGNoCiAgLSBncm91cDogY2VydGlmaWNhdGVzLms4cy5pbwogIC0gZ3JvdXA6IGV4dGVuc2lvbnMKICAtIGdyb3VwOiBtZXRyaWNzLms4cy5pbwogIC0gZ3JvdXA6IG5ldHdvcmtpbmcuazhzLmlvCiAgLSBncm91cDogcG9saWN5CiAgLSBncm91cDogcmJhYy5hdXRob3JpemF0aW9uLms4cy5pbwogIC0gZ3JvdXA6IHNldHRpbmdzLms4cy5pbwogIC0gZ3JvdXA6IHN0b3JhZ2UuazhzLmlvCiAgb21pdFN0YWdlczoKICAtIFJlcXVlc3RSZWNlaXZlZAotIGxldmVsOiBNZXRhZGF0YQogIG9taXRTdGFnZXM6CiAgLSBSZXF1ZXN0UmVjZWl2ZWQK
+      encoding: base64
+      owner: root:root
+      path: /etc/kubernetes/audit-policy.yaml
+      permissions: "0600"
+    - content: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUR1VENDQXFHZ0F3SUJBZ0lVQlJiTnM0bSs2UVZSdWEzS2ZqZHo3TzhDS3d3d0RRWUpLb1pJaHZjTkFRRUwKQlFBd09qRUxNQWtHQTFVRUJoTUNTMUl4RFRBTEJnTlZCQW9NQkUxNVEwRXhIREFhQmdOVkJBTU1FM0p2YjNRZwpVMlZzWmlCVGFXZHVaV1FnUTBFd0hoY05NakV4TURJeU1USXdPVEF6V2hjTk16RXhNREl3TVRJd09UQXpXakJECk1Rc3dDUVlEVlFRR0V3SkxVakVPTUF3R0ExVUVDZ3dGVFhsUGNtY3hEakFNQmdOVkJBc01CVTE1VDNKbk1SUXcKRWdZRFZRUUREQXR3WTJaa1pXMXZMbTVsZERDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQwpnZ0VCQUtvQTRnT1EySHFobVcvaGhZZjRXTUJrcUMvV3dzcVRVRVQvakxSZjkxa2VsSk5zY2UwYnFNeTlWLzdDCnJNRG5BcHIxUnloYzg3anhjbURtUGtFblNDcjg3cnc4eXdhWElnWDJjVGMxNitBZmJqTG5sK0ZJR3NldFlrOGIKMVgrTjJGTEMvNzd4RmJUVEdLYzE4aVYrSmFxd0Vta2JCWDAwNDJHZkI5Q3ZiYUtvajRwTlFqY2puOFN1akdSaAo3VmpBcEpzUEwySU5jM3RYc3l4cVBoZWNwUE5GWXU4ZEVuOFVidjRmbU9lNVB5NFRoWkY4cERIcXJwUFBqQnhmCjhRSlk4cCtXa2NZZWFRaGJKMGZsc3VNVGhMVTVEaTN3d3ZDNnBia1ZTZk02OE5KOXR3Q3dWZVlIRzljTTJZYnAKMlUwWElZVEtkZjd6T29NZ2RJdVdGZUFOeHFFQ0F3RUFBYU9CclRDQnFqQUpCZ05WSFJNRUFqQUFNQjBHQTFVZApEZ1FXQkJTbUtYcXJYbnB1WVl2NHkvTlFQTnZIN1JLN0JUQUxCZ05WSFE4RUJBTUNCYUF3SFFZRFZSMGxCQll3CkZBWUlLd1lCQlFVSEF3RUdDQ3NHQVFVRkJ3TUNNRklHQTFVZEVRUkxNRW1DQ2lvdWRHVnpkQzVqYjIyQ0VTb3UKYkdGaUxuQmpabVJsYlc4dWJtVjBnaHhwYm1aeVlTMW9ZWEppYjNJdWJHRmlMbkJqWm1SbGJXOHVibVYwaHdSLwpBQUFCaHdUQXFBQUZNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUJpZTAwR0VpQ2M1c1BreVl3N0hReFV1cjFvClBVbGFTb3c3d080YW10ODNOYzJDQ0VLQVlIdExqVXZ6eTBiMStBWXVyTE1wVFRkVVE0VmQwb3ZpUGJ1Y2tYdXgKOXM4NlJyNW9jdzVpUzQ0TmtLRTU5SVhwUmQyOWdnUG5UcUZaKzVhcHNqY2xoaEhVL0ZEOVJQcWxNeUxrNXZsTQplTENXSjNDVExibzlOZllkZGdHNG9JcmFsSVpsK2lJQ2hZMHcvWDJIZVBVbFJaY0xEdTU4MVhqeFpWQnc2VmNNCnN4UDVqWU9qVm1qRmJNRXFWNjhDN25vV1REUTBZUWphQk9rdG9kOFQzbzVabFowV2tqYjZIa2dBdkQxbnNSbTMKQ2drZVlXZW44OEpKUU94V1djaEtqMUZCc3pkVkN4aEZBWEtoUUUwZWVXcG5lbVdWazZDWllNUy8zWUdrCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+      encoding: base64
+      path: /etc/containerd/infra-harbor.lab.pcfdemo.net.crt
+      permissions: "0444"
+    - content: |
+        -----BEGIN CERTIFICATE-----
+        MIIDtDCCApygAwIBAgIUBRbNs4m+6QVRua3Kfjdz7O8CKw0wDQYJKoZIhvcNAQEL
+        BQAwOjELMAkGA1UEBhMCS1IxDTALBgNVBAoMBE15Q0ExHDAaBgNVBAMME3Jvb3Qg
+        U2VsZiBTaWduZWQgQ0EwHhcNMjExMTA4MDY1OTUwWhcNMzExMTA2MDY1OTUwWjBD
+        MQswCQYDVQQGEwJLUjEOMAwGA1UECgwFTXlPcmcxDjAMBgNVBAsMBU15T3JnMRQw
+        EgYDVQQDDAtwY2ZkZW1vLm5ldDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+        ggEBAMXzQg+fIj0fc/WmExiv9JCbQpn7d4Uq/IWpm5sN8p0fippza4271HLEUFpB
+        0rGtcHEQfuWgqLX/YMODbnnd47/fzpa7010ZpfbUakfLgsOCk3GuiNMERTaQjQ3L
+        E+EsRfyX2M49uSc3vZR5mQbWNRmNtnyKqIpOV5911ZfmmJvGRlzOEqpHTP8KUz27
+        PC8OoLmOXTclEFlpgZfptTgpVP+Y25u/Zfwz542Wz+H6DDJ5Uwy1EEm0WAnpWTtj
+        PUr6BIj9/qr7UW9xvLO90usn6pdEGFj5cYMXuUyoFqEvZ8AdHfQ6hJybnonbkwRx
+        kZeG/AtYhkiRY7JsHEZHB5tN9XUCAwEAAaOBqDCBpTAJBgNVHRMEAjAAMB0GA1Ud
+        DgQWBBTC43www3xuyy9BK0epX1To1rNdgTALBgNVHQ8EBAMCBaAwHQYDVR0lBBYw
+        FAYIKwYBBQUHAwEGCCsGAQUFBwMCME0GA1UdEQRGMESCCioudGVzdC5jb22CESou
+        bGFiLnBjZmRlbW8ubmV0ghdnaXRsYWIyLmxhYi5wY2ZkZW1vLm5ldIcEfwAAAYcE
+        wKgABjANBgkqhkiG9w0BAQsFAAOCAQEAoWOOcvXS/nbXMvOQGiUSow0BGPAI+7fH
+        BdMtnKtUD6Y6ppAWIZuxlUJY20dCf6WjXC6EP0bWPqVswpjoC6X5uCs4fsg71w7J
+        nl+S231Ly8IQZwROc0w/XfROu44VGyZhpgaT1Ge+6vp0lKVj5aH+VwpUolIpZ4wh
+        3gG6Pe42z0EbyyqNPT4mCNocq2dELzCUp60raAohMoF1+v45JfA9yvmwB++ufa7Q
+        MnQ/tlGhcdih0VgKQ5B+XHAdmOEgZMUS33gxOOX9vOmbS8U5VRh+MZE/MiVGe9S5
+        H5gBczpKPL74ZP1EauP1Lgv82Hjc+nNbJKX7UX/V8R+3cOLIaOjIKg==
+        -----END CERTIFICATE-----
+      owner: root:root
+      path: /etc/ssl/certs/tkg-custom-ca.pem
+      permissions: "0644"
+    initConfiguration:
+      localAPIEndpoint:
+        advertiseAddress: ""
+        bindPort: 0
+      nodeRegistration:
+        criSocket: /var/run/containerd/containerd.sock
+        kubeletExtraArgs:
+          cloud-provider: external
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        name: '{{ ds.meta_data.hostname }}'
+    joinConfiguration:
+      discovery: {}
+      nodeRegistration:
+        criSocket: /var/run/containerd/containerd.sock
+        kubeletExtraArgs:
+          cloud-provider: external
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        name: '{{ ds.meta_data.hostname }}'
+    preKubeadmCommands:
+    - hostname "{{ ds.meta_data.hostname }}"
+    - echo "::1         ipv6-localhost ipv6-loopback" >/etc/hosts
+    - echo "127.0.0.1   localhost" >>/etc/hosts
+    - echo "127.0.0.1   {{ ds.meta_data.hostname }}" >>/etc/hosts
+    - echo "{{ ds.meta_data.hostname }}" >/etc/hostname
+    - echo '[plugins."io.containerd.grpc.v1.cri".registry.configs."infra-harbor.lab.pcfdemo.net".tls]'
+      >> /etc/containerd/config.toml
+    - echo '  ca_file = "/etc/containerd/infra-harbor.lab.pcfdemo.net.crt"' >> /etc/containerd/config.toml
+    - systemctl restart containerd
+    - sed -i 's|".*/pause|"infra-harbor.lab.pcfdemo.net/tkg/pause|' /etc/containerd/config.toml
+    - systemctl restart containerd
+    - echo "test"
+    - echo "test"
+    - echo "test"
+    - '! which rehash_ca_certificates.sh 2>/dev/null || rehash_ca_certificates.sh'
+    - '! which update-ca-certificates 2>/dev/null || (mv /etc/ssl/certs/tkg-custom-ca.pem
+      /usr/local/share/ca-certificates/tkg-custom-ca.crt && update-ca-certificates)'
+    - echo "test"
+    useExperimentalRetryJoin: true
+    users:
+    - name: capv
+      sshAuthorizedKeys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDe9NJNp/GyCcFBp07uvHqj48ssdteNjP5a6k/OLDUtN2YW9vcimiw14ScqUxelheFpK9uC6qPmS3EYIO+mT82s9GV+HjAf/odVbYIOXzDaG/gqPhhOWDrKhdpB+Jh53RNruspmrc08YyIae5UK7/Tv5aNe1gBgDXPnWcgOa0Qml7GjjgyGNQ5hZVvavJfPKVdD51A6d25pVLcvtSumxARE8cy4WmRad+eNG1p8RayLgy8FL42BAeZmWAmnhU8fIshAVgTQA/Bl2X4Gz8RdzsPogoNnEezNG4ulRyxubKCjWL6UoKVdzWl673hdD8ymB0i9UWM5qRxDuHKBWN7xIYx454tAPfZrERBC3CaxJseHAw3Di4sLyM5Qpx/vrqiqUEB22wgJDDPxdYJX3WhxzMyw3oZGi3cXwzK4dxqzWizVUfN0O+0yjr1VaoRuI/DZD8sRuUaDPTYnXd5AyvZoVxEGWcFvnL/iGLv4AzLZHmHfE5L6UO8LLcqKWirFQ3KlpGs=
+      sudo: ALL=(ALL) NOPASSWD:ALL
+  replicas: 1
+  rolloutStrategy:
+    rollingUpdate:
+      maxSurge: 1
+    type: RollingUpdate
+  version: v1.21.2+vmware.1
+status:
+  conditions:
+  - lastTransitionTime: "2022-01-30T09:28:43Z"
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2022-01-19T10:46:19Z"
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2022-01-19T10:44:43Z"
+    status: "True"
+    type: CertificatesAvailable
+  - lastTransitionTime: "2022-01-30T09:27:16Z"
+    status: "True"
+    type: ControlPlaneComponentsHealthy
+  - lastTransitionTime: "2022-01-30T09:28:59Z"
+    status: "True"
+    type: EtcdClusterHealthyCondition
+  - lastTransitionTime: "2022-01-30T09:26:53Z"
+    status: "True"
+    type: MachinesReady
+  - lastTransitionTime: "2022-01-30T09:28:43Z"
+    status: "True"
+    type: MachinesSpecUpToDate
+  - lastTransitionTime: "2022-01-30T09:28:43Z"
+    status: "True"
+    type: Resized
+  initialized: true
+  observedGeneration: 6
+  ready: true
+  readyReplicas: 1
+  replicas: 1
+  selector: cluster.x-k8s.io/cluster-name=tkc-noavi,cluster.x-k8s.io/control-plane
+  updatedReplicas: 1
