@@ -28,6 +28,7 @@ curl -k https://VCENTER_URL/api/session -X DELETE -H 'vmware-api-session-id: $SE
 
 
 ### wcp health
+Developer Center> API Explorer> Select API: appliance
 
 ```
 https://VCENTER_URL/rest/appliance/vmon/service/wcp -H 'vmware-api-session-id: $SESSIONID' -k
@@ -42,3 +43,4 @@ https://VCENTER_URL/rest/appliance/vmon/service/wcp -H 'vmware-api-session-id: $
     }
 }
 ```
+https://developer.vmware.com/apis/vsphere-automation/v7.0U2-deprecated/appliance/rest/appliance/vmon/service/service/get/
