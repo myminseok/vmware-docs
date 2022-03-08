@@ -23,7 +23,22 @@ https://developer.vmware.com/apis/vsphere-automation/latest/vcenter/api/vcenter/
 
 ### delete vcenter api session
 ```
-curl -k https://kitkat-vc.eng.vmware.com/api/session -X DELETE -H 'vmware-api-session-id: $SESSIONID' -kv
+curl -k https://VCENTER_URL/api/session -X DELETE -H 'vmware-api-session-id: $SESSIONID' -kv
 ```
 
 
+### wcp health
+
+```
+https://VCENTER_URL/rest/appliance/vmon/service/wcp -H 'vmware-api-session-id: $SESSIONID' -k
+{
+    "value": {
+        "name_key": "cis.wcp.ServiceName",
+        "startup_type": "AUTOMATIC",
+        "health_messages": [],
+        "health": "HEALTHY",
+        "description_key": "cis.wcp.ServiceDescription",
+        "state": "STARTED"
+    }
+}
+```
