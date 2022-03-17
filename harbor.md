@@ -1,11 +1,21 @@
-## replication harbor api 
-
+## docker api
+https://docs.docker.com/registry/spec/api/
 ```
 export TOKEN=$(echo -n 'admin:VMware1!' | base64)
 
 
 curl -k -X 'GET' -H "authorization: Basic $TOKEN"  -H 'accept: application/json' 'https://harbor1.haas-488.pez.vmware.com/v2/_catalog'
 {"repositories":["test/echoserver","test/echoserver2","test/nginx"]}
+
+```
+
+
+
+
+## replication harbor api 
+
+```
+export TOKEN=$(echo -n 'admin:VMware1!' | base64)
 
 
 curl -k -X 'GET' -H "authorization: Basic $TOKEN"  -H 'accept: application/json' \
