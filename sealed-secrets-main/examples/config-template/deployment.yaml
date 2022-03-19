@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example
+spec:
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+      # This is an example application that assumes a complex configuration file in /config/myconfig.json.
+      # The JSON format here is just an example; any textual file format would work.
+      - name: app
+        image: bitnami/minideb:buster
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+        command: ["sh", "-c"]
+        args:
+        - |
+         echo Your app will get this config file:
+         cat /config/myconfig.json
+         # dummy application
+         sleep 100000h
+      volumes:
+      - name: config-volume
+        secret:
+          secretName: example
