@@ -48,10 +48,12 @@ https://developer.vmware.com/apis/vsphere-automation/v7.0U2-deprecated/appliance
 
 
 ### rotate scp password
+https://developer.vmware.com/apis/vsphere-automation/latest/vcenter/api/vcenter/namespace-management/clusters/clusteractionrotate_password/post/
+
 ```
 export CLUSTER=domain-c33011 # Cluster comes from vcenter url with `ClusterComputeResource` key. https://VCENTERIP /ui/app/cluster;nav=h/urn:vmomi:ClusterComputeResource:domain-c33011:29502699-b2e7-4a8c-9b14-73b809e3768e/configure/ha
 
 curl  -X POST  -H "vmware-api-session-id: $SESSIONID" "https://$VCENTER_URL/api/vcenter/namespace-management/clusters/$CLUSTER?action=rotate_password" -k
 ```
--  https://developer.vmware.com/apis/vsphere-automation/latest/vcenter/api/vcenter/namespace-management/clusters/clusteractionrotate_password/post/
-- vcenter UI> developer center> API explorer > vcenter > namespace_management/clusters 
+vcenter UI> developer center> API explorer > vcenter > namespace_management/clusters 
+
