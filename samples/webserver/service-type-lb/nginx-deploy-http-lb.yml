@@ -1,6 +1,6 @@
 
 
-#k create secret docker-registry harbor-registry-secret --docker-server=10.213.70.67 --docker-username=kminseok@vsphere.local --docker-password=VMware1! -n kminseok -o yaml
+# kubectl create secret docker-registry harbor-registry-secret --docker-server=10.213.70.67 --docker-username=kminseok@vsphere.local --docker-password=VMware1! -n kminseok -o yaml
 apiVersion: v1
 data:
   .dockerconfigjson: eyJhdXRocyI6eyIxMC4yMTMuNzAuNjciOnsidXNlcm5hbWUiOiJrbWluc2Vva0B2c3BoZXJlLmxvY2FsIiwicGFzc3dvcmQiOiJWTXdhcmUxISIsImF1dGgiOiJhMjFwYm5ObGIydEFkbk53YUdWeVpTNXNiMk5oYkRwV1RYZGhjbVV4SVE9PSJ9fX0=
