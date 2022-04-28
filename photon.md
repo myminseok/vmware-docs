@@ -43,7 +43,7 @@ EOF
 ```sh
 chmod 644 /etc/systemd/network/10-static-en.network
 
-mv /etc/systemd/network/10-id0.network /etc/systemd/network/10-id0.network.orig
+mv /etc/systemd/network/10-cloud-init-id0.network /etc/systemd/network/10-cloud-init-id0.network.orig
 ```
 ```sh
 systemctl restart systemd-networkd
