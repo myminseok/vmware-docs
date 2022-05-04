@@ -1,0 +1,12 @@
+- default: <nil>
+  description: |
+    Args passed via command-line to multus-cni
+    Below items are examples same as upstream settings
+    For more guide, please refer to
+    https://github.com/k8snetworkplumbingwg/multus-cni/tree/master/docs
+  key: daemonset.args
+  type: array
+- default: kube-system
+  description: Namespace where multus-cni daemonset will be deployed.
+  key: namespace
+  type: string

@@ -1,0 +1,11 @@
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+images:
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/k8snetworkplumbingwg/multus-cni:v3.7.1
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: v3.7.1_vmware.2
+          url: projects.registry.vmware.com/tkg/multus-cni:v3.7.1_vmware.2
+  image: infra-harbor.lab.pcfdemo.net/tkg-1.5/packages/standard/repo@sha256:71a2cc823d548e74daec1b0436f62e402d1b1b228010aac318f912102166bdf8
+kind: ImagesLock

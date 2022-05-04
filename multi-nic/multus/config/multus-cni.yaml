@@ -1,0 +1,15 @@
+#! Load ytt libs
+#@ load("@ytt:data", "data")
+#@ load("@ytt:library", "library")
+#@ load("@ytt:template", "template")
+
+#! export vendored multuscni bundle as a var
+#@ multus_cni_lib = library.get("bundle/config")
+
+#! define a map for values to be passed to vendored multuscni lib
+#@ def multus_cni_values():
+#@   return data.values or {}
+#@ end
+
+#! render yaml from vendored lib with data values
+--- #@ template.replace(multus_cni_lib.with_data_values(multus_cni_values()).eval())

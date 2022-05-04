@@ -1,0 +1,11 @@
+#@data/values
+---
+
+namespace: kube-system
+
+#! DaemonSet related configuration
+daemonset:
+  #! Refer to https://github.com/k8snetworkplumbingwg/multus-cni/tree/master/images#entrypointsh-parameters
+  args:
+    - "--multus-conf-file=auto"
+    - "--cni-version=0.3.1"

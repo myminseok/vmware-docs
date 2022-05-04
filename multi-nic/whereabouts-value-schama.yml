@@ -1,0 +1,33 @@
+- default: 100m
+  description: CronJob cpu request.
+  key: ip_reconciler.config.resources.request.cpu
+  type: string
+- default: 50Mi
+  description: CronJob memory request.
+  key: ip_reconciler.config.resources.request.memory
+  type: string
+- default: '*/5 * * * *'
+  description: CronJob schedule.
+  key: ip_reconciler.config.schedule
+  type: string
+- default: kube-system
+  description: Namespace where whereabouts daemonset and ip-reconciler cronjob will
+    be deployed.
+  key: namespace
+  type: string
+- default: 100m
+  description: Daemonset cpu limits.
+  key: whereabouts.config.resources.limits.cpu
+  type: string
+- default: 50Mi
+  description: Daemonset memory limits.
+  key: whereabouts.config.resources.limits.memory
+  type: string
+- default: 100m
+  description: Daemonset cpu request.
+  key: whereabouts.config.resources.request.cpu
+  type: string
+- default: 50Mi
+  description: Daemonset memory request.
+  key: whereabouts.config.resources.request.memory
+  type: string
