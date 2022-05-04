@@ -9,7 +9,8 @@ multi NIC is required on following scenarios.
 
 
 
-## Multux CN type and IP Address Management (IPAM) testing results
+## Testing results on Multux CNI type and IP Address Management (IPAM) 
+only `ipvlan cni type + whereabouts ipam type` combination was useful from this test.
 1. macvlan cni type + host-local ipam type => host-local only knows how to assign IPs to pods on the same node. the pod on different worker node might have the same ip from the ipam pool. pod routable within the same worker node only.
 2. ipvlan cni type + host-local ipam type => the same above.
 3. ipvlan cni type + whereabouts ipam type =>  [wehreabouts](https://github.com/vmware-tanzu/community-edition/tree/main/addons/packages/whereabouts/0.5.1) can assigns IP addresses cluster-wide.. routable between any pod on other worker node in the k8s cluster. please note that whereabouts experimental as of writing.
