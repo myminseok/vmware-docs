@@ -1,16 +1,16 @@
 # Assigning multiple NICs on k8s pod on TKGm
-this has been test on TKC1.5.2 by following official doc [Implement Multiple Pod Network Interfaces with Multus
+This has been test on TKC1.5.2 by following official doc [Implement Multiple Pod Network Interfaces with Multus
 ](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-packages-cni-multus.html)
 
 ## Scenarios
-multi NIC is required on following scenarios.
+Multi NIC is required on following scenarios.
 1. outbound access from pod in k8s worker node to external resources such as DB, Storage, NFS on  external network which is outside of k8s worker node network.
 2. due to security reason or reguration, pod to pod communcation inside of k8s cluster with isolated network might be required.
 
 
 
 ## Testing results on Multux CNI type and IP Address Management (IPAM) 
-only `ipvlan cni type + whereabouts ipam type` combination was useful from this test.
+Only `ipvlan cni type + whereabouts ipam type` combination was useful from this test.
 1. macvlan cni type + host-local ipam type => host-local only knows how to assign IPs to pods on the same node. the pod on different worker node might have the same ip from the ipam pool. pod routable within the same worker node only.
 2. ipvlan cni type + host-local ipam type => the same above.
 3. ipvlan cni type + whereabouts ipam type =>  [wehreabouts](https://github.com/vmware-tanzu/community-edition/tree/main/addons/packages/whereabouts/0.5.1) can assigns IP addresses cluster-wide.. routable between any pod on other worker node in the k8s cluster. please note that whereabouts experimental as of writing.
@@ -18,7 +18,7 @@ only `ipvlan cni type + whereabouts ipam type` combination was useful from this 
 
 ## Setting up 
 1. Prepare TKC wit multiple NICs on worker node.
-create [TKC manifest file](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-tanzu-k8s-clusters-deploy.html#manifest)
+Create [TKC manifest file](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-tanzu-k8s-clusters-deploy.html#manifest)
 ```
 tanzu cluster create my-cluster --file my-cluster-config.yaml --dry-run > my-cluster-manifest.yaml
 ```
