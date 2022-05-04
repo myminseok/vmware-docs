@@ -1,22 +1,23 @@
-# assigning multiple NICs on k8s pod on TKGm
+# Assigning multiple NICs on k8s pod on TKGm
+this has been test on TKC1.5.2 by following official doc [Implement Multiple Pod Network Interfaces with Multus
+](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-packages-cni-multus.html)
 
-
-## scenarios
+## Scenarios
 multi NIC is required on following scenarios.
 1. outbound access from pod in k8s worker node to external resources such as DB, Storage, NFS on  external network which is outside of k8s worker node network.
 2. due to security reason or reguration, pod to pod communcation inside of k8s cluster with isolated network might be required.
 
 
 
-## Multux CN type and IP Address Management (IPAM) CNI testing results
+## Multux CN type and IP Address Management (IPAM) testing results
 1. macvlan cni type + host-local ipam type => host-local only knows how to assign IPs to pods on the same node. the pod on different worker node might have the same ip from the ipam pool. pod routable within the same worker node only.
 2. ipvlan cni type + host-local ipam type => the same above.
-3. ipvlan cni type + whereabouts ipam type =>  wehreabouts can assigns IP addresses cluster-wide.(https://github.com/vmware-tanzu/community-edition/tree/main/addons/packages/whereabouts/0.5.1). routable between any pod on other worker node in the k8s cluster.
+3. ipvlan cni type + whereabouts ipam type =>  [wehreabouts](https://github.com/vmware-tanzu/community-edition/tree/main/addons/packages/whereabouts/0.5.1) can assigns IP addresses cluster-wide.. routable between any pod on other worker node in the k8s cluster. please note that whereabouts experimental as of writing.
 
 
-## setting up
+## Setting up 
 1. Prepare TKC wit multiple NICs on worker node.
-create TKC manifest file(https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-tanzu-k8s-clusters-deploy.html#manifest)
+create [TKC manifest file](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-tanzu-k8s-clusters-deploy.html#manifest)
 ```
 tanzu cluster create my-cluster --file my-cluster-config.yaml --dry-run > my-cluster-manifest.yaml
 ```
@@ -50,7 +51,7 @@ spec:
       storagePolicyName: ""
       template: /dc0/vm/photon-3-kube-v1.22.3+vmware.1-tkg.3
 ```
-deploy the tkc
+deploy the TKC
 
 ```
 kubectl config use-context mgmt-admin@mgmt
@@ -61,7 +62,15 @@ check the progress with various check points.
 - k logs deploy/capi-controller-manager -n capi-system
 - pod creation status on the TKC cluster
 
-2. Multus CNI is installed in the TKC cluster
+
+once the provision is completed, then check the node nic.
+```
+kubectl get nodes -o wide
+ssh capv@WORKER_NODE_IP
+ip addr
+```
+
+2. install `Multus` CNI on the TKC cluster
 ```
 tanzu package available list multus-cni.tanzu.vmware.com -A
 
@@ -90,7 +99,7 @@ STATUS:                  Reconcile succeeded
 CONDITIONS:              [{ReconcileSucceeded True  }]
 USEFUL-ERROR-MESSAGE:
 ```
-3. whereabouts
+3. deploy `whereabouts` IPAM
 
 ```
 tanzu package repository add tce-repo --url projects.registry.vmware.com/tce/main:0.10.0 --namespace tanzu-package-repo-global
@@ -121,11 +130,10 @@ USEFUL-ERROR-MESSAGE:
 
 ```
 
-## testing
+## Testing pod routing 
 
 1. configure cni crd config
-use ipvlan on second NIC on the worker node. ipam will use private pod network in this k8s cluster.
-see https://github.com/vmware-tanzu/community-edition/tree/main/addons/packages/whereabouts/0.5.1
+use ipvlan on second NIC on the worker node. ipam will use private pod network in this k8s cluster. see [whereabouts docs](https://github.com/vmware-tanzu/community-edition/tree/main/addons/packages/whereabouts/0.5.1)
 
 ```
 apiVersion: "k8s.cni.cncf.io/v1"
@@ -146,6 +154,9 @@ spec:
       }
     }'
 ```
+> master: set the second NIC on the worker node.
+> ipam : set private pod network in this k8s cluster.
+
 2. label worker node
 ```
 k label node tkc-avi-md-0-bdc77b698-b8wx9 workerid=worker1
@@ -204,11 +215,12 @@ spec:
                 values:
                 - worker1
 
-
 ```
+> spec.affinity: set for each worker node label.
+
 verify ip assignment or troubleshooting
 ```
-k describe pod busybox-deploy-95cb848fd-qn8p5
+kubectl describe pod busybox-deploy-95cb848fd-qn8p5
 
   Type    Reason          Age   From               Message
   ----    ------          ----  ----               -------
@@ -224,15 +236,15 @@ k describe pod busybox-deploy-95cb848fd-qn8p5
 
 
 ```
-root@ubuntu:/data/vmware-docs/multi-nic# k get pod -o wide
+root@ubuntu:/data/vmware-docs/multi-nic# kubectl get pod -o wide
 NAME                             READY   STATUS    RESTARTS   AGE     IP             NODE                           NOMINATED NODE   READINESS GATES
 busybox1                         1/1     Running   0          52m     100.96.1.137   tkc-avi-md-0-bdc77b698-b8wx9   <none>           <none>
 busybox2                         1/1     Running   0          52m     100.96.2.141   tkc-avi-md-0-bdc77b698-x7ck6   <none>           <none>
 ```
 
 
-4. testing 
-busybox1 
+4. Testing 
+kubectl exec into the busybox1 pod
 ```
 / # ip addr
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1000
@@ -262,7 +274,7 @@ default         100.96.1.1      0.0.0.0         UG    0      0        0 eth0
 100.96.1.0      *               255.255.255.0   U     0      0        0 eth0
 
 ```
-busybox2
+kubectl exec into the busybox2 pod and do the test
 ```
 root@ubuntu:/data/vmware-docs/multi-nic# k exec -it busybox2 sh
 / # ip addr
@@ -292,7 +304,6 @@ default         100.96.2.1      0.0.0.0         UG    0      0        0 eth0
 100.96.2.0      *               255.255.255.0   U     0      0        0 eth0
 
 
-
 ## route to worker node1
 / # ping 192.168.0.115
 PING 192.168.0.115 (192.168.0.115): 56 data bytes
@@ -310,10 +321,3 @@ PING 10.99.1.200 (10.99.1.200): 56 data bytes
 64 bytes from 10.99.1.200: seq=0 ttl=64 time=0.295 ms
 
 ```
-
-
-
-
-
-reference: https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-packages-cni-multus.html
-
