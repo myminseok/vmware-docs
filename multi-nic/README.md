@@ -1,5 +1,5 @@
 # Assigning multiple NICs on k8s pod on TKGm
-This has been test on TKC1.5.2 by following official doc [Implement Multiple Pod Network Interfaces with Multus
+This has been test on TKGm 1.5.2 by following official doc [Implement Multiple Pod Network Interfaces with Multus
 ](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-packages-cni-multus.html)
 
 ## Scenarios
