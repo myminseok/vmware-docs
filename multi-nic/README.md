@@ -69,6 +69,11 @@ once the provision is completed, then check the node nic.
 kubectl get nodes -o wide
 ssh capv@WORKER_NODE_IP
 ip addr
+
+- eth0
+- eth1
+...
+
 ```
 
 2. install `Multus` CNI on the TKC cluster
