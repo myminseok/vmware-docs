@@ -17,7 +17,7 @@ spec:
       labels:
         app: busybox-deploy
       annotations:
-        k8s.v1.cni.cncf.io/networks: macvlan-conf
+        k8s.v1.cni.cncf.io/networks: ipvlan-whereabouts-conf
     spec:
       containers:
       - image: busybox
