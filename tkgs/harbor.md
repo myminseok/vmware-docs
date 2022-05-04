@@ -12,7 +12,6 @@ chmod +x tkg-ssh-sv-vm.sh
                             
 ```
 
-
 ## manaul way
 
 ### Get SSH secrets of TKC
@@ -140,3 +139,19 @@ imagePullSecrets:
 - name: harbor-registry-secret
 ```
 
+# get embeded harbor admin secret from supervisor cluster
+
+ssh into the supervisor cluster vm.
+```
+HARBOR_NAMESPACE=$(kubectl get ns | grep registry- | awk '{print $1}')
+
+HARBOR_POD_ID=$(echo $HARBOR_NAMESPACE | sed 's/.*-//')
+
+kubectl -n ${HARBOR_NAMESPACE} get secret "harbor-${HARBOR_POD_ID}-controller-registry" --template={{.data.harborAdminUsername}} | base64 --decode | base64 --decode
+
+
+kubectl -n ${HARBOR_NAMESPACE} get secret "harbor-${HARBOR_POD_ID}-controller-registry" --template={{.data.harborAdminPassword}} | base64 --decode | base64 --decode
+
+
+
+```

@@ -1,6 +1,4 @@
-
-
-# kubectl create secret docker-registry harbor-registry-secret --docker-server=10.213.70.67 --docker-username=kminseok@vsphere.local --docker-password=VMware1! -n kminseok -o yaml
+#k create secret docker-registry harbor-registry-secret --docker-server=10.213.70.67 --docker-username=kminseok@vsphere.local --docker-password=VMware1! -n kminseok -o yaml
 apiVersion: v1
 data:
   .dockerconfigjson: eyJhdXRocyI6eyIxMC4yMTMuNzAuNjciOnsidXNlcm5hbWUiOiJrbWluc2Vva0B2c3BoZXJlLmxvY2FsIiwicGFzc3dvcmQiOiJWTXdhcmUxISIsImF1dGgiOiJhMjFwYm5ObGIydEFkbk53YUdWeVpTNXNiMk5oYkRwV1RYZGhjbVV4SVE9PSJ9fX0=
@@ -14,7 +12,7 @@ type: kubernetes.io/dockerconfigjson
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: nginx
+  name: echoserver
 imagePullSecrets:
 - name: harbor-registry-secret
 
@@ -24,13 +22,13 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: nginx
-  name: nginx-app
+    app: echoserver
+  name: echoserver-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: echoserver
   strategy: 
     type: RollingUpdate
     rollingUpdate: 
@@ -40,35 +38,33 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: nginx
+        app: echoserver
       annotations:
-        fluentbit.io/parser: nginx
+        fluentbit.io/parser: echoserver
     spec:
-#imagePullSecrets:
-#      - name: harbor-registry-secret
       containers:
-      - image: 10.213.70.67/kminseok/nginx:latest
-        name: nginx-app
+      - image: 10.213.70.67/kminseok/echoserver:1.4
+        name: echoserver-app
         imagePullPolicy: Always
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 0
         resources: {}
-      serviceAccount: nginx
-      serviceAccountName: nginx
+      serviceAccount: echoserver
+      serviceAccountName: echoserver
 status: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-app-service
+  name: echoserver-app-service
 spec:
   type: LoadBalancer
   #type: ClusterIP
   externalTrafficPolicy: Local
   selector:
-    app: nginx
+    app: echoserver
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 8080

@@ -1,0 +1,52 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: example
+  namespace: default
+spec:
+  encryptedData:
+    database1: AgCzueobebbJziX36gM8zzwX0visBENsDW9wdzEnZERMAumCPOoNkZ/FhNJ9wupMAiWD1xp8bU6//VD5/pL06bcxgkNKZUjgkzBzkJhgfJnTJhTjoWXfkpVXoDqlYD3XckXgpf9pr3LJFUoPOj0XQ/0aSLVTNdu7ROa7fY1MvBltMUhS51ZTZ95qzzNyFrjARNXbGGRnMUOqamc8cgIKtqo4KPkM9DG2PxWsR9RntIs5D5RS5pwv/XfU9RtVMJB4Fzxdxxx5BtPglFrmVgXHeMnbWUIofyKNeH4dRyvfVd3TV1oY3GWKwUijGLzEU+iRUm1rxOPGThn6GvU0zBfKMGn1VXDfYsPSIQFeQJXx20QZNNrZLvO2nscYtaxqr7lGbA2gHgfIm5gehPGkxF1VL54DUKnor9fYkG2Y5z7vtJAXibMmJ3pBM29Jqqcz6cRmsqX8HOVJltei6cIimsBszD3L3xrLPgExgsGjzxsqU0PVprGbdEpGM3zBrBkRhvztCs3B6vIHWrzxE7NGBx9rcDz3kssBxfG8Pji+KbvTb6It4HY/jFKzGrty5EjIioF/V1uKXnzL2HRU82DKJO3SI3/L1mcdLMe/FKWtILLI+4quy9jElEBH60q+I10WLpcKpNZmx/12cv4GH3FgjUHItDhLt15tvOKSeMeSOTyYpfMoVVwepuPkooD3857m3EqM/m7V5LppcxZuY8ex1Brjaw==
+    foo: AgBBRmigjIMkiVjCsNgx1DXkYSAYBhnz0zTzXVuxIK1N3lXvNiXVNC18sWXbBibwm2Vc1LEE6WVhQFYd7fWvr6c+G7DT06EapaVMgF7qR1ybWSwq6cbOWcXntuDDGEskBp4H4/nKRGpC7Z/ohad/SvokPSQU3fIRATmfHZgbfIifX8tPRjtn7yGpNWGbd0M22zGYZMRQ63SRGmLzsNVy8z8xualkbM6ykQM9p2jI8+RgUjWTYf2XBhY/h650NVpBxxsjAMoKEvio44WTkcf0wHuEwkrzmv1xxwHhbUOZax0FN99cTxoc12DmWhMpwL9QLcB0Oe+mYbSDOPAA6SPQfQASXElQqTE65iZwee8J/XWddb57gGXq2w6slKYQ3PfVWyVEVAYUXxK7Mse4eTnYw70tWgyihjcTYNwDxUKPNgWcBWJ3MDpDhHzu7rImHARe6CYNI6njS4iGYUaZg424b2wnabDXNpY0GqvQEmZ2ULU279/+RwkzMUI41sZBoCOKvGx6X4I0RWtnETrzKYKy4hdAEUh6v0qOF/oFndkApFhsdWVFoSif/ZOmlNqqClhoySyaZkxYUMfnHzZCWUrNYCuKRUQZiMI9bizyCWVilxduOTUSXYN7EppnaWpDJOmnWE6W9+ipgXWN2oLR2hO+9lHyx7nyrbSpiK8d4VzsmPpdhsotK0kCR2p+/UHcn8HkODDAZzT1+LXgrQ==
+    server1: AgACAnYdCuICs1vJzEU/NWHPL3bMI5RsF0Blb0FOZgugIf02d7lVXoV+9b9MolCNq75ldk439XqT2SPTz371leLh95HeWkWs9aabWq119fnLRdeOmEoKA6ohd36pvp+rjmCRTdwP48VmqAZGn8jxEPs3FnHJN/z8Chs/EXGgWS+hPcLvwP3nkH6IT71+sdbAnvGvOtcyZACvGFjj6Am7im2Ene//G5vEKe2y3g+otWT4ZufcUiGd3wmN5Aqaoh5Ba2pNXjOo3uURmNEtxXdij1UohcgkCI7VVkoaVeHLSfg6aGqRvEoahAf3sTgiEWBwCxXaE4G696Bh0chUnAeTtWpy/FcUAj+DijZTaTkllkV/w/0TQpZUVXrwHXSm50m5eCtKB707fCeKP6TBgi7qgqhnutiHa2ZBHJ3ACF//6a+qbcka+Un3heKxwcotHeq6D4AkLsAQqI26r+6ogi5em+ZGHd7eRftqh9QrcUVkVoQPkyDf5evNC3ZjzBcKYH2sXOjMfOKRai2MTzOh3TThU21zklRbHerWKk3GZ9/5hKiDC8JsQz748P00HVO0WbUnBBCEPY+HhAdHxbmcOdTO4wKSX3di1jEZwf6n9pDzXHmLCpXMdhAKgpK8MQN4aI2cGcevy0YKoCXS5MjTDQqt/Tk0WHTp/a9E9IOKI4fDE+moSGqcVUuSEFntR3LXTvL0dg2/in3sxlzwx5yoe3c=
+    server2: AgDM27Kpr5okiUBkB2p/NiuwzBcHxI2+PjphBJuGr4iAjIujuFJAu/CMdEYUgiBtSAphyBzkuIaQ9pp/xwLnGyZ4xNbyzicY9G7TLS8BF1nuxKVWJyFmkcPQSmbas18vFJG5FEWWg5yGB5KAdsBPGcC84mwEYqCQ/O0Km52AVhJ7BfJt7oaAo278jeVyT3KBu1ZGCAtweQ8gg8+TbKlqsH0dRqS+UsuaTOYjXX5b+/1XidGq1HXxMw7SKxayKZJisKJkCWjLU00oD5wBx9+UOP79fKTImTw4E2c4yHGERsOKvfr7x7hTGpYlFBUWOmgExmDhC6tejysCuG3IRN99ZPBQXK8sR112uX44DZzcTQBc616iyBniIBw3nMHnXyY8pvRpiX/eyTyKvSOZfsM0ZKqqaJ6gIgcG1kvL5ZZ1E+PUbhrcHsBV9/SKYRzi691lmu0l8WjLXgHIgz1WMfmm0S0oJ97YhGHB+vQ0REEx6jh/VpvvUWQEWrhDibB24TeZBLcyGY0PRdGBmm+hFaullUM4NUXBUV8PO7DbXkysfnhfiscSBGaRl7jGSAhFcSXPEn1pxyl3nIYvaM1ce9uxKq3eiry/kCyZ+twDK7YW8VilnPBUVqtpJS6ETrLZElif9mLMk1AfwZnqezv8lSvyj65Slii38yLUyBdZ4EIA9s8IaSRM8R0ehHZYE8u4tfsuk2Zi3QHSimAfBAMCGw==
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: example
+      namespace: default
+
+    data:
+      myconfig.json: |
+        {
+               "Server": [{
+                               "host": "foobar",
+                               "ip": "10.10.10.12",
+                               "port": "22",
+                               "env": "SOME_ENV",
+                               "user": "myuser",
+                               "password": "{{ index . "server1" }}",
+                               "role": "foo"
+                       },{
+                               "host": "barfoo",
+                               "ip": "10.10.10.11",
+                               "port": "22",
+                               "env": "SOME_OTHER_STUFF",
+                               "user": "otheruser",
+                               "password": "{{ index . "server2" }}",
+                               "role": "foo"
+                       }
+               ],
+               "Database": [{
+                               "host": "somedb",
+                               "ip": "10.10.10.10",
+                               "port": "1521",
+                               "sid": "FOO",
+                               "env": "BAZ",
+                               "user": "abcdefg123",
+                               "password": "{{ index . "database1" }}",
+                               "role": "foo"
+                       }
+               ]
+        }

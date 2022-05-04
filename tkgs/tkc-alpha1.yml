@@ -1,0 +1,17 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1
+kind: TanzuKubernetesCluster
+metadata:
+  name: tkc1
+  namespace: kminseok
+spec:
+  distribution:
+    version: v1.20
+  topology:
+    controlPlane:
+      count: 3
+      class: guaranteed-medium
+      storageClass: tanzu
+    workers:
+      count: 2
+      class: guaranteed-medium
+      storageClass: tanzu
