@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: csi.vsphere.vmware.com
+  creationTimestamp: "2021-02-18T09:46:22Z"
+  finalizers:
+  - kubernetes.io/pv-protection
+  - external-attacher/csi-vsphere-vmware-com
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:pv.kubernetes.io/provisioned-by: {}
+      f:spec:
+        f:accessModes: {}
+        f:capacity:
+          .: {}
+          f:storage: {}
+        f:claimRef:
+          .: {}
+          f:apiVersion: {}
+          f:kind: {}
+          f:name: {}
+          f:namespace: {}
+          f:resourceVersion: {}
+          f:uid: {}
+        f:csi:
+          .: {}
+          f:driver: {}
+          f:fsType: {}
+          f:volumeAttributes:
+            .: {}
+            f:storage.kubernetes.io/csiProvisionerIdentity: {}
+            f:type: {}
+          f:volumeHandle: {}
+        f:persistentVolumeReclaimPolicy: {}
+        f:storageClassName: {}
+        f:volumeMode: {}
+    manager: csi-provisioner
+    operation: Update
+    time: "2021-02-18T09:46:22Z"
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        f:phase: {}
+    manager: kube-controller-manager
+    operation: Update
+    time: "2021-02-18T09:46:22Z"
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:finalizers:
+          v:"external-attacher/csi-vsphere-vmware-com": {}
+    manager: csi-attacher
+    operation: Update
+    time: "2021-02-18T09:46:27Z"
+  name: pvc-7376fe55-2127-4b19-88c1-f1c34fa242d8
+  resourceVersion: "520999"
+  selfLink: /api/v1/persistentvolumes/pvc-7376fe55-2127-4b19-88c1-f1c34fa242d8
+  uid: 897dcaf7-93e4-4f12-8dad-5649302a600f
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: redis-data
+    namespace: yelb
+    resourceVersion: "520786"
+    uid: 7376fe55-2127-4b19-88c1-f1c34fa242d8
+  csi:
+    driver: csi.vsphere.vmware.com
+    fsType: ext4
+    volumeAttributes:
+      storage.kubernetes.io/csiProvisionerIdentity: 1613525929955-8081-csi.vsphere.vmware.com
+      type: vSphere CNS Block Volume
+    volumeHandle: 57c1238a-290e-43a0-8f6c-0a5a87bb3742-7376fe55-2127-4b19-88c1-f1c34fa242d8
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: pacific-gold-storage-policy
+  volumeMode: Filesystem
+status:
+  phase: Bound

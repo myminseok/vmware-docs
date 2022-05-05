@@ -1,0 +1,34 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  creationTimestamp: "2021-02-26T09:37:12Z"
+  labels:
+    run.tanzu.vmware.com/vmware-system-synced-from-supervisor: "yes"
+  managedFields:
+  - apiVersion: rbac.authorization.k8s.io/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:labels:
+          .: {}
+          f:run.tanzu.vmware.com/vmware-system-synced-from-supervisor: {}
+      f:roleRef:
+        f:apiGroup: {}
+        f:kind: {}
+        f:name: {}
+      f:subjects: {}
+    manager: manager
+    operation: Update
+    time: "2021-02-26T09:37:12Z"
+  name: vmware-system-auth-sync-wcp:ns1:user:vsphere.local:user1
+  resourceVersion: "1049375"
+  selfLink: /apis/rbac.authorization.k8s.io/v1/clusterrolebindings/vmware-system-auth-sync-wcp%3Ans1%3Auser%3Avsphere.local%3Auser1
+  uid: 4f455ac7-c3a6-4ae2-9991-b3ce1faac8ae
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: sso:user1@vsphere.local

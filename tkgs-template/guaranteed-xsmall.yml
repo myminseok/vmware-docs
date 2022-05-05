@@ -1,0 +1,46 @@
+apiVersion: vmoperator.vmware.com/v1alpha1
+kind: VirtualMachineClass
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"vmoperator.vmware.com/v1alpha1","kind":"VirtualMachineClass","metadata":{"annotations":{},"name":"guaranteed-xsmall-custom"},"spec":{"hardware":{"cpus":2,"memory":"2Gi"},"policies":{"resources":{"requests":{"cpu":"2000m","memory":"2Gi"}}}}}
+  creationTimestamp: "2021-02-14T13:58:53Z"
+  generation: 1
+  managedFields:
+  - apiVersion: vmoperator.vmware.com/v1alpha1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+      f:spec:
+        .: {}
+        f:hardware:
+          .: {}
+          f:cpus: {}
+          f:memory: {}
+        f:policies:
+          .: {}
+          f:resources:
+            .: {}
+            f:requests:
+              .: {}
+              f:cpu: {}
+              f:memory: {}
+    manager: kubectl
+    operation: Update
+    time: "2021-02-14T13:58:53Z"
+  name: guaranteed-xsmall-custom
+  resourceVersion: "2953"
+  selfLink: /apis/vmoperator.vmware.com/v1alpha1/virtualmachineclasses/guaranteed-xsmall-custom
+  uid: 8675982f-fa04-4639-8ed1-5867f103533e
+spec:
+  hardware:
+    cpus: 1
+    memory: 2Gi
+  policies:
+    resources:
+      requests:
+        cpu: 2000m
+        memory: 2Gi

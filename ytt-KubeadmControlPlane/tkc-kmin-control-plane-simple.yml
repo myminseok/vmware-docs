@@ -1,0 +1,53 @@
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: KubeadmControlPlane
+metadata:
+  uid: 6d823b2f-8b43-4d88-abc0-c562918588e1
+spec:
+  infrastructureTemplate:
+    apiVersion: infrastructure.cluster.vmware.com/v1alpha3
+    kind: WCPMachineTemplate
+    name: tkc-kmin-control-plane-fhjrq
+    namespace: kmin-test
+  kubeadmConfigSpec:
+    files:
+    - content: |
+        ---
+        apiVersion: apiserver.k8s.io/v1alpha1
+        kind: AdmissionConfiguration
+        plugins:
+      owner: root:root
+      path: /etc/kubernetes/extra-config/admission-control-config.yaml
+      permissions: "0640"
+    - content: |
+        ---
+        apiVersion: apiserver.config.k8s.io/v1
+        kind: EncryptionConfiguration
+        resources:
+          - resources:
+            - secrets
+            providers:
+            - secretbox:
+                keys:
+                - name: secretbox_existing_key
+                  secret: r+nwGxriCkWBS0hVdRu/Xr54YbpA0LY=
+                - name: secretbox_existing_key1
+                  secret: r+nwGxriCkWBS0hVdRu/Xr54YbpA0LY=
+            - aescbc:
+                keys:
+                - name: aescbc_existing_key
+                  secret: r+nwGLgPGm65Qq0H1UriCkWBS0hVdRu/Xr54YbpA0LY=
+            - identity: {}
+      owner: root:root
+      path: /etc/kubernetes/extra-config/encryption-provider-config.yaml
+      permissions: "0640"
+    - content: |
+        ---
+        apiVersion: audit.k8s.io/v1
+        kind: Policy
+        # Log all requests at the Metadata level.
+        rules:
+        - level: Metadata
+      owner: root:root
+      path: /etc/kubernetes/extra-config/audit-policy.yaml
+      permissions: "0640------------"
+    

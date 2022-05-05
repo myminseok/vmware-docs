@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-proxy
+  name: nginx-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-proxy
+  template:
+    metadata:
+      labels:
+        app: nginx-proxy
+    spec:
+      containers:
+      - name: nginx-proxy
+        image: nginx
+        ports:
+        - containerPort: 443
+        volumeMounts:
+        - name: tls
+          mountPath: "/etc/nginx/ssl"
+          readOnly: true
+        - name: nginx-conf
+          mountPath: "/etc/nginx/nginx.conf"
+          subPath: nginx.conf
+          readOnly: true
+      volumes:
+      - name: tls
+        secret:
+          secretName: minio-tls
+      - name: nginx-conf
+        configMap:
+          name: nginx-conf-tls
+          items:
+          - key: nginx.conf
+            path: nginx.conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-proxy
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.90.12.139
+  selector:
+    app: nginx-proxy
+  ports:
+  - protocol: TCP
+    port: 443
+    targetPort: 443
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf-tls
+data:
+  nginx.conf: |
+    user nginx;
+    worker_processes  1;
+    events {
+      worker_connections  10240;
+    }
+    http {
+      server {
+          listen 443 ssl;
+          ssl on;
+          ssl_certificate     /etc/nginx/ssl/tls.crt;
+          ssl_certificate_key /etc/nginx/ssl/tls.key;
+          server_name  localhost;
+          location / {
+            #proxy_pass https://10.90.12.131;
+            proxy_pass https://google.com;
+        }
+      }
+    }

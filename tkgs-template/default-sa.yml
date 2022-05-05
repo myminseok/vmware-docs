@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  creationTimestamp: "2021-04-09T09:30:05Z"
+  name: default
+  namespace: default
+  resourceVersion: "1313314"
+  selfLink: /api/v1/namespaces/default/serviceaccounts/default
+  uid: 39c16649-891b-4d61-aa57-cf53a31c0af6
+secrets:
+- name: default-token-jhtf7

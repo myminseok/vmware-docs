@@ -4,18 +4,13 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: selfsigned-issuer
-    kubernetes.io/ingress.allow-http: "true"
-  name: yelb-ingress-tls
+  name: guestbook-ingress-http
 spec:
-  tls:
-  - hosts:
-    - yelb.com
-    secretName: yelb-tls
   rules:
-  - host: yelb.com
+  - host: ingress-http.guestbook.com
     http:
       paths:
       - backend:
-          serviceName: yelb-ui
+          serviceName: guestbook
           servicePort: 80
           

@@ -9,11 +9,16 @@ spec:
   imagePullSecrets:
   - name: harbor-registry-secret
   containers:
-  - image: 10.213.227.68/ns1/busybox
-
+  - image: busybox
     name: pod
     command: ['sh','-c','sleep 4800']
-    resources: {}
+    resources:
+      requests:
+        memory: "500Mi"
+        cpu: "250m"
+      limits:
+        memory: "500Mi"
+        cpu: "500m"
   dnsPolicy: ClusterFirst
   restartPolicy: Never
 status: {}

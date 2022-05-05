@@ -1,0 +1,17 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1      #TKGS API endpoint
+kind: TanzuKubernetesCluster                   #required parameter
+metadata:
+  name: tkgs-cluster-1                         #cluster name, user defined
+  namespace: ns1
+spec:
+  distribution:
+    version: v1.18                             #Resolves to the latest v1.18 image
+  topology:
+    controlPlane:
+      count: 1                                 #number of control plane nodes
+      class: best-effort-small                 #vmclass for control plane nodes
+      storageClass: pacific-gold-storage-policy
+    workers:
+      count: 3                                 #number of worker nodes
+      class: best-effort-small                 #vmclass for worker nodes
+      storageClass: pacific-gold-storage-policy

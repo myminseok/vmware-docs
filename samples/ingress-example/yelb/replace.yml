@@ -1,0 +1,14 @@
+#@ load("@ytt:overlay", "overlay")
+#@ for/end kind in ["Deployment", "DaemonSet"]:
+#@overlay/match by=overlay.subset({"kind": kind}), expects="0+"
+---
+spec:
+  template:
+    spec:
+      #@overlay/match missing_ok=True
+      #@overlay/match by=overlay.index(0)
+      containers:
+        image: a
+      
+
+
