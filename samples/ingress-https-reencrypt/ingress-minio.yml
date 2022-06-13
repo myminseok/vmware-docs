@@ -1,0 +1,23 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+    ncp/ssl-mode: "reencrypt"
+  name: minio
+spec:
+  backend:
+    serviceName: mintest-hl
+    servicePort: 9000
+  tls:
+  - hosts:
+    - minio.pcfdemo.net
+    secretName: minio-tls
+  rules:
+  - host: minio.pcfdemo.net
+    http:
+      paths:
+      - backend:
+          serviceName: mintest-hl
+          servicePort: 9000

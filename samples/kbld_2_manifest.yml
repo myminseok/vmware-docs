@@ -1,0 +1,5 @@
+images:
+- image: mreferre/yelb-appserver:0.5
+- image: mreferre/yelb-db:0.5
+- image: mreferre/yelb-ui:0.7
+- image: redis:4.0.2

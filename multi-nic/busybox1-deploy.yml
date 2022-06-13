@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: busybox-deploy1
+  name: busybox-deploy1
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: busybox-deploy1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: busybox-deploy1
+      annotations:
+        k8s.v1.cni.cncf.io/networks: ipvlan-whereabouts-conf
+    spec:
+      containers:
+      - image: busybox
+        name: pod
+        command: ['sh','-c','sleep 4800']
+        resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: workerid
+                operator: In
+                values:
+                - worker1

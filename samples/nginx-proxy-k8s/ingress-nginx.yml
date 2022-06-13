@@ -1,0 +1,23 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.allow-http: "true"
+    #ncp/ssl-mode: "reencrypt"
+  name: nginx-http
+spec:
+  backend:
+    serviceName: failover-http
+    servicePort: 80
+  tls:
+  - hosts:
+    - nginx-ingress.pcfdemo.net
+    secretName: minio-tls
+  rules:
+  - host: nginx-ingress.pcfdemo.net
+    http:
+      paths:
+      - backend:
+          serviceName: nginx-http
+          servicePort: 80

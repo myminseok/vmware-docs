@@ -1,0 +1,519 @@
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: KubeadmControlPlane
+metadata:
+  annotations:
+    controlplane.cluster.x-k8s.io/skip-coredns: ""
+    controlplane.cluster.x-k8s.io/skip-kube-proxy: ""
+  creationTimestamp: "2021-04-09T08:33:47Z"
+  finalizers:
+  - kubeadm.controlplane.cluster.x-k8s.io
+  generation: 1
+  labels:
+    cluster.x-k8s.io/cluster-name: tkc-kmin
+  managedFields:
+  - apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:controlplane.cluster.x-k8s.io/skip-coredns: {}
+          f:controlplane.cluster.x-k8s.io/skip-kube-proxy: {}
+        f:finalizers:
+          .: {}
+          v:"kubeadm.controlplane.cluster.x-k8s.io": {}
+        f:labels:
+          .: {}
+          f:cluster.x-k8s.io/cluster-name: {}
+        f:ownerReferences:
+          .: {}
+          k:{"uid":"0e90dd8f-c57e-43a2-9fa4-06985a46584d"}:
+            .: {}
+            f:apiVersion: {}
+            f:kind: {}
+            f:name: {}
+            f:uid: {}
+          k:{"uid":"4464934b-64e3-44a4-af5d-503ee4493729"}:
+            .: {}
+            f:apiVersion: {}
+            f:blockOwnerDeletion: {}
+            f:controller: {}
+            f:kind: {}
+            f:name: {}
+            f:uid: {}
+      f:spec:
+        .: {}
+        f:infrastructureTemplate:
+          .: {}
+          f:apiVersion: {}
+          f:kind: {}
+          f:name: {}
+          f:namespace: {}
+        f:kubeadmConfigSpec:
+          .: {}
+          f:clusterConfiguration:
+            .: {}
+            f:apiServer:
+              .: {}
+              f:extraArgs:
+                .: {}
+                f:admission-control-config-file: {}
+                f:allow-privileged: {}
+                f:audit-log-maxage: {}
+                f:audit-log-maxbackup: {}
+                f:audit-log-maxsize: {}
+                f:audit-log-path: {}
+                f:audit-policy-file: {}
+                f:authentication-token-webhook-config-file: {}
+                f:client-ca-file: {}
+                f:cloud-provider: {}
+                f:enable-admission-plugins: {}
+                f:encryption-provider-config: {}
+                f:profiling: {}
+                f:runtime-config: {}
+                f:tls-cipher-suites: {}
+              f:extraVolumes: {}
+            f:clusterName: {}
+            f:controlPlaneEndpoint: {}
+            f:controllerManager:
+              .: {}
+              f:extraArgs:
+                .: {}
+                f:profiling: {}
+                f:tls-cipher-suites: {}
+                f:use-service-account-credentials: {}
+            f:dns:
+              .: {}
+              f:imageRepository: {}
+              f:imageTag: {}
+              f:type: {}
+            f:etcd:
+              .: {}
+              f:local:
+                .: {}
+                f:imageRepository: {}
+                f:imageTag: {}
+            f:imageRepository: {}
+            f:networking: {}
+            f:scheduler:
+              .: {}
+              f:extraArgs:
+                .: {}
+                f:profiling: {}
+                f:tls-cipher-suites: {}
+          f:files: {}
+          f:initConfiguration:
+            .: {}
+            f:localAPIEndpoint:
+              .: {}
+              f:advertiseAddress: {}
+              f:bindPort: {}
+            f:nodeRegistration:
+              .: {}
+              f:kubeletExtraArgs:
+                .: {}
+                f:cloud-provider: {}
+                f:event-qps: {}
+                f:node-labels: {}
+                f:protect-kernel-defaults: {}
+                f:read-only-port: {}
+                f:tls-cipher-suites: {}
+          f:joinConfiguration:
+            .: {}
+            f:discovery: {}
+            f:nodeRegistration:
+              .: {}
+              f:kubeletExtraArgs:
+                .: {}
+                f:cloud-provider: {}
+                f:event-qps: {}
+                f:node-labels: {}
+                f:protect-kernel-defaults: {}
+                f:read-only-port: {}
+                f:tls-cipher-suites: {}
+          f:ntp:
+            .: {}
+            f:enabled: {}
+            f:servers: {}
+          f:postKubeadmCommands: {}
+          f:preKubeadmCommands: {}
+          f:useExperimentalRetryJoin: {}
+          f:users: {}
+          f:verbosity: {}
+        f:replicas: {}
+        f:version: {}
+      f:status:
+        .: {}
+        f:conditions: {}
+        f:initialized: {}
+        f:observedGeneration: {}
+        f:ready: {}
+        f:readyReplicas: {}
+        f:replicas: {}
+        f:selector: {}
+        f:updatedReplicas: {}
+    manager: manager
+    operation: Update
+    time: "2021-04-27T08:27:21Z"
+  name: tkc-kmin-control-plane
+  namespace: kmin-test
+  ownerReferences:
+  - apiVersion: run.tanzu.vmware.com/v1alpha1
+    kind: TanzuKubernetesCluster
+    name: tkc-kmin
+    uid: 0e90dd8f-c57e-43a2-9fa4-06985a46584d
+  - apiVersion: cluster.x-k8s.io/v1alpha3
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: tkc-kmin
+    uid: 4464934b-64e3-44a4-af5d-503ee4493729
+  resourceVersion: "17509526"
+  selfLink: /apis/controlplane.cluster.x-k8s.io/v1alpha3/namespaces/kmin-test/kubeadmcontrolplanes/tkc-kmin-control-plane
+  uid: 6d823b2f-8b43-4d88-abc0-c562918588e1
+spec:
+  infrastructureTemplate:
+    apiVersion: infrastructure.cluster.vmware.com/v1alpha3
+    kind: WCPMachineTemplate
+    name: tkc-kmin-control-plane-fhjrq
+    namespace: kmin-test
+  kubeadmConfigSpec:
+    clusterConfiguration:
+      apiServer:
+        extraArgs:
+          admission-control-config-file: /etc/kubernetes/extra-config/admission-control-config.yaml
+          allow-privileged: "true"
+          audit-log-maxage: "30"
+          audit-log-maxbackup: "10"
+          audit-log-maxsize: "100"
+          audit-log-path: /var/log/kubernetes/audit/kube-apiserver.log
+          audit-policy-file: /etc/kubernetes/extra-config/audit-policy.yaml
+          authentication-token-webhook-config-file: /webhook/webhook-config.yaml
+          client-ca-file: /etc/ssl/certs/extensions-tls.crt
+          cloud-provider: external
+          enable-admission-plugins: PodSecurityPolicy,NodeRestriction,NamespaceLifecycle,ServiceAccount
+          encryption-provider-config: /etc/kubernetes/extra-config/encryption-provider-config.yaml
+          profiling: "false"
+          runtime-config: authentication.k8s.io/v1beta1=true
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        extraVolumes:
+        - hostPath: /etc/kubernetes/auth-webhook-config.yaml
+          mountPath: /webhook/webhook-config.yaml
+          name: webhook-config
+          pathType: File
+          readOnly: true
+        - hostPath: /etc/kubernetes/extra-config
+          mountPath: /etc/kubernetes/extra-config
+          name: kubernetes-extra-config
+          pathType: Directory
+          readOnly: true
+        - hostPath: /var/log/kubernetes/audit
+          mountPath: /var/log/kubernetes/audit
+          name: audit
+          pathType: Directory
+      clusterName: tkc-kmin
+      controlPlaneEndpoint: '{% if ds.meta_data.controlPlaneEndpoint %}{{ ds.meta_data.controlPlaneEndpoint
+        }}{% else %}{{ ds.meta_data.local_ipv4 }}:6443{% endif %}'
+      controllerManager:
+        extraArgs:
+          profiling: "false"
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          use-service-account-credentials: "true"
+      dns:
+        imageRepository: localhost:5000/vmware.io
+        imageTag: v1.7.0_vmware.7
+        type: CoreDNS
+      etcd:
+        local:
+          imageRepository: localhost:5000/vmware.io
+          imageTag: v3.4.13_vmware.6
+      imageRepository: localhost:5000/vmware.io
+      networking: {}
+      scheduler:
+        extraArgs:
+          profiling: "false"
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    files:
+    - content: |
+        {{ ds.meta_data.hostname.split('.') | first }}
+      owner: root:root
+      path: /etc/hostname
+      permissions: "0644"
+    - content: |
+        ::1         ipv6-localhost ipv6-loopback
+        127.0.0.1   localhost {{ ds.meta_data.hostname.split('.') | first }}
+      owner: root:root
+      path: /etc/hosts
+      permissions: "0644"
+    - content: |
+        -----BEGIN CERTIFICATE-----
+        MIIELzCCAxegAwIBAgIJAOGBi9Pq5pvAMA0GCSqGSIb3DQEBCwUAMIGiMQswCQYD
+        VQQDDAJDQTEaMBgGCgmSJomT8ixkARkWCmtpdGthdC1sYWIxFTATBgoJkiaJk/Is
+        ZAEZFgVsb2NhbDELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExITAf
+        BgNVBAoMGGtpdGthdC12Yy5lbmcudm13YXJlLmNvbTEbMBkGA1UECwwSVk13YXJl
+        IEVuZ2luZWVyaW5nMB4XDTIxMDMyODA3NTUyMFoXDTMxMDMyNjA3NTUyMFowgaIx
+        CzAJBgNVBAMMAkNBMRowGAYKCZImiZPyLGQBGRYKa2l0a2F0LWxhYjEVMBMGCgmS
+        JomT8ixkARkWBWxvY2FsMQswCQYDVQQGEwJVUzETMBEGA1UECAwKQ2FsaWZvcm5p
+        YTEhMB8GA1UECgwYa2l0a2F0LXZjLmVuZy52bXdhcmUuY29tMRswGQYDVQQLDBJW
+        TXdhcmUgRW5naW5lZXJpbmcwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+        AQC5tuEtJ6X1Lqb71y4Cn9Q/AZiDnEtWZ18Pw3FadjTB4RIrlE5LKYmX1Jyt25Vc
+        bEn4ELMiaSAKkiAqFEh060kCfMCKYhcSn53+OtlrkUQyGpGQDyl6oxwqn26HF7/r
+        WHXkCJq0eUG/Ugix3JmK6e+wviWJ1Difeq3F+j/pZOTJ+eLVWyygrK15/7aUJOo7
+        GJQseBf20Cu0L65M2RPgWgvWFtE2ALPK5ELgoXzy3U4mnVUStKPDxX4dRJRCGqpt
+        8UUIDYgbOz21QUm9/1ntJTx06mBXaN/T0dqMYS21olpdQRISWf4hVIWwATHJB5aV
+        og9p2fGdV/CySj70ES83kO5fAgMBAAGjZjBkMB0GA1UdDgQWBBSUty316qVuReTX
+        G73vFqzsIjb1sjAfBgNVHREEGDAWgQ5lbWFpbEBhY21lLmNvbYcEfwAAATAOBgNV
+        HQ8BAf8EBAMCAQYwEgYDVR0TAQH/BAgwBgEB/wIBADANBgkqhkiG9w0BAQsFAAOC
+        AQEAHaa6EdW5uL1OsEbSXdTax6lhtODtVCpCraKDDmkjTTjI3PsxkLMPN70DlYjV
+        cvfyPCLLFHX2kJRd46A8kHhn1IgLj55KhpupP2lHhcuOLjyttBu3+MHpZpPiiBEI
+        BPPPgLgt+iK07PP7tP7qp+ZDRoemEjdMfgpG7XNDtAYBbZf2qsr32PbUYlbAVnep
+        z8lCbAujGn+en8H42BBiPQnWejJ3DkDQCaMQ1/Cq17s/LVC2HdHZsi1ZKw2gL4z2
+        8IeFFBojiIRlBFC5/02VVViYnpUeuhxovEFyTYiMHOq5RuWAjyUwou+WVs90vwjW
+        xZ6Qd52/VPOR5/fxsC0dwVNKPw==
+        -----END CERTIFICATE-----
+      owner: root:root
+      path: /etc/ssl/certs/harbor-1981214639-ssl-vmware-system-registry-1981214639-ca.pem
+      permissions: "0644"
+    - content: |
+        -----BEGIN CERTIFICATE-----
+        MIIE7jCCAtagAwIBAgIRALWvEgpxGH3soCwaczl/x7owDQYJKoZIhvcNAQELBQAw
+        IDEeMBwGA1UEAxMVa3ViZXJuZXRlcy1leHRlbnNpb25zMB4XDTIxMDQwOTA4MzM0
+        N1oXDTMxMDQwNzA4MzM0N1owIDEeMBwGA1UEAxMVa3ViZXJuZXRlcy1leHRlbnNp
+        b25zMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEApTAv7duCOhbS3kF4
+        ZKcYjsJtLDj4p3XGq+XFTu457dFLIsVC7v3mAENk78tl8crRI1FB4YVNPRFd8eBc
+        WKMf14RoPXS5trJ0XNUwabwUoHKJ6cE9yq5cns3JYr2WBrLm9V0Mm0oPWTIbeQoN
+        cvU9IO5hDv4nVAK53fciUIOdf8o3Jy8A2SpeyirRtLJYrB3LeSE2RATdGR45F/Wf
+        3w9nozxIr2MMQqmJcgUeH1XZViJ2IrrTrKZPFOJt7cDnbx8Gz8MzvcfPqZcuPwhZ
+        c9DVfTJjyNC58+KlYXay0GwGaXEJ7aXN9l+NUlR61IOp/tjKM4u+meOD8AAiRBol
+        w6aOs6S9b22ojmP4UkR5606MwRLJoGRfJz0ugmVCKMRVI4XDyaY7uvgSIINcXdZJ
+        NhL9UGcoORoaS5LcNgDkxZIpuot3Rvyutr4Dx6QLKZDJY08qFhE45JvfobM8NN7L
+        SBdgMHp8SGZd26NnUkyxsHtaNxM1EUB5oCjJV1ZvgjsCptwExUNhJqS7nZFf/AtX
+        R2kcMMMNqaDGERDpbyEezSJqgqihQvQq/+VMXHrnBnMNmu5skc0/6nhHI3RtQ1+O
+        vWDemnXEGguSOMSgz7hNLD55V0dSk/Uf1gk7WHfeRgQy7npYWGMpihs+FkUWLHZC
+        GAz2l3v62CKzcf2AcUdk6WTId1sCAwEAAaMjMCEwDgYDVR0PAQH/BAQDAgGGMA8G
+        A1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggIBAGKl/wx0SApZVYFiQGiz
+        FUT33FRGc9TtB0D6g/0yOJ6LZwb2VqKZ91TXpAeaO0dFNUSz2bEs10GZrnWOcKsT
+        uAIFKZ91gvFcIwLnRxE0A66tlfjaNspxQ+SZrZekWelA/YbhY5+kKEjinkBW403e
+        s4bdg37b/jkDiGD3jcMfENph2Dccnv8nKPLBw/DoM1EcQ6w4zrbGZmpnD3g8nkpL
+        MI6VMvGqqZJD3BBYL+Fk0lh+t3jGTPxJOTHQSz69+lQND25IyAbiKdU6I97a+FDC
+        dCN9Z8MEPjLWKyxjHr99DFFC8XJfudLD0kUOVgWa9GZTS0gaEoMxeNEMcqfdAhMz
+        coPgEEMySK47/WmR5e9/RRNyVlQxIVeo9lSC4aVh46haLTqTFr66ZT5UKT/2ZrIi
+        7ScUa7icKE2J3tIHt/lmevmm0Bw6NIxS4v54TMquZqw71uQejuWsYy+2z2sKedHx
+        zMOvEHPPh4pupuy14/pvuM1TUIgD8LRp2x1c6lB9T/IFAwl+mOQrDtvGXD7fCWRK
+        D9YpXR28vUoTxzJZ9xDGx2EvRVMnwp0h1tXCU4StALwpJji329wHmAIv24qpP7ON
+        wcDgGUmzyqJXmR+yL7Jmgx245UdaMUZfCuitZ5c3ANHjpstbDC1wXkgz10bzW9H7
+        E9xozjk1Amxj/BgZYw8Ubw53
+        -----END CERTIFICATE-----
+      owner: root:root
+      path: /etc/ssl/certs/extensions-tls.crt
+      permissions: "0644"
+    - content: "#!/bin/bash\nCSR_NAME=vmware-system-auth.guest-cluster-auth-svc-csr\nCSR_FILE=server.csr\nPRIVATE_KEY_FILE=key.pem\nNAMESPACE=vmware-system-auth\nSECRET_NAME=guest-cluster-auth-svc-key\nCERT_FILE=cert.crt\nCERT_NAME=guest-cluster-auth-svc-cert\n\nfunction
+        log() {\n\techo $(date +\"%Y-%m-%dT%H:%M:%S.%3N\") \"$1 \"\"\"\n}\n\n# Helper
+        script to generate an RSA private key, produce a CSR for it with CN=localhost,
+        create a CSR using kubectl, approve it, create a secret with that key/configmap
+        from signed certificate. This partly/completely mimics the flow that would
+        be followed during guest apiserver VM creation, hopefully.\nlog \"checking
+        if the cert and key for auth service already exists and if so exit\"\nkubectl
+        get configmap -n ${NAMESPACE} ${CERT_NAME} &&\\\n\tkubectl get secret -n ${NAMESPACE}
+        ${SECRET_NAME} &&\\\n\techo \"cert ${CERT_NAME} and key ${SECRET_NAME} already
+        exists, nothing to be done\" &&\\\n\texit 0;\n\nlog \"Generating private key,
+        certificate and CSR.\"\nopenssl genrsa -out ${PRIVATE_KEY_FILE} &&\n\topenssl
+        req -new -subj \"/CN=localhost\" -out ${CSR_FILE} -key ${PRIVATE_KEY_FILE}
+        &&\n\tcat <<EOF | kubectl apply -f -\napiVersion: certificates.k8s.io/v1beta1\nkind:
+        CertificateSigningRequest\nmetadata:\n  name: ${CSR_NAME}\nspec:\n  request:
+        $(cat \"${CSR_FILE}\" | base64 | tr -d '\\n')\n  usages:\n  - digital signature\n
+        \ - key encipherment\n  - server auth\nEOF\n\n# Approve the CSR.\nlog \"Approving
+        CSR.\"\nkubectl certificate approve ${CSR_NAME}\n\n# Delete the secret if
+        already present, then store it in the cluster.\nlog \"Storing private key.\"\nkubectl
+        delete secret -n ${NAMESPACE} ${SECRET_NAME} ;\nkubectl create secret generic
+        --from-file ${PRIVATE_KEY_FILE} -n ${NAMESPACE} ${SECRET_NAME}\n\n# Get the
+        signed certificate.\nlog \"Getting signed certificate.\"\ntempdir=$(mktemp
+        -d /tmp/guest_authsvc_cert-XXXXXX)\ntempfile=\"${tempdir}/${CERT_FILE}\"\n#
+        Poll a times until we get a CSR with actual certificate data. This is to work
+        around an issue where we seem to have an empty file, possibly due to some
+        race between the approval happening and the contents being populated in etcd.\nCERT_CONTENTS=\"\"\n#
+        Cap the number of attempts.\nCOUNTER=0\nMAX_ATTEMPTS=60 # Try for around 5
+        minutes, sometimes it takes a while for the control plane to come up.\n\n#
+        Loop until we succeed in getting a signed cert, or we time out.\nuntil ! [
+        -z \"${CERT_CONTENTS}\" ] || [ ${COUNTER} -ge ${MAX_ATTEMPTS} ]; do\n\tCERT_CONTENTS=$(kubectl
+        get csr ${CSR_NAME} -o jsonpath='{.status.certificate}' | base64 -d )\n\n\tCOUNTER=$[$COUNTER+1]\n\tlog
+        \"CSR is still empty, will retry. ($COUNTER attempts so far)\"\n\tsleep 5\ndone\n\n#
+        Check to see if we timed out. If so, clean up and exit with NZEC.\nif [ -z
+        \"${CERT_CONTENTS}\" ] ; then\n\tlog \"Failed to get a signed CSR in ${MAX_ATTEMPTS}
+        attempts\"\n\trm -rf \"${tempdir}\"\n\texit 1\nfi\n\nlog \"Found certificate
+        contents, storing in local file\"\necho \"${CERT_CONTENTS}\" > \"${tempfile}\"\n\n#
+        Delete any old certificate, then store the signed certificate in the cluster.\nlog
+        \"Storing signed certificate.\"\nkubectl delete configmap -n ${NAMESPACE}
+        ${CERT_NAME}\nkubectl create configmap --from-file=\"$tempfile\" -n ${NAMESPACE}
+        ${CERT_NAME}\n\n# Clean up temp files.\nrm -rf \"${tempdir}\"\n"
+      owner: root:root
+      path: /usr/lib/vmware-wcpgc-manifests/generate_key_and_csr_updated.sh
+      permissions: "0755"
+    - content: |
+        ---
+        apiVersion: apiserver.k8s.io/v1alpha1
+        kind: AdmissionConfiguration
+        plugins:
+      owner: root:root
+      path: /etc/kubernetes/extra-config/admission-control-config.yaml
+      permissions: "0640"
+    - content: |
+        ---
+        apiVersion: apiserver.config.k8s.io/v1
+        kind: EncryptionConfiguration
+        resources:
+          - resources:
+            - secrets
+            providers:
+            - aescbc:
+                keys:
+                - name: key2
+                  secret: r+nwGLgPGm65Qq0H1UriCkWBS0hVdRu/Xr54YbpA0LY=
+            - secretbox:
+                keys:
+                - name: secretbox_existing_key
+                  secret: r+nwGxriCkWBS0hVdRu/Xr54YbpA0LY=
+                - name: secretbox_existing_key1
+                  secret: r+nwGxriCkWBS0hVdRu/Xr54YbpA0LY=
+            - identity: {}
+      owner: root:root
+      path: /etc/kubernetes/extra-config/encryption-provider-config.yaml
+      permissions: "0640"
+    - content: |
+        ---
+        apiVersion: audit.k8s.io/v1
+        kind: Policy
+        # Log all requests at the Metadata level.
+        rules:
+        - level: Metadata
+      owner: root:root
+      path: /etc/kubernetes/extra-config/audit-policy.yaml
+      permissions: "0640"
+    - owner: root:root
+      path: /var/log/kubernetes/audit/kube-apiserver.log
+      permissions: "0600"
+    - content: |
+        ---
+        apiVersion: v1
+        kind: Config
+        # clusters refers to the remote service.
+        clusters:
+          - name: guest-cluster-auth-service
+            cluster:
+              # Use the Kubernetes CA to verify the guest cluster auth service.
+              certificate-authority: /etc/ssl/certs/extensions-tls.crt         # CA for verifying the remote service.
+              server: https://localhost:5443/tokenreview
+        # Users refers to the API server's webhook configuration.
+        users:
+          - name: guest-apiserver
+            user:
+              client-certificate: /etc/kubernetes/pki/apiserver.crt
+              client-key: /etc/kubernetes/pki/apiserver.key
+        # kubeconfig files require a context. Provide one for the API server.
+        current-context: webhook
+        contexts:
+        - context:
+            cluster: guest-cluster-auth-service
+            user: guest-apiserver
+          name: webhook
+      owner: root:root
+      path: /etc/kubernetes/auth-webhook-config.yaml
+      permissions: "0600"
+    initConfiguration:
+      localAPIEndpoint:
+        advertiseAddress: ""
+        bindPort: 0
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-provider: external
+          event-qps: "0"
+          node-labels: run.tanzu.vmware.com/kubernetesDistributionVersion=v1.19.7_vmware.1-tkg.1.fc82c41
+          protect-kernel-defaults: "true"
+          read-only-port: "0"
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    joinConfiguration:
+      discovery: {}
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-provider: external
+          event-qps: "0"
+          node-labels: run.tanzu.vmware.com/kubernetesDistributionVersion=v1.19.7_vmware.1-tkg.1.fc82c41
+          protect-kernel-defaults: "true"
+          read-only-port: "0"
+          tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    ntp:
+      enabled: true
+      servers:
+      - 10.112.0.1
+      - 10.112.0.2
+    postKubeadmCommands:
+    - kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f /usr/lib/vmware-wcpgc-manifests/guest-cluster-auth-svc.yaml
+    - KUBECONFIG=/etc/kubernetes/admin.conf /usr/lib/vmware-wcpgc-manifests/generate_key_and_csr_updated.sh
+    - touch /root/kubeadm-complete
+    preKubeadmCommands:
+    - set -xe
+    - cloud-init single --name write-files --frequency always
+    - vmtoolsd --cmd 'info-set guestinfo.userdata  '
+    - hostname "{{ ds.meta_data.hostname.split('.') | first }}"
+    - 'sed -i -e "s/^preserve_hostname: .*/preserve_hostname: true/" /etc/cloud/cloud.cfg'
+    - /usr/bin/rehash_ca_certificates.sh
+    - cat /etc/kubernetes/pki/ca.crt >> /etc/ssl/certs/extensions-tls.crt
+    - 'set +xe; echo ''vmware-system-user'':''W3mAsFkcgY40HTs+v6XDKw0sfDbweKz7K80s7B/9HXQ=''
+      | chpasswd ; retcode=$?; if [ "$retcode" -ne 0 ]; then  echo "Error: chpasswd
+      failed for user ''vmware-system-user'' with exit code $retcode. Will disable
+      password login for user ''vmware-system-user''"; passwd -l ''vmware-system-user'';
+      fi; set -xe'
+    - echo -e 'kernel.panic_on_oops=1\nkernel.panic=10\nvm.overcommit_memory=1' >>
+      /etc/sysctl.d/kubelet.conf && sysctl -p /etc/sysctl.d/kubelet.conf
+    - systemctl is-enabled --quiet containerd.service && systemctl restart containerd.service
+    - |-
+      if systemctl is-enabled --quiet containerd.service ; then \
+        running=false; \
+        for _ in {1..15}; do crictl ps > /dev/null 2>&1 && running=true && break; sleep 1s; done; \
+        if [[ "${running}" != true ]]; then echo "WARNING: containerd may not be running"; exit 1; fi; \
+      fi
+    - systemctl start docker.service
+    - if [ -f /root/kubeadm-complete ]; then echo "Kubeadm already completed - terminating
+      early"; exit 0; fi
+    useExperimentalRetryJoin: true
+    users:
+    - lockPassword: false
+      name: vmware-system-user
+      passwd: W3mAsFkcgY40HTs+v6XDKw0sfDbweKz7K80s7B/9HXQ=
+      sshAuthorizedKeys:
+      - |
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDUVZvPp4M5jWRc4ftKSmTK0w+2LjFNRll7KxZl9LF07wnBxRAhoGQh5pV17XLJZ5S78XMJXptxp0eN+XSVRU9THGegoGWDvHEC6EGdeBRoUQqw9rgHZIIXTMwkptYa/UVo4Ub7Pq+L/THVfxaUSjfr/cKkpLszMPl5BMFcWuHJSGh+R3TJkNV5rUkaadN19DFvnFVQ+V8fVkFG+Nz0Mncwox2t4U+cSxyL7NlQKsTuuCa9PesK2SoAKJrqOmC6wO0yDD+Lvrt7PqMBidVC4DsNpNS4GJIen69uvJX1vVzRbxABRT5haISE7JmUb/d/X4pQR9RW6B5M0vtn3gIYZXr0B+ZKJ7L0d382nOzeeBgBJ41cmBCBJ/os4GQ+hs/QiFZN0iDf3l4MwDbVOVmLzLOpYCYEmcSwjS8K3svcF00pehscygxvZA+3/ibUOgoxvfCs3J0Ol/e2o0AleDV2KWEztQKPIVz8jW+NrfX2NyQ/uCVv3V78+OM4m26WaRYX1a/xpXVlnFkMe7itUMtXIcfIzCuGjBxZGxOMZ8yOtzQo1tswErgohxIUtLIl7e2VijKloX0FhB5bltBRBL0qKafeXQwCLHwnTlXRO/bcfL45T9klK/x+s8sDzN65Gu8B5zYtquZsXJ2sj6JXcqRuAMm84ZfK4ZhhnO16ehE+OxzJbw==
+      sudo: ALL=(ALL) NOPASSWD:ALL
+    verbosity: 2
+  replicas: 1
+  version: v1.19.7+vmware.1
+status:
+  conditions:
+  - lastTransitionTime: "2021-04-09T08:36:13Z"
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2021-04-09T08:36:13Z"
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2021-04-09T08:33:56Z"
+    status: "True"
+    type: CertificatesAvailable
+  - lastTransitionTime: "2021-04-09T08:39:23Z"
+    status: "True"
+    type: ControlPlaneComponentsHealthy
+  - lastTransitionTime: "2021-04-09T08:39:23Z"
+    status: "True"
+    type: EtcdClusterHealthyCondition
+  - lastTransitionTime: "2021-04-09T08:35:50Z"
+    status: "True"
+    type: MachinesReady
+  - lastTransitionTime: "2021-04-09T08:35:50Z"
+    status: "True"
+    type: Resized
+  initialized: true
+  observedGeneration: 1
+  ready: true
+  readyReplicas: 1
+  replicas: 1
+  selector: cluster.x-k8s.io/cluster-name=tkc-kmin,cluster.x-k8s.io/control-plane
+  updatedReplicas: 1

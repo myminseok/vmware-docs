@@ -1,0 +1,36 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1
+kind: TanzuKubernetesCluster
+metadata:
+  annotations:
+    tkg/plan: dev
+  labels:
+    tkg.tanzu.vmware.com/cluster-name: mycluster2
+  name: mycluster2
+  namespace: ns2
+spec:
+  distribution:
+    version: v1.17
+  settings:
+    network:
+      cni:
+        name: calico
+      pods:
+        cidrBlocks:
+        - 100.96.0.0/11
+      serviceDomain: cluster.local
+      services:
+        cidrBlocks:
+        - 100.64.0.0/13
+    storage:
+      classes:
+      - pacific-gold-storage-policy
+      defaultClass: pacific-gold-storage-policy
+  topology:
+    controlPlane:
+      class: best-effort-small
+      count: 1
+      storageClass: pacific-gold-storage-policy
+    workers:
+      class: best-effort-small
+      count: 2
+      storageClass: pacific-gold-storage-policy

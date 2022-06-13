@@ -1,0 +1,12 @@
+#@ load("@ytt:overlay", "overlay")
+#@overlay/match by=overlay.subset({"kind": "PersistentVolumeClaim"})
+#@overlay/match by=overlay.all
+---
+spec:
+  template:
+    spec:
+      #@overlay/match missing_ok=True
+      imagePullSecrets:
+      #@overlay/match by=overlay.index(0)
+      - name: harbor-registry-secret
+ 

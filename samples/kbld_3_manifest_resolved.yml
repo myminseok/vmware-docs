@@ -1,0 +1,29 @@
+---
+images:
+- image: index.docker.io/mreferre/yelb-appserver@sha256:db367946dc02cf38752ad925e0b0fbff0f5c6f9186ca481fb8541530879d9c8d
+- image: index.docker.io/mreferre/yelb-db@sha256:6412d2fe96ee71ca701932d47675c549fe0428dede6a7975d39d9a581dc46c0c
+- image: index.docker.io/mreferre/yelb-ui@sha256:a2199d4f9fd38b168af93acf25331cda4e93140704bcba585d8981e0eeec0050
+- image: index.docker.io/library/redis@sha256:cd277716dbff2c0211c8366687d275d2b53112fecbf9d6c86e9853edb0900956
+metadata:
+  annotations:
+    kbld.k14s.io/images: |
+      - Metas:
+        - Tag: 4.0.2
+          Type: resolved
+          URL: redis:4.0.2
+        URL: index.docker.io/library/redis@sha256:cd277716dbff2c0211c8366687d275d2b53112fecbf9d6c86e9853edb0900956
+      - Metas:
+        - Tag: "0.5"
+          Type: resolved
+          URL: mreferre/yelb-appserver:0.5
+        URL: index.docker.io/mreferre/yelb-appserver@sha256:db367946dc02cf38752ad925e0b0fbff0f5c6f9186ca481fb8541530879d9c8d
+      - Metas:
+        - Tag: "0.5"
+          Type: resolved
+          URL: mreferre/yelb-db:0.5
+        URL: index.docker.io/mreferre/yelb-db@sha256:6412d2fe96ee71ca701932d47675c549fe0428dede6a7975d39d9a581dc46c0c
+      - Metas:
+        - Tag: "0.7"
+          Type: resolved
+          URL: mreferre/yelb-ui:0.7
+        URL: index.docker.io/mreferre/yelb-ui@sha256:a2199d4f9fd38b168af93acf25331cda4e93140704bcba585d8981e0eeec0050

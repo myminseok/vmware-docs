@@ -1,0 +1,16 @@
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-issuer
+  name: guestbook-ingress-http
+spec:
+  rules:
+  - host: ingress-http.guestbook.com
+    http:
+      paths:
+      - backend:
+          serviceName: guestbook
+          servicePort: 80
+          

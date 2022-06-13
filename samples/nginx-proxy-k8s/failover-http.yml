@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: failover-http
+  name: failover-http
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: failover-http
+  template:
+    metadata:
+      labels:
+        app: failover-http
+    spec:
+      containers:
+      - name: failover-http
+        image: failover
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: failover-conf
+          mountPath: "/etc/failover/failover.conf"
+          subPath: failover.conf
+          readOnly: true
+      volumes:
+      - name: failover-conf
+        configMap:
+          name: failover-conf
+          items:
+          - key: failover.conf
+            path: failover.conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: failover-http
+spec:
+  type: ClusterIP
+  selector:
+    app: failover-http
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: failover-conf
+data:
+  failover.conf: |
+    user failover;
+    worker_processes  1;
+    events {
+      worker_connections  10240;
+    }
+    http {
+      server {
+          listen       80;
+          server_name  localhost;
+          location / {
+            root   /usr/share/failover/html; #Change this line
+            #index  index.html index.htm;
+        }
+      }
+    }

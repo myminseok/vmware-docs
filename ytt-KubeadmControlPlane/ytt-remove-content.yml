@@ -1,0 +1,13 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@overlay/match by=overlay.all
+---
+spec:
+  kubeadmConfigSpec:
+    files:
+    #@overlay/match by=overlay.index(#@ data.values.content_index)
+    #@overlay/remove
+    - (this value is ignored)
+      
+  
+   

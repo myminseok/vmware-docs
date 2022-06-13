@@ -1,0 +1,30 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+#@ def insert_new_key():
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  #@overlay/match by=overlay.index(0)
+  - providers:
+    #@overlay/match by=lambda i, left, right: "aescbc" in left
+    - aescbc:
+        keys:
+        #@overlay/match by=overlay.index(0)
+        #@overlay/insert before=True
+        - name: added-key
+          secret: added-secret
+#@ end
+
+
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+spec:
+  kubeadmConfigSpec:
+    files:
+    #@overlay/match by=overlay.index(data.values.content_index)
+    - 
+      #@overlay/replace via=lambda left,right: yaml.encode(overlay.apply(yaml.decode(left), insert_new_key()))
+      content:
