@@ -9,8 +9,7 @@ spec:
   imagePullSecrets:
   - name: harbor-registry-secret
   containers:
-  - image: 10.213.227.68/ns1/busybox
-
+  - image: busybox
     name: pod
     command: ['sh','-c','sleep 4800']
     resources: {}
