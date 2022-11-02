@@ -1,3 +1,7 @@
+# https://projectcontour.io/docs/v1.13.1/config/request-routing/#response-timeouts
+# https://hub.docker.com/r/mendhak/http-https-echo
+# curl -v -H "x-set-response-delay-ms: 2000"  http://echo.lab.pcfdemo.net
+#
 apiVersion: projectcontour.io/v1
 kind: HTTPProxy
 metadata:
