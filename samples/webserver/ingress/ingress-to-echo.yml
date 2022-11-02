@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo-ingress
+spec:
+  tls:
+  - hosts:
+      - echo.lab.pcfdemo.net
+    secretName: echo-tls
+  rules:
+  - host: echo.lab.pcfdemo.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: echo-app-service
+            port:
+              number: 80

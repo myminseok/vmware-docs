@@ -2,14 +2,11 @@
 apiVersion: projectcontour.io/v1
 kind: HTTPProxy
 metadata:
-  name: httpproxy-nginx
+  name: httpproxy-echo
 spec:
   virtualhost:
-    fqdn: nginx-test.lab.pcfdemo.net
-    tls:
-      secretName: default/nginx-tls
-      #secretName: nginx-test/nginx-tls
+    fqdn: echo.lab.pcfdemo.net
   routes:
     - services:
-        - name: nginx-app-service
+        - name: echo-app-service
           port: 80

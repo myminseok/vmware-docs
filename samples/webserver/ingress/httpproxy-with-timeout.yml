@@ -1,0 +1,15 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: httpproxy-echo
+
+spec:
+  virtualhost:
+    fqdn: echo.lab.pcfdemo.net
+  routes:
+  - timeoutPolicy:
+      response: 600s  
+      idle: 60s
+    services:
+    - name: echo-app-service
+      port: 80
