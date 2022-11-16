@@ -1,3 +1,4 @@
+## kubectl create secret docker-registry harbor-registry-secret --docker-username=  --docker-password=
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -28,6 +29,8 @@ spec:
       annotations:
         fluentbit.io/parser: echo
     spec:
+      imagePullSecrets:
+      - name: harbor-registry-secret
       containers:
       - image: mendhak/http-https-echo:23
         name: http-https-echo

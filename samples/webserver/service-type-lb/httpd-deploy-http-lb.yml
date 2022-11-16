@@ -28,8 +28,8 @@ spec:
       annotations:
         fluentbit.io/parser: httpd
     spec:
-#imagePullSecrets:
-#      - name: harbor-registry-secret
+      imagePullSecrets:
+      - name: harbor-registry-secret
       containers:
       - image: httpd
         name: httpd-app
