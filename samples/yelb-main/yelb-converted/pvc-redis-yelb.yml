@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: yelb-redis-server-pvc
+  labels:
+   app: redis-server
+spec:
+  #storageClassName: pacific-gold-storage-policy
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi

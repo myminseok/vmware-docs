@@ -1,2 +1,4 @@
+mreferre/yelb-db:0.5
+mreferre/yelb-appserver:0.5
 mreferre/yelb-ui:0.7
 redis:4.0.2
