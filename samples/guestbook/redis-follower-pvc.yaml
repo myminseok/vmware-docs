@@ -5,7 +5,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: k8s-storage
+      #  storageClassName: k8s-storage
   resources:
     requests:
       storage: 2Gi
