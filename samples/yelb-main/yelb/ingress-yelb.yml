@@ -9,10 +9,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - yelb.com
+    - yelb.tap.h2o-2-2257.h2o.vmware.com
     secretName: yelb-tls
   rules:
-  - host: yelb.com
+  - host: yelb.tap.h2o-2-2257.h2o.vmware.com
     http:
       paths:
       - backend:
