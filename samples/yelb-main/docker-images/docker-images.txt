@@ -1,0 +1,2 @@
+mreferre/yelb-ui:0.7
+redis:4.0.2

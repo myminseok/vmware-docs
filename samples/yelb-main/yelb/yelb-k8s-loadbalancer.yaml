@@ -104,6 +104,14 @@ spec:
         image: redis:4.0.2
         ports:
         - containerPort: 6379
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+      volumes: 
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: yelb-redis-server-pvc
+
 ---
 apiVersion: apps/v1
 kind: Deployment
