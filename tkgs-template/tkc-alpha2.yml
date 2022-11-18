@@ -2,21 +2,21 @@ apiVersion: run.tanzu.vmware.com/v1alpha2
 kind: TanzuKubernetesCluster
 metadata:
   name: tkc2
-  namespace: kminseok
+  namespace: test
 spec:
   topology:
     controlPlane:
       replicas: 1
-      vmClass: best-effort-medium
-      storageClass: tanzu
+      vmClass: best-effort-small
+      storageClass: tanzu-ssd
       tkr:  
         reference:
           name: v1.21.2---vmware.1-tkg.1.ee25d55
     nodePools:
     - name: worker-nodepool-a1
       replicas: 2
-      vmClass: best-effort-medium
-      storageClass: tanzu
+      vmClass: best-effort-small
+      storageClass: tanzu-ssd
       volumes:
         - name: containerd
           mountPath: /var/lib/containerd
@@ -27,9 +27,4 @@ spec:
           name: v1.21.2---vmware.1-tkg.1.ee25d55
   settings:
     storage:
-      defaultClass: tanzu
-    network:
-      trust:
-        additionalTrustedCAs:
-          - name: harbor
-            data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUR6VENDQXJXZ0F3SUJBZ0lVZkRhZjBZc0wraFRLdW53Q1ZkMzhrcS9QZkZzd0RRWUpLb1pJaHZjTkFRRUwKQlFBd09qRUxNQWtHQTFVRUJoTUNTMUl4RFRBTEJnTlZCQW9NQkUxNVEwRXhIREFhQmdOVkJBTU1FM0p2YjNRZwpVMlZzWmlCVGFXZHVaV1FnUTBFd0hoY05Nakl3TXpFM01ETXdORFV3V2hjTk16SXdNekUwTURNd05EVXdXakE2Ck1Rc3dDUVlEVlFRR0V3SkxVakVOTUFzR0ExVUVDZ3dFVFhsRFFURWNNQm9HQTFVRUF3d1RjbTl2ZENCVFpXeG0KSUZOcFoyNWxaQ0JEUVRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSnhPUGRPQgpuMmoxL1l2bm8xRVhyclN5TVJkTGNuekJsTjhLTEVWYXJpcXpieGdoQUpSUWJLN3pUTDkzMGUvUkRjZ3FkWmFSCkhCTERFMXFQaXhXV3lIVHUvUGY0dmxaVnRZRng5emVIckxJekQwbWp3eHR6N0lqei9zMmhKU05sN0dZNUhSMzkKTVNXS3haZzhwdS8vQ1hDclBIMk4yMWR6MktNTzRXWVVPMWJRNHBDRU5Oc1dodXVhZTJFRy92SVFoOWlXNWx4QQpuaGQrdHlGMi9mbGxWNDZtVzJFZG1UNXpPWXNERzllcDJNSUFvK00weXZDdTViRmRlYzJPTEpxMlUyaUZEZ3hOCmpXMVpkamo2WTZtb3lsYkUyYXhpTm5TUFZKMERGUktsNzhjNjZ5RkxsTmpsNmNVb1NuZWwzVGRMWG1OM3BhYkoKbVdQeHFuU09ob1BMZWcwQ0F3RUFBYU9CeWpDQnh6QVBCZ05WSFJNQkFmOEVCVEFEQVFIL01CMEdBMVVkRGdRVwpCQlJTbjJDZkg2OWp0WlorQUpNYTVYMUNPbWxVd2pCMUJnTlZIU01FYmpCc2dCUlNuMkNmSDY5anRaWitBSk1hCjVYMUNPbWxVd3FFK3BEd3dPakVMTUFrR0ExVUVCaE1DUzFJeERUQUxCZ05WQkFvTUJFMTVRMEV4SERBYUJnTlYKQkFNTUUzSnZiM1FnVTJWc1ppQlRhV2R1WldRZ1EwR0NGSHcybjlHTEMvb1V5cnA4QWxYZC9KS3Z6M3hiTUFzRwpBMVVkRHdRRUF3SUJCakFSQmdsZ2hrZ0JodmhDQVFFRUJBTUNBQWN3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCCkFJR25uTXBlTlVRajIxT3hXTmFaUFUvU3k0N1NNVHZvdUlJcXFoKzdMOThsRjZjdlYvTkxWeHJYRWQ5VEdBaXQKTHJyd0xuZTU3ZlhadXNWOFAyTXY5VTZtWDBGWW9idkt2WnppbFZ5cURkSHVkakVSRjRjNHRmRmtWUEFzajFlSQpkNkt2NlVqRUs5M0JrdFpnbkh6dVJXbEVTZldoNE9ROUhkWmdsL3pVWVFQd2NMYkJrUkp2Z1VUKzdUaWhyUXBVCkJSVWpHRnRwNDYrTHFiOFNVWlR3MUVJSU9NVHZvTVRLN01QRnlyaVZENWlpVkw2djRnSjIzU05GZE0vY0hwZHMKcUhwU0Fkc1FjMy9PVmlZekQ4TTFZR2FyK1V3UmhIanpybnNnSVA5NU9YZ2pTS3ltTjhZK3diWW9ZcjN0b3hLWgpBWkowWlNJVkJRRHI2ekZJUmVaUk8vOD0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+      defaultClass: tanzu-ssd
