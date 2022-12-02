@@ -7,7 +7,6 @@ data:
 kind: Secret
 metadata:
   name: harbor-registry-secret
-  namespace: kminseok
 type: kubernetes.io/dockerconfigjson
 ---
 
@@ -47,7 +46,7 @@ spec:
 #imagePullSecrets:
 #      - name: harbor-registry-secret
       containers:
-      - image: 10.213.70.67/kminseok/nginx:latest
+      - image: infra-harbor2.lab.pcfdemo.net/library/nginx:latest
         name: nginx-app
         imagePullPolicy: Always
         securityContext:
