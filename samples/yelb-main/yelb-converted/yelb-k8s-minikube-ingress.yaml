@@ -91,7 +91,7 @@ spec:
     spec:
       containers:
       - name: yelb-ui
-        image: harbor.h2o-2-2257.h2o.vmware.com/library/yelb-ui:0.7
+        image: infra-harbor2.lab.pcfdemo.net/library/yelb-ui:0.7
         ports:
         - containerPort: 80
 ---
@@ -113,7 +113,7 @@ spec:
     spec:
       containers:
       - name: redis-server
-        image: harbor.h2o-2-2257.h2o.vmware.com/library/redis:4.0.2
+        image: infra-harbor2.lab.pcfdemo.net/library/redis:4.0.2
         ports:
         - containerPort: 6379
 ---
@@ -135,7 +135,7 @@ spec:
     spec:
       containers:
       - name: yelb-db
-        image: harbor.h2o-2-2257.h2o.vmware.com/library/yelb-db:0.5
+        image: infra-harbor2.lab.pcfdemo.net/library/yelb-db:0.5
         ports:
         - containerPort: 5432
 ---
@@ -157,7 +157,7 @@ spec:
     spec:
       containers:
       - name: yelb-appserver
-        image: harbor.h2o-2-2257.h2o.vmware.com/library/yelb-appserver:0.5
+        image: infra-harbor2.lab.pcfdemo.net/library/yelb-appserver:0.5
         ports:
         - containerPort: 4567
 

@@ -1,0 +1,14 @@
+#https://projectcontour.io/docs/v1.13.1/config/request-routing/#response-timeouts
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: httpproxy-yelb
+spec:
+  virtualhost:
+    fqdn: yelb.tap.lab.pcfdemo.net
+    tls:
+      secretName: default/yelb-default-tls
+  routes:
+    - services:
+        - name: yelb-ui
+          port: 80

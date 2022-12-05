@@ -6,7 +6,7 @@ set -ex
 SOURCE_ABS=$( cd ../yelb/  && pwd )
 
 TARGET_FOLDER="${SOURCE_ABS}-converted"
-TARGET_URL="harbor.h2o-2-2257.h2o.vmware.com\/library"
+TARGET_URL="infra-harbor2.lab.pcfdemo.net\/library"
 rm -rf $TARGET_FOLDER
 cp -r $SOURCE_ABS $TARGET_FOLDER
 

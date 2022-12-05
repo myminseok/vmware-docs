@@ -1,0 +1,39 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: yelb-selfsigned-issuer
+spec:
+  selfSigned: { }
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: yelb-ca
+spec:
+  commonName: yelb-ca
+  isCA: true
+  issuerRef:
+    kind: Issuer
+    name: yelb-selfsigned-issuer
+  secretName: yelb-ca
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: yelb-ca-issuer
+spec:
+  ca:
+    secretName: yelb-ca
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: yelb-default-tls
+spec:
+  dnsNames:
+  - yelb.tap.lab.pcfdemo.net
+  issuerRef:
+    kind: Issuer
+    name: yelb-ca-issuer
+  secretName: yelb-default-tls

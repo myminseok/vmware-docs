@@ -8,10 +8,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - yelb.tap.h2o-2-2257.h2o.vmware.com
+    - yelb.tap.lab.pcfdemo.net
     secretName: yelb-tls
   rules:
-  - host: yelb.tap.h2o-2-2257.h2o.vmware.com
+  - host: yelb.tap.lab.pcfdemo.net
     http:
       paths:
       - backend:
