@@ -14,5 +14,5 @@ kubectl --context mgmt-admin@mgmt get secret tkc-run-kapp-controller-data-values
 ```
 
 
-# updating kapp-controller-config after deploying tkc. 
+# Updating kapp-controller-config after deploying tkc. 
 https://github.com/myminseok/vmware-docs/blob/main/kapp-controller-config/update-after-TKC-deployment.md
