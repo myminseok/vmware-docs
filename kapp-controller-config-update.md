@@ -41,18 +41,13 @@ kubectl patch --context mgmt-admin@mgmt app/tkc-view-kapp-controller -n default 
 
 
 ##  verify kapp-controller-config on workload cluster 
-### switch to  TKC cluster
-```
-kubectl config use-context tkc-view-cluster-admin@tkc-view-cluster
-Switched to context "tkc-view-cluster-admin@tkc-view-cluster".
-```
 
 ### wait for 2-3 min 
 ```
-kubectl delete cm kapp-controller-config -n tkg-system
+kubectl --context tkc-view-cluster-admin@tkc-view-cluster delete cm kapp-controller-config -n tkg-system
 NAME                     DATA   AGE
 kapp-controller-config   5      102s
 
-k get cm kapp-controller-config -n tkg-system -o yaml
+kubectl --context tkc-view-cluster-admin@tkc-view-cluster get cm kapp-controller-config -n tkg-system -o yaml
 ```
 
