@@ -15,18 +15,17 @@ tkc-shared-cluster-kapp-controller-data-values                 Opaque           
 tkc-view-cluster-kapp-controller-addon                         tkg.tanzu.vmware.com/addon             1      7h37m.    < --- target secerte CA
 tkc-view-cluster-kapp-controller-data-values                   Opaque                                 1      7h36m
 ```
-### fetch tkg154-view-cluster-kapp-controller-data-values from addon
+### fetch tkc-view-cluster-kapp-controller-data-values from addon
 ```
 kubectl --context mgmt-admin@mgmt get secret tkc-view-cluster-kapp-controller-data-values -o yaml -o jsonpath='{.data.values\.yaml}' | base64 --decode
 kubectl --context mgmt-admin@mgmt get secret tkc-view-cluster-kapp-controller-data-values -o yaml -o jsonpath='{.data.values\.yaml}' | base64 --decode > tkc-view-cluster-kapp-controller-data-values.yaml
 ```
 
-### apply to tkg154-view-cluster-kapp-controller-data-values
+### apply to tkc-view-cluster-kapp-controller-addon
 ```
 cat tkc-view-kapp-controller-data-values.yml | base64 -w0
 ```
 
-### apply to tkg154-view-cluster-kapp-controller-addon
 ```
 kubectl --context mgmt-admin@mgmt edit secret tkc-view-cluster-kapp-controller-addon
 ```
