@@ -5,7 +5,7 @@ ref: https://carvel.dev/kapp-controller/docs/v0.42.0/controller-config/
 
 
 
-### fetch target cluster kapp-controller-addon. for example workload clsuter name is 'tkc-view-cluster' then, 
+### 1 fetch target cluster kapp-controller-addon. for example workload clsuter name is 'tkc-view-cluster' then, 
 ```
 kubectl --context mgmt-admin@mgmt  get secret -n default | grep kapp
 tkc-iterator-cluster-kapp-controller-addon                     tkg.tanzu.vmware.com/addon             1      25d
@@ -15,13 +15,13 @@ tkc-shared-cluster-kapp-controller-data-values                 Opaque           
 tkc-view-cluster-kapp-controller-addon                         tkg.tanzu.vmware.com/addon             1      7h37m.    < --- target secerte CA
 tkc-view-cluster-kapp-controller-data-values                   Opaque                                 1      7h36m
 ```
-### fetch tkc-view-cluster-kapp-controller-data-values from addon
+### 2 fetch tkc-view-cluster-kapp-controller-data-values from addon
 ```
 kubectl --context mgmt-admin@mgmt get secret tkc-view-cluster-kapp-controller-data-values -o yaml -o jsonpath='{.data.values\.yaml}' | base64 --decode
 kubectl --context mgmt-admin@mgmt get secret tkc-view-cluster-kapp-controller-data-values -o yaml -o jsonpath='{.data.values\.yaml}' | base64 --decode > tkc-view-cluster-kapp-controller-data-values.yaml
 ```
 
-### apply to tkc-view-cluster-kapp-controller-addon
+### 3 apply to tkc-view-cluster-kapp-controller-addon
 ```
 cat tkc-view-kapp-controller-data-values.yml | base64 -w0
 ```
@@ -40,9 +40,8 @@ kubectl patch --context mgmt-admin@mgmt app/tkc-view-kapp-controller -n default 
 ```
 
 
-##  verify kapp-controller-config on workload cluster 
-
-### wait for 2-3 min 
+### 4 verify kapp-controller-config on workload cluster 
+wait for 2-3 min to be updated.
 ```
 kubectl --context tkc-view-cluster-admin@tkc-view-cluster delete cm kapp-controller-config -n tkg-system
 NAME                     DATA   AGE
