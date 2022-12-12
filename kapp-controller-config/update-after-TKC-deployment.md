@@ -1,8 +1,8 @@
+
+# updating kapp-controller-config on workload cluster  by changing just workload template on mgmt cluster.
 on workload cluster., kapp controller init fails due to needed CA is not there or need to update kapp-controller-config secret(configmap) 
 ref: https://carvel.dev/kapp-controller/docs/v0.42.0/controller-config/
 
-
-# updating kapp-controller-config on workload cluster  by changing just workload template on mgmt cluster.
 
 
 ### fetch target cluster kapp-controller-addon. for example workload clsuter name is 'tkc-view-cluster' then, 
