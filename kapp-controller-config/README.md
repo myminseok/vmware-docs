@@ -1,4 +1,4 @@
-# applying kapp-controller-config on deploying tkc. 
+# Applying kapp-controller-config on deploying tkc. 
 
 ### apply overlay.
 ```
