@@ -12,3 +12,7 @@ cp update-kapp-controller_addon_data.lib.yaml ~/.config/tanzu/tkg/providers/ytt/
 ```
 kubectl --context mgmt-admin@mgmt get secret tkc-run-kapp-controller-data-values -o jsonpath='{.data.values\.yaml}' | base64 -d
 ```
+
+
+# updating kapp-controller-config after deploying tkc. 
+https://github.com/myminseok/vmware-docs/blob/main/kapp-controller-config/update-after-TKC-deployment.md
