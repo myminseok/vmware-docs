@@ -32,8 +32,8 @@ spec:
       imagePullSecrets:
       - name: harbor-registry-secret
       containers:
-              #- image: mendhak/http-https-echo:23
-      - image: harbor.h2o-2-2257.h2o.vmware.com/test/http-https-echo:23
+      - image: mendhak/http-https-echo:23
+      #- image: harbor.h2o-2-2257.h2o.vmware.com/test/http-https-echo:23
         name: http-https-echo
         imagePullPolicy: Always
         securityContext:
