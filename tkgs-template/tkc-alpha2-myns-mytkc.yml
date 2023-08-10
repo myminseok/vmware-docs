@@ -1,22 +1,22 @@
 apiVersion: run.tanzu.vmware.com/v1alpha2
 kind: TanzuKubernetesCluster
 metadata:
-  name: tkc2
-  namespace: test
+  name: myns-mytkc
+  namespace: myns # bounds to workload network
 spec:
   topology:
     controlPlane:
       replicas: 1
       vmClass: best-effort-small
-      storageClass: tanzu-ssd
+      storageClass: vc01cl01-t0compute
       tkr:  
         reference:
-          name: v1.21.2---vmware.1-tkg.1.ee25d55
+          name: v1.23.8---vmware.3-tkg.1
     nodePools:
     - name: worker-nodepool-a1
       replicas: 2
       vmClass: best-effort-small
-      storageClass: tanzu-ssd
+      storageClass: vc01cl01-t0compute
       volumes:
         - name: containerd
           mountPath: /var/lib/containerd
@@ -24,7 +24,7 @@ spec:
             storage: 16Gi
       tkr:  
         reference:
-          name: v1.21.2---vmware.1-tkg.1.ee25d55
+          name: v1.23.8---vmware.3-tkg.1
   settings:
     storage:
-      defaultClass: tanzu-ssd
+      defaultClass: vc01cl01-t0compute

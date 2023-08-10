@@ -1,14 +1,14 @@
 
 
-# kubectl create secret docker-registry harbor-registry-secret --docker-server=10.213.70.67 --docker-username=kminseok@vsphere.local --docker-password=VMware1! -n kminseok -o yaml
-apiVersion: v1
-data:
-  .dockerconfigjson: eyJhdXRocyI6eyIxMC4yMTMuNzAuNjciOnsidXNlcm5hbWUiOiJrbWluc2Vva0B2c3BoZXJlLmxvY2FsIiwicGFzc3dvcmQiOiJWTXdhcmUxISIsImF1dGgiOiJhMjFwYm5ObGIydEFkbk53YUdWeVpTNXNiMk5oYkRwV1RYZGhjbVV4SVE9PSJ9fX0=
-kind: Secret
-metadata:
-  name: harbor-registry-secret
-type: kubernetes.io/dockerconfigjson
----
+# kubectl create secret docker-registry harbor-registry-secret --docker-server=https://index.docker.io/v1/ --docker-username= --docker-password= 
+# apiVersion: v1
+# data:
+#   .dockerconfigjson: eyJhdXRocyI6eyIxMC4yMTMuNzAuNjciOnsidXNlcm5hbWUiOiJrbWluc2Vva0B2c3BoZXJlLmxvY2FsIiwicGFzc3dvcmQiOiJWTXdhcmUxISIsImF1dGgiOiJhMjFwYm5ObGIydEFkbk53YUdWeVpTNXNiMk5oYkRwV1RYZGhjbVV4SVE9PSJ9fX0=
+# kind: Secret
+# metadata:
+#   name: harbor-registry-secret
+# type: kubernetes.io/dockerconfigjson
+# ---
 
 apiVersion: v1
 kind: ServiceAccount
@@ -43,10 +43,9 @@ spec:
       annotations:
         fluentbit.io/parser: nginx
     spec:
-#imagePullSecrets:
-#      - name: harbor-registry-secret
+      imagePullSecrets:
+       - name: harbor-registry-secret
       containers:
-      #- image: infra-harbor2.lab.pcfdemo.net/library/nginx:latest
       - image: nginx
         name: nginx-app
         imagePullPolicy: Always
