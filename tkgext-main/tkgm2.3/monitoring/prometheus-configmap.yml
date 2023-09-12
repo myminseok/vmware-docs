@@ -12,6 +12,8 @@ data:
     ## https://github.com/prometheus/prometheus/blob/release-2.47/documentation/examples/web-config.yml
     # Usernames and passwords required to connect to Prometheus.
     # Passwords are hashed with bcrypt: https://github.com/prometheus/exporter-toolkit/blob/master/docs/web-configuration.md#about-bcrypt
+    # htpasswd -nBC 10 "" | tr -d ':\n'
+    # VMware1! $2y$10$uC5K6atkxsgtobH4QQQrLeldPynEZprlHuuXPu/vY7O0y9pzOOPs2
+    ## test: $2b$12$hNf2lSsxfm0.i4a.1kVpSOVyBCfIB51VRjgBUyv6kdnyTlgWj81Ay
     basic_auth_users:
-      alice: $2y$10$mDwo.lAisC94iLAyP81MCesa29IzH37oigHC/42V2pdJlUprsJPze
-      bob: $2y$10$hLqFl9jSjoAAy95Z/zw8Ye8wkdMBM8c5Bn1ptYqP/AXyV0.oy0S8m
+      admin: $2y$10$uC5K6atkxsgtobH4QQQrLeldPynEZprlHuuXPu/vY7O0y9pzOOPs2

@@ -24,6 +24,22 @@ spec:
             #@overlay/append
             - name: prometheus-web-config
               mountPath: /etc/web-config
+          livenessProbe:
+            httpGet:
+              #!-- echo -n 'admin:VMware1!' | base64
+              #@overlay/match missing_ok=True
+              httpHeaders:
+                #@overlay/replace
+                - name: Authorization
+                  value: 'Basic YWRtaW46Vk13YXJlMSE='
+          readinessProbe:
+            httpGet:
+              #!--echo -n 'admin:VMware1' | base64
+              #@overlay/match missing_ok=True
+              httpHeaders:
+                #@overlay/replace
+                - name: Authorization
+                  value: 'Basic YWRtaW46Vk13YXJlMSE='
       volumes:
         #@overlay/append
         - name: prometheus-web-config
