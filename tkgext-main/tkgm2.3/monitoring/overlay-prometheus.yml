@@ -1,0 +1,31 @@
+---
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind": "Deployment", "metadata": {"name": "prometheus-server"}}), expects="1+"
+#!--@overlay/match by=overlay.and_op(overlay.subset({"kind": "Deployment"}), overlay.subset({"metadata": {"name": "prometheus-server"}})), expects="1+"
+
+---
+spec:
+  template:
+    spec:
+      containers:
+        #@overlay/match by="name",expects="1+"
+        - name: prometheus-server
+          #@overlay/replace
+          args:
+            - --storage.tsdb.retention.time=30d
+            - --config.file=/etc/config/prometheus.yml
+            - --web.config.file=/etc/web-config/prometheus_web_config.yml
+            - --storage.tsdb.path=/data
+            - --web.console.libraries=/etc/prometheus/console_libraries
+            - --web.console.templates=/etc/prometheus/consoles
+            - --web.enable-lifecycle
+          volumeMounts:
+            #@overlay/append
+            - name: prometheus-web-config
+              mountPath: /etc/web-config
+      volumes:
+        #@overlay/append
+        - name: prometheus-web-config
+          configMap:
+            name: prometheus-web-config

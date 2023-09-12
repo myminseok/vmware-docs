@@ -1,0 +1,39 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  annotations:
+    ext.packaging.carvel.dev/ytt-paths-from-secret-name.1: overlay-prometheus
+    packaging.carvel.dev/package-ClusterRole: prometheus-my-packages-cluster-role
+    packaging.carvel.dev/package-ClusterRoleBinding: prometheus-my-packages-cluster-rolebinding
+    packaging.carvel.dev/package-Secret: prometheus-my-packages-values
+    packaging.carvel.dev/package-ServiceAccount: prometheus-my-packages-sa
+    tkg.tanzu.vmware.com/tanzu-package-ClusterRole: prometheus-my-packages-cluster-role
+    tkg.tanzu.vmware.com/tanzu-package-ClusterRoleBinding: prometheus-my-packages-cluster-rolebinding
+    tkg.tanzu.vmware.com/tanzu-package-Secret: prometheus-my-packages-values
+    tkg.tanzu.vmware.com/tanzu-package-ServiceAccount: prometheus-my-packages-sa
+  creationTimestamp: "2023-09-11T23:52:03Z"
+  finalizers:
+  - finalizers.packageinstall.packaging.carvel.dev/delete
+  generation: 5
+  name: prometheus
+  namespace: my-packages
+  resourceVersion: "3818371"
+  uid: e07bfb47-eb9e-4a4b-a7aa-fe7e51869cb6
+spec:
+  packageRef:
+    refName: prometheus.tanzu.vmware.com
+    versionSelection:
+      constraints: 2.27.0+vmware.2-tkg.1
+      prereleases: {}
+  serviceAccountName: prometheus-my-packages-sa
+  values:
+  - secretRef:
+      name: prometheus-my-packages-values
+status:
+  conditions:
+  - status: "True"
+    type: ReconcileSucceeded
+  friendlyDescription: Reconcile succeeded
+  lastAttemptedVersion: 2.27.0+vmware.2-tkg.1
+  observedGeneration: 5
+  version: 2.27.0+vmware.2-tkg.1

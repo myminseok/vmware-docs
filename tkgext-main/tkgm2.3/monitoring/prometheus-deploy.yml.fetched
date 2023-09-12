@@ -1,0 +1,156 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kapp.k14s.io/identity: v1;tanzu-system-monitoring/apps/Deployment/prometheus-server;apps/v1
+    kapp.k14s.io/original: '{"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"kbld.k14s.io/images":"-
+      origins:\n  - resolved:\n      tag: v0.5.0_vmware.2\n      url: projects.registry.vmware.com/tkg/prometheus/configmap-reload:v0.5.0_vmware.2\n  -
+      preresolved:\n      url: extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:79aaa990f90c5e0a492b9b4fd445ac3a42d2708577d5c59024b360b7614fe83b\n  url:
+      extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:79aaa990f90c5e0a492b9b4fd445ac3a42d2708577d5c59024b360b7614fe83b\n-
+      origins:\n  - resolved:\n      tag: v2.27.0_vmware.1\n      url: projects.registry.vmware.com/tkg/prometheus/prometheus:v2.27.0_vmware.1\n  -
+      preresolved:\n      url: extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:b5bcecd51dc3e14b7839858f764324cfc661ce11e48c8ca4e06cf4e7a24eface\n  url:
+      extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:b5bcecd51dc3e14b7839858f764324cfc661ce11e48c8ca4e06cf4e7a24eface\n"},"labels":{"app":"prometheus","component":"server","kapp.k14s.io/app":"1694476325653988143","kapp.k14s.io/association":"v1.40689ad0e6910d6b0b6d646acea7dfc6"},"name":"prometheus-server","namespace":"tanzu-system-monitoring"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"prometheus","component":"server","kapp.k14s.io/app":"1694476325653988143"}},"template":{"metadata":{"annotations":{},"labels":{"app":"prometheus","component":"server","kapp.k14s.io/app":"1694476325653988143","kapp.k14s.io/association":"v1.40689ad0e6910d6b0b6d646acea7dfc6"}},"spec":{"containers":[{"args":["--volume-dir=/etc/config","--webhook-url=http://127.0.0.1:9090/-/reload"],"image":"extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:79aaa990f90c5e0a492b9b4fd445ac3a42d2708577d5c59024b360b7614fe83b","imagePullPolicy":"IfNotPresent","name":"prometheus-server-configmap-reload","resources":null,"volumeMounts":[{"mountPath":"/etc/config","name":"config-volume","readOnly":true}]},{"args":["--storage.tsdb.retention.time=42d","--config.file=/etc/config/prometheus.yml","--storage.tsdb.path=/data","--web.console.libraries=/etc/prometheus/console_libraries","--web.console.templates=/etc/prometheus/consoles","--web.enable-lifecycle"],"image":"extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:b5bcecd51dc3e14b7839858f764324cfc661ce11e48c8ca4e06cf4e7a24eface","imagePullPolicy":"IfNotPresent","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/-/healthy","port":9090},"initialDelaySeconds":30,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":10},"name":"prometheus-server","ports":[{"containerPort":9090}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/-/ready","port":9090},"initialDelaySeconds":30,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":4},"resources":null,"volumeMounts":[{"mountPath":"/etc/config","name":"config-volume"},{"mountPath":"/data","name":"storage-volume","subPath":""}]}],"dnsPolicy":"ClusterFirst","hostNetwork":false,"securityContext":{"fsGroup":65534,"runAsGroup":65534,"runAsNonRoot":true,"runAsUser":65534},"serviceAccountName":"prometheus-server-sa","terminationGracePeriodSeconds":300,"volumes":[{"configMap":{"name":"prometheus-server"},"name":"config-volume"},{"name":"storage-volume","persistentVolumeClaim":{"claimName":"prometheus-server"}}]}}}}'
+    kapp.k14s.io/original-diff-md5: 8a499025dac587d0c6bb71394221dde5
+    kbld.k14s.io/images: |
+      - origins:
+        - resolved:
+            tag: v0.5.0_vmware.2
+            url: projects.registry.vmware.com/tkg/prometheus/configmap-reload:v0.5.0_vmware.2
+        - preresolved:
+            url: extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:79aaa990f90c5e0a492b9b4fd445ac3a42d2708577d5c59024b360b7614fe83b
+        url: extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:79aaa990f90c5e0a492b9b4fd445ac3a42d2708577d5c59024b360b7614fe83b
+      - origins:
+        - resolved:
+            tag: v2.27.0_vmware.1
+            url: projects.registry.vmware.com/tkg/prometheus/prometheus:v2.27.0_vmware.1
+        - preresolved:
+            url: extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:b5bcecd51dc3e14b7839858f764324cfc661ce11e48c8ca4e06cf4e7a24eface
+        url: extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:b5bcecd51dc3e14b7839858f764324cfc661ce11e48c8ca4e06cf4e7a24eface
+  creationTimestamp: "2023-09-11T23:52:11Z"
+  generation: 2
+  labels:
+    app: prometheus
+    component: server
+    kapp.k14s.io/app: "1694476325653988143"
+    kapp.k14s.io/association: v1.40689ad0e6910d6b0b6d646acea7dfc6
+  name: prometheus-server
+  namespace: tanzu-system-monitoring
+  resourceVersion: "3801197"
+  uid: 6edb108d-acc5-414a-8b96-e9f13af083bf
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: prometheus
+      component: server
+      kapp.k14s.io/app: "1694476325653988143"
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: prometheus
+        component: server
+        kapp.k14s.io/app: "1694476325653988143"
+        kapp.k14s.io/association: v1.40689ad0e6910d6b0b6d646acea7dfc6
+    spec:
+      containers:
+      - args:
+        - --volume-dir=/etc/config
+        - --webhook-url=http://127.0.0.1:9090/-/reload
+        image: extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:79aaa990f90c5e0a492b9b4fd445ac3a42d2708577d5c59024b360b7614fe83b
+        imagePullPolicy: IfNotPresent
+        name: prometheus-server-configmap-reload
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/config
+          name: config-volume
+          readOnly: true
+      - args:
+        - --storage.tsdb.retention.time=42d
+        - --config.file=/etc/config/prometheus.yml
+        - --storage.tsdb.path=/data
+        - --web.console.libraries=/etc/prometheus/console_libraries
+        - --web.console.templates=/etc/prometheus/consoles
+        - --web.enable-lifecycle
+        image: extensions.aws-usw2.tmc.cloud.vmware.com/packages/standard/repo@sha256:b5bcecd51dc3e14b7839858f764324cfc661ce11e48c8ca4e06cf4e7a24eface
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /-/healthy
+            port: 9090
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 10
+        name: prometheus-server
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /-/ready
+            port: 9090
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 4
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/config
+          name: config-volume
+        - mountPath: /data
+          name: storage-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccount: prometheus-server-sa
+      serviceAccountName: prometheus-server-sa
+      terminationGracePeriodSeconds: 300
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: prometheus-server
+        name: config-volume
+      - name: storage-volume
+        persistentVolumeClaim:
+          claimName: prometheus-server
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2023-09-11T23:53:04Z"
+    lastUpdateTime: "2023-09-11T23:53:04Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2023-09-11T23:52:12Z"
+    lastUpdateTime: "2023-09-11T23:53:04Z"
+    message: ReplicaSet "prometheus-server-5886ffcc9" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

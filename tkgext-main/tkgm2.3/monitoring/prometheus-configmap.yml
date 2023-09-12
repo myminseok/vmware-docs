@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-web-config
+  annotations:
+    kapp.k14s.io/identity: v1;tanzu-system-monitoring//ConfigMap/prometheus-server;v1
+  labels:
+    app: prometheus
+    component: server
+data:
+  prometheus_web_config.yml: |
+    ## https://github.com/prometheus/prometheus/blob/release-2.47/documentation/examples/web-config.yml
+    # Usernames and passwords required to connect to Prometheus.
+    # Passwords are hashed with bcrypt: https://github.com/prometheus/exporter-toolkit/blob/master/docs/web-configuration.md#about-bcrypt
+    basic_auth_users:
+      alice: $2y$10$mDwo.lAisC94iLAyP81MCesa29IzH37oigHC/42V2pdJlUprsJPze
+      bob: $2y$10$hLqFl9jSjoAAy95Z/zw8Ye8wkdMBM8c5Bn1ptYqP/AXyV0.oy0S8m
