@@ -34,7 +34,7 @@ spec:
                   value: 'Basic YWRtaW46Vk13YXJlMSE='
           readinessProbe:
             httpGet:
-              #!--echo -n 'admin:VMware1' | base64
+              #!--echo -n 'admin:VMware1!' | base64
               #@overlay/match missing_ok=True
               httpHeaders:
                 #@overlay/replace
