@@ -24,6 +24,7 @@ spec:
             #@overlay/append
             - name: prometheus-web-config
               mountPath: /etc/web-config
+          #!--Liveness probe fails with http status code 401 when configured with http basic auth https://github.com/prometheus-community/helm-charts/issues/3688
           livenessProbe:
             httpGet:
               #!-- echo -n 'admin:VMware1!' | base64
