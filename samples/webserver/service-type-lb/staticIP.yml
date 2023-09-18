@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: srvclb-ngnx
+  name: svclb-ngnx
 spec:
   selector:
     app: hello
@@ -11,7 +11,7 @@ spec:
     port: 80
     targetPort: 80
   type: LoadBalancer
-  loadBalancerIP: 10.220.25.105
+  loadBalancerIP: 10.220.31.180
 ---
 apiVersion: apps/v1
 kind: Deployment

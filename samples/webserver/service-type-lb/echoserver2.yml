@@ -1,20 +1,24 @@
+
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: echo
+  name: echoserver
+imagePullSecrets:
+- name: harbor-registry-secret
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: echo
-  name: echo-app
+    app: echoserver
+  name: echoserver-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: echo
+      app: echoserver
   strategy: 
     type: RollingUpdate
     rollingUpdate: 
@@ -24,31 +28,32 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: echo
+        app: echoserver
       annotations:
-        fluentbit.io/parser: echo
+        fluentbit.io/parser: echoserver
     spec:
       containers:
-      - image: mendhak/http-https-echo:23
-        name: http-https-echo
+      - image: echoserver:1.4
+        name: echoserver-app
         imagePullPolicy: Always
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 0
         resources: {}
-      serviceAccount: echo
-      serviceAccountName: echo
+      serviceAccount: echoserver
+      serviceAccountName: echoserver
 status: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: echo-app-service
+  name: echoserver-app-service
 spec:
   type: LoadBalancer
   #type: ClusterIP
+  externalTrafficPolicy: Local
   selector:
-    app: echo
+    app: echoserver
   ports:
     - protocol: TCP
       port: 80

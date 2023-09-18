@@ -1,25 +1,13 @@
 
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
-#define the cluster
 metadata:
-  #user-defined name of the cluster; string
-  name: myns-mytkc
-  #kubernetes namespace for the cluster; string
+  name: myns-mytkc-beta
   namespace: myns
-#define the desired state of cluster
 spec:
-  clusterNetwork:
-    services:
-      cidrBlocks: ["198.51.100.0/12"]
-    pods:
-      cidrBlocks: ["192.0.2.0/16"]
-    serviceDomain: "cluster.local"
   topology:
-    #name of the ClusterClass object to derive the topology
     class: tanzukubernetescluster
     version: v1.23.8---vmware.2-tkg.2-zshippable
-    ## v1.23.8---vmware.3-tkg.1 => Error from server (CAPI cluster cannot be created using legacy TKR, please use uTKR): error when creating "tkc-beta1.yml": admission webhook "capi.validating.tanzukubernetescluster.run.tanzu.vmware.com" denied the request: CAPI cluster cannot be created using legacy TKR, please use uTKR
     controlPlane:
       replicas: 1
     workers:

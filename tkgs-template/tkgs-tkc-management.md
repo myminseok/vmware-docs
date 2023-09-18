@@ -25,3 +25,8 @@ psp:authenticated                                                    ClusterRole
 ## Certificates
 - certificate list and validity : https://kb.vmware.com/s/article/89324
 - rotate : https://kb.vmware.com/s/article/90627
+
+
+## sample apps
+
+https://docs.vmware.com/en/VMware-vSphere/7.0/vmware-vsphere-with-tanzu/GUID-E217C538-2241-4FD9-9D67-6A54E97CA800.html

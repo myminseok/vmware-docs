@@ -1,0 +1,44 @@
+## https://docs.vmware.com/en/VMware-vSphere/7.0/vmware-vsphere-with-tanzu/GUID-B2807BCD-0CE1-4C3A-9C0E-2B78F5DA0E90.html
+apiVersion: run.tanzu.vmware.com/v1alpha2
+kind: TanzuKubernetesCluster
+metadata:
+  name: myns-mytkc
+  namespace: myns # bounds to workload network
+spec:
+  topology:
+    controlPlane:
+      replicas: 3
+      vmClass: guaranteed-medium
+      storageClass: vc01cl01-t0compute
+      tkr:  
+        reference:
+          name: v1.23.8---vmware.3-tkg.1
+    nodePools:
+    - name: worker-nodepool-a1
+      replicas: 1
+      vmClass: guaranteed-large
+      storageClass: vc01cl01-t0compute
+      volumes: ##ephemeral disk.
+        - name: containerd 
+          mountPath: /var/lib/containerd 
+          capacity:
+            storage: 16Gi
+        - name: myvolume
+          mountPath: /var/lib/myvolume
+          capacity:
+            storage: 30Gi
+        - name: myvolume2
+          mountPath: /var/lib/myvolume2
+          capacity:
+            storage: 1Gi
+      tkr:  
+        reference:
+          name: v1.23.8---vmware.3-tkg.1
+    - name: worker-nodepool-a2
+      replicas: 2
+      vmClass: guaranteed-medium
+      storageClass: vc01cl01-t0compute
+      tkr:  
+        reference:
+          name: v1.23.8---vmware.3-tkg.1
+

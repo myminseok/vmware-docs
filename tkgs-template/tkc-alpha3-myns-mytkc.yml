@@ -1,7 +1,7 @@
-apiVersion: run.tanzu.vmware.com/v1alpha2
+apiVersion: run.tanzu.vmware.com/v1alpha3
 kind: TanzuKubernetesCluster
 metadata:
-  name: myns-mytkc
+  name: myns-mytkc3
   namespace: myns # bounds to workload network
 spec:
   topology:
