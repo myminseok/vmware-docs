@@ -2,7 +2,7 @@ apiVersion: run.tanzu.vmware.com/v1alpha1
 kind: TanzuKubernetesCluster
 metadata:
   name: tkc1
-  namespace: kminseok
+  namespace: kminseok # !!! IMPORTANT bounds to workload network in supervisor
 spec:
   distribution:
     version: v1.20
