@@ -2,7 +2,7 @@ apiVersion: run.tanzu.vmware.com/v1alpha2
 kind: TanzuKubernetesCluster
 metadata:
   name: myns2-mytkc
-  namespace: myns2 # bounds to workload network
+  namespace: myns2 # !!! IMPORTANT bounds to workload network in supervisor
 spec:
   topology:
     controlPlane:
