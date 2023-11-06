@@ -2,7 +2,7 @@ apiVersion: run.tanzu.vmware.com/v1alpha1      #TKGS API endpoint
 kind: TanzuKubernetesCluster                   #required parameter
 metadata:
   name: tkc1
-  namespace: ns1
+  namespace: ns1     # !!! IMPORTANT bounds to workload network in supervisor
 spec:
   distribution:
     version: v1.18                             #Resolves to the latest v1.18 image
