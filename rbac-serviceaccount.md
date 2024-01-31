@@ -35,7 +35,13 @@ rules:
 kubectl create clusterrolebinding custom-binding \
 --clusterrole=custom-role  \
 --serviceaccount=default:custom-sa
+
+kubectl create clusterrolebinding custom-binding \
+--clusterrole=custom-role  \
+--serviceaccount=tkg-system:ako-sa
+
 ```
+
 
 ```
 apiVersion: rbac.authorization.k8s.io/v1

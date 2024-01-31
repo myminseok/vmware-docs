@@ -1,0 +1,15 @@
+#https://projectcontour.io/docs/v1.13.1/config/request-routing/#response-timeouts
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: httpproxy-nginx
+spec:
+  virtualhost:
+    fqdn: nginx-test.lab.pcfdemo.net
+    tls:
+      secretName: default/nginx-tls
+      #secretName: nginx-test/nginx-tls
+  routes:
+    - services:
+        - name: nginx-app-service
+          port: 80
