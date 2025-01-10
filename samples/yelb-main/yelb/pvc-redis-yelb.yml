@@ -5,10 +5,10 @@ metadata:
   labels:
    app: redis-server
 spec:
-  storageClassName: vc01cl01-t0compute
+  storageClassName: default
   accessModes:
-  #  - ReadWriteOnce
-  - ReadWriteMany
+  - ReadWriteOnce
+  #- ReadWriteMany
   resources:
     requests:
       storage: 3Gi

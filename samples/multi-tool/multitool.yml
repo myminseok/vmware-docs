@@ -1,0 +1,18 @@
+## docker pull praqma/network-multitool
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multitool2
+  namespace: default
+spec:
+  containers:
+  - image: praqma/network-multitool
+    imagePullPolicy: Always
+    securityContext:
+      allowPrivilegeEscalation: false
+    name: jumpbox
+    resources:
+      limits:
+        memory: "1Gi"
+      requests:
+        memory: "1Gi"

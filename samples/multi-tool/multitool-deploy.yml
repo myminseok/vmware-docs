@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: multitool-deploy
+  name: multitool-deploy
+  namespace: default
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: multitool-deploy
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: multitool-deploy
+    spec:
+      containers:
+      - image: praqma/network-multitool
+        name: multitool
+        command: ['sh','-c','sleep 4800']
+        resources: {}
+        
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsGroup: 65534
+          runAsUser: 65534
+      dnsPolicy: ClusterFirst
+      #dnsPolicy: Default
+      restartPolicy: Always
+
