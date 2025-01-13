@@ -19,7 +19,7 @@ kubectl --context mgmt-admin@mgmt get secret tkc-run-kapp-controller-data-values
 ```
 
 
-# Updating kapp-controller-config after deploying tkc. 
+# (warning: this is temporary and might be reverted back) Updating kapp-controller-config after deploying tkc.
 
 ### 1 fetch target cluster kapp-controller-addon. for example workload clsuter name is 'tkc-view-cluster' then, 
 ```
