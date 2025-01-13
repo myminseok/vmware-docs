@@ -37,7 +37,30 @@ kubectl --context mgmt-admin@mgmt get secret tkc-view-cluster-kapp-controller-da
 kubectl --context mgmt-admin@mgmt get secret tkc-view-cluster-kapp-controller-data-values -o yaml -o jsonpath='{.data.values\.yaml}' | base64 --decode > tkc-view-cluster-kapp-controller-data-values.yaml
 ```
 
-### 3 apply to tkc-view-cluster-kapp-controller-addon
+### 3 edit tkc-view-kapp-controller-data-values.yml
+```
+#@data/values
+#@overlay/match-child-defaults missing_ok=True
+---
+kappController:
+  namespace: tkg-system
+  createNamespace: true
+  globalNamespace: tanzu-package-repo-global
+  image:
+    repository: projects.registry.vmware.com/tkg
+    path: kapp-controller
+    tag: v0.48.2_vmware.1
+    pullPolicy: IfNotPresent
+  deployment:
+    concurrency: 4
+   ...
+  config:
+    caCerts: |
+      -----BEGIN CERTIFICATE-----
+      MIIDzTCCArWgAwIBAgIUNch6P5frstAn
+```
+
+### 4 apply to tkc-view-cluster-kapp-controller-addon
 ```
 cat tkc-view-kapp-controller-data-values.yml | base64 -w0
 ```
