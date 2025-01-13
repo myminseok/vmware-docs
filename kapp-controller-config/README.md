@@ -52,6 +52,7 @@ data:
   values.yaml: PASTE_HERE 
 ```
 ```
+kubectl patch --context mgmt-admin@mgmt app/tkc-view-kapp-controller -n default -p '{"spec":{"paused":true}}' --type=merge
 kubectl patch --context mgmt-admin@mgmt app/tkc-view-kapp-controller -n default -p '{"spec":{"paused":false}}' --type=merge
 ```
 
