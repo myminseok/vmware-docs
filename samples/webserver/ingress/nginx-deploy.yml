@@ -31,8 +31,8 @@ spec:
 #imagePullSecrets:
 #      - name: harbor-registry-secret
       containers:
-      #- image: nginx
-      - image: infra-harbor.lab.pcfdemo.net/library/nginx:latest
+      - image: nginx
+      #- image: infra-harbor.lab.pcfdemo.net/library/nginx:latest
         name: nginx-app
         imagePullPolicy: Always
         securityContext:
